@@ -1,0 +1,261 @@
+﻿<template>
+  <el-container>
+    <el-header class="header">
+      <el-row :gutter="12">
+        <el-col :span="8">
+          <el-input v-model="keyword" placeholder="通过用户名搜索" prefix-icon="el-icon-search"></el-input>
+        </el-col>
+        <el-col :span="3">
+          <el-button @click="searchUser()" type="primary" icon="el-icon-search">查询</el-button>
+        </el-col>
+        <el-col :span="3">
+          <el-button @click="isUserAddDlgVisible=true" type="success" icon="el-icon-plus">添加新用户</el-button>
+        </el-col>
+      </el-row>
+    </el-header>
+
+    <el-table :data="userList" v-loading="loading" border stripe>
+      <el-table-column prop="id" label="用户ID" sortable width="100"></el-table-column>
+      <el-table-column prop="username" label="用户名" sortable></el-table-column>
+      <el-table-column prop="phone" label="联系电话" width="120"></el-table-column>
+      <el-table-column prop="registerTime" label="注册时间" sortable></el-table-column>
+      <el-table-column prop="roles" label="角色权限">
+        <template slot-scope="scope">
+          <el-tag
+            v-for="role in roleList[scope.$index]"
+            :key="role.id"
+            effect="plain"
+          >{{role.remark}}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="enabled" label="用户状态" width="150">
+        <template slot-scope="scope">
+          <el-switch
+            @change="setUserEnabled(scope.row)"
+            v-model="scope.row.enabled"
+            active-text="启用"
+            inactive-text="禁用"
+          ></el-switch>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button @click="onEditUser(scope.row)" size="mini" icon="el-icon-edit">编辑</el-button>
+          <el-button
+            @click="deleteUser(scope.row)"
+            size="mini"
+            icon="el-icon-delete"
+            type="danger"
+          >删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <el-footer>
+      <el-pagination
+        layout="total, sizes, prev, pager, next, jumper"
+        background
+        style="margin-top: 10px;"
+        @size-change="onPageSizeChange"
+        @current-change="onPageChange"
+        :page-sizes="[5, 10, 15, 20, 25]"
+        :page-size="pageSize"
+        :current-page="page"
+        :total="total"
+      ></el-pagination>
+    </el-footer>
+
+    <el-dialog title="添加新用户" :visible.sync="isUserAddDlgVisible">
+      <el-form ref="addForm" :model="addForm" :rules="rules" status-icon label-width="120px">
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="addForm.username" prefix-icon="el-icon-user"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input v-model="addForm.password" type="password" prefix-icon="el-icon-lock"></el-input>
+        </el-form-item>
+        <el-form-item label="联系电话" prop="phone">
+          <el-input v-model="addForm.phone" prefix-icon="el-icon-phone"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+        <el-button @click="addUser()" type="primary">添加</el-button>
+        <el-button @click="isUserAddDlgVisible=false">取消</el-button>
+      </div>
+    </el-dialog>
+  </el-container>
+</template>
+
+<script>
+export default {
+  name: "User",
+  data: function() {
+    return {
+      total: 0, // 查询到的用户总数
+      page: 1, // 当前页码
+      pageSize: 10, // 当前页面大小
+      keyword: "", // 查询用户名的关键字
+      userList: [], // 获得的查询结果
+      loading: false, // 页面表格是否处于加载状态
+      addForm: {
+        username: "",
+        password: "",
+        phone: ""
+      },
+      rules: {
+        username: [
+          { required: true, message: "用户名不能为空", trigger: "blur" }
+        ],
+        password: [
+          { required: true, message: "密码不能为空", trigger: "blur" }
+        ],
+        phone: [
+          { required: true, message: "联系电话不能为空", trigger: "blur" }
+        ]
+      },
+      isUserAddDlgVisible: false,
+      isUserEditDlgVisible: false
+    };
+  },
+
+  computed: {
+    roleList: function() {
+      var result = [];
+      this.userList.forEach(user => {
+        result.push(user.roles);
+      });
+      return result;
+    }
+  },
+
+  mounted: function() {
+    this.loading = true;
+    this.getRequest("/users");
+  },
+
+  methods: {
+    getRequest(url) {
+      var that = this;
+      this.$axios
+        .get(url)
+        .then(res => {
+          if (res.status === 200) {
+            console.log(res);
+            that.userList = res.data.userList;
+            that.total = res.data.total;
+            that.loading = false;
+            this.$message.success("数据加载成功!");
+          } else {
+            that.loading = false;
+            that.$message.error("数据加载失败!");
+          }
+        })
+        .catch(res => {
+          that.loading = false;
+          that.$message.error("服务器连接失败");
+        });
+    },
+
+    searchUser() {
+      if (this.keyword.trim() === "") {
+        this.$message.warning("请输入关键字");
+        return;
+      }
+      this.loading = true;
+      var url =
+        "/users?page=" +
+        this.page +
+        "&pageSize=" +
+        this.pageSize +
+        "&keyword=" +
+        this.keyword.trim();
+      this.getRequest(url);
+    },
+
+    onPageChange(val) {
+      this.page = val;
+      this.loading = true;
+      var url = "/users?page=" + this.page + "&pageSize=" + this.pageSize;
+      if (this.keyword !== "") {
+        url += "&keyword=" + this.keyword.trim();
+      }
+      this.getRequest(url);
+    },
+
+    onPageSizeChange(val) {
+      this.pageSize = val;
+      this.loading = true;
+      var url = "/users?page=" + this.page + "&pageSize=" + this.pageSize;
+      if (this.keyword !== "") {
+        url += "&keyword=" + this.keyword.trim();
+      }
+      this.getRequest(url);
+    },
+
+    setUserEnabled(row) {
+      this.$axios
+        .post("/user/" + row.id + "/enabled" + "?enabled=" + row.enabled, {})
+        .then(res => {
+          console.log(res);
+          this.$message.success("用户[" + row.username + "]状态已改变");
+        })
+        .catch(res => {
+          console.log(res);
+        });
+    },
+
+    addUser() {
+      this.$refs["addForm"].validate(valid => {
+        if (valid) {
+          var that = this;
+          this.$axios
+            .post("/user/add", this.addForm)
+            .then(res => {
+              if (res.status === 200) {
+                if (res.data === 1) {
+                  that.$message.success("用户添加成功");
+                  that.isUserAddDlgVisible = false;
+                  that.addForm.username = "";
+                  that.addForm.password = "";
+                  that.addForm.phone = "";
+                } else {
+                  that.$message.warning("用户添加失败, 用户名可能已存在");
+                }
+              } else if (res.status === 403) {
+                that.$message.warning("权限不足，请联系管理员");
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        } else {
+          return false;
+        }
+      });
+    },
+
+    deleteUser(row) {
+      this.$confirm("是否删除该用户?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.$axios
+          .delete("/user/" + row.id + "/delete")
+          .then(res => {
+            console.log(res);
+            this.$message.success("用户[" + row.username + "]已删除");
+          })
+          .catch(res => {
+            console.log(res);
+          });
+      });
+    }
+  }
+};
+</script>
+
+<style>
+.header {
+  margin-top: 20px;
+}
+</style>

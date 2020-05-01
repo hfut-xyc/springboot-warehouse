@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.server.mapper.UserMapper">
+
+    <resultMap id="UserResultMap" type="org.server.entity.User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="phone" property="phone"/>
+        <result column="enabled" property="enabled"/>
+        <result column="register_time" property="registerTime"/>
+        <collection property="roles" ofType="org.server.entity.Role">
+            <id column="rid" property="id"/>
+            <result column="rname" property="name"/>
+            <result column="remark" property="remark"/>
+        </collection>
+    </resultMap>
+
+    <select id="getUserById" resultMap="UserResultMap">
+        select u.*, r.id as rid, r.name as rname, remark
+        from tb_user u, tb_role r, tb_user_role ur
+        where u.id=ur.uid and r.id=rid and u.id=#{id}
+    </select>
+
+    <select id="getUserByUsername" resultType="org.server.entity.User">
+        select * from tb_user where username=#{username}
+    </select>
+
+    <select id="getUserList" resultMap="UserResultMap">
+        select u.*, r.id as rid, r.name as rname, remark
+        from tb_user u, tb_role r, tb_user_role ur
+        where ur.uid=u.id and ur.rid=r.id
+        <if test="keyword != null">
+            and u.username like concat('%',#{keyword},'%')
+        </if>
+        limit #{offset}, #{count}
+    </select>
+
+    <select id="getUserCount" resultType="java.lang.Integer">
+        select count(*) from tb_user
+        <if test="keyword != null">
+            where username like concat('%',#{keyword},'%')
+        </if>
+    </select>
+
+    <insert id="addUser" parameterType="org.server.entity.User">
+        insert ignore into tb_user(username, password, phone)
+        values (#{username}, #{password}, #{phone})
+    </insert>
+
+    <update id="updateUserEnabled">
+        update tb_user set enabled=#{enabled} WHERE id=#{id}
+    </update>
+
+    <delete id="deleteUserById">
+        delete from tb_user where id=#{id}
+    </delete>
+</mapper>
