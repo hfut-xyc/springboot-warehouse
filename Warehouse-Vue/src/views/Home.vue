@@ -87,6 +87,7 @@ export default {
     // this.currentUsername = JSON.parse(
     //   window.sessionStorage.getItem("username")
     // );
+    this.currentUsername = this.$store.state.username;
   },
 
   methods: {
