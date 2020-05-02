@@ -1,6 +1,7 @@
-
--- create database warehouse;
--- use warehouse;
+-- 第一次使用时，初始化数据库
+-- cat init.sql | mysql -u root -p
+create database if not exists warehouse;
+use warehouse;
 
 drop table if exists tb_user;
 create table tb_user(
@@ -17,7 +18,7 @@ drop table if exists tb_role;
 create table tb_role(
     `id` int(11) not null auto_increment,
     `name` varchar(255) not null,
-		`remark` varchar(255) not null,
+	`remark` varchar(255) not null comment '备注',
     primary key(id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
