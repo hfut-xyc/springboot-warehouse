@@ -13,7 +13,7 @@ public interface UserMapper {
 
 	User getUserByUsername(String username);
 
-	List<User> getUserList(@Param("offset") int offset, @Param("count") int count, @Param("keyword") String keyword);
+	List<User> getUserList(@Param("keyword") String keyword);
 
 	int getUserCount(@Param("keyword") String keyword);
 

@@ -41,8 +41,8 @@ public class UserService implements UserDetailsService {
 		return userMapper.getUserById(id);
 	}
 
-	public List<User> getUserList(int offset, int count, String keyword) {
-		return userMapper.getUserList(offset, count, keyword);
+	public List<User> getUserList(String keyword) {
+		return userMapper.getUserList(keyword);
 	}
 
 	public int getUserCount(String keyword) {

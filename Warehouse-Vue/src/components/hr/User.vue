@@ -9,7 +9,7 @@
           <el-button @click="searchUser()" type="primary" icon="el-icon-search">查询</el-button>
         </el-col>
         <el-col :span="3">
-          <el-button @click="isUserAddDlgVisible=true" type="success" icon="el-icon-plus">添加新用户</el-button>
+          <el-button @click="isDialogVisible=true" type="success" icon="el-icon-plus">添加新用户</el-button>
         </el-col>
       </el-row>
     </el-header>
@@ -40,13 +40,7 @@
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button @click="onEditUser(scope.row)" size="mini" icon="el-icon-edit">编辑</el-button>
-          <el-button
-            @click="deleteUser(scope.row)"
-            size="mini"
-            icon="el-icon-delete"
-            type="danger"
-          >删除</el-button>
+          <el-button @click="deleteUser(scope.row)" size="mini" icon="el-icon-delete" type="danger">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -65,7 +59,7 @@
       ></el-pagination>
     </el-footer>
 
-    <el-dialog title="添加新用户" :visible.sync="isUserAddDlgVisible">
+    <el-dialog title="添加新用户" :visible.sync="isDialogVisible">
       <el-form ref="addForm" :model="addForm" :rules="rules" status-icon label-width="120px">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="addForm.username" prefix-icon="el-icon-user"></el-input>
@@ -79,7 +73,7 @@
       </el-form>
       <div slot="footer">
         <el-button @click="addUser()" type="primary">添加</el-button>
-        <el-button @click="isUserAddDlgVisible=false">取消</el-button>
+        <el-button @click="isDialogVisible=false">取消</el-button>
       </div>
     </el-dialog>
   </el-container>
@@ -96,24 +90,18 @@ export default {
       keyword: "", // 查询用户名的关键字
       userList: [], // 获得的查询结果
       loading: false, // 页面表格是否处于加载状态
-      addForm: {
+
+      isDialogVisible: false,   // 添加用户的对话框是否可见
+      addForm: {    // 添加用户表单
         username: "",
         password: "",
         phone: ""
       },
       rules: {
-        username: [
-          { required: true, message: "用户名不能为空", trigger: "blur" }
-        ],
-        password: [
-          { required: true, message: "密码不能为空", trigger: "blur" }
-        ],
-        phone: [
-          { required: true, message: "联系电话不能为空", trigger: "blur" }
-        ]
-      },
-      isUserAddDlgVisible: false,
-      isUserEditDlgVisible: false
+        username: [{ required: true, message: "用户名不能为空", trigger: "blur" }],
+        password: [{ required: true, message: "密码不能为空", trigger: "blur" }],
+        phone: [{ required: true, message: "联系电话不能为空", trigger: "blur" }]
+      }
     };
   },
 
@@ -129,30 +117,28 @@ export default {
 
   mounted: function() {
     this.loading = true;
-    this.getRequest("/users");
+    this.loadUserList("/users");
   },
 
   methods: {
-    getRequest(url) {
+    loadUserList(url) {
       var that = this;
-      this.$axios
-        .get(url)
-        .then(res => {
-          if (res.status === 200) {
-            console.log(res);
-            that.userList = res.data.userList;
-            that.total = res.data.total;
-            that.loading = false;
-            this.$message.success("数据加载成功!");
-          } else {
-            that.loading = false;
-            that.$message.error("数据加载失败!");
-          }
-        })
-        .catch(res => {
+      this.$axios.get(url).then(res => {
+        if (res.status === 200) {
+          console.log(res);
+          that.userList = res.data.userList;
+          that.total = res.data.total;
           that.loading = false;
-          that.$message.error("服务器连接失败");
-        });
+          this.$message.success("数据加载成功");
+        } else {
+          that.loading = false;
+          that.$message.error("数据加载失败");
+        }
+      })
+      .catch(res => {
+        that.loading = false;
+        that.$message.error("服务器连接异常");
+      });
     },
 
     searchUser() {
@@ -161,14 +147,8 @@ export default {
         return;
       }
       this.loading = true;
-      var url =
-        "/users?page=" +
-        this.page +
-        "&pageSize=" +
-        this.pageSize +
-        "&keyword=" +
-        this.keyword.trim();
-      this.getRequest(url);
+      var url ="/users?page=" + this.page + "&pageSize=" + this.pageSize + "&keyword=" + this.keyword.trim();
+      this.loadUserList(url);
     },
 
     onPageChange(val) {
@@ -178,7 +158,7 @@ export default {
       if (this.keyword !== "") {
         url += "&keyword=" + this.keyword.trim();
       }
-      this.getRequest(url);
+      this.loadUserList(url);
     },
 
     onPageSizeChange(val) {
@@ -188,7 +168,7 @@ export default {
       if (this.keyword !== "") {
         url += "&keyword=" + this.keyword.trim();
       }
-      this.getRequest(url);
+      this.loadUserList(url);
     },
 
     setUserEnabled(row) {
@@ -207,26 +187,25 @@ export default {
       this.$refs["addForm"].validate(valid => {
         if (valid) {
           var that = this;
-          this.$axios
-            .post("/user/add", this.addForm)
-            .then(res => {
-              if (res.status === 200) {
-                if (res.data === 1) {
-                  that.$message.success("用户添加成功");
-                  that.isUserAddDlgVisible = false;
-                  that.addForm.username = "";
-                  that.addForm.password = "";
-                  that.addForm.phone = "";
-                } else {
-                  that.$message.warning("用户添加失败, 用户名可能已存在");
-                }
-              } else if (res.status === 403) {
-                that.$message.warning("权限不足，请联系管理员");
+          this.$axios.post("/user/add", this.addForm)
+          .then(res => {
+            if (res.status === 200) {
+              if (res.data === 1) {
+                that.$message.success("用户添加成功");
+                that.isDialogVisible = false;
+                that.addForm = { username: "", password: "", phone: "" };
+                that.loadUserList("/users");
+              } else {
+                that.$message.warning("用户添加失败, 用户名可能已存在");
               }
-            })
-            .catch(err => {
-              console.log(err);
-            });
+            } else if (res.status === 403) {
+              that.$message.warning("权限不足，请联系管理员");
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            that.$message.error("服务器连接异常");
+          });
         } else {
           return false;
         }
@@ -239,15 +218,17 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-        this.$axios
-          .delete("/user/" + row.id + "/delete")
-          .then(res => {
-            console.log(res);
-            this.$message.success("用户[" + row.username + "]已删除");
-          })
-          .catch(res => {
-            console.log(res);
-          });
+        var that = this;
+        this.$axios.delete("/user/" + row.id + "/delete")
+        .then(res => {
+          console.log(res);
+          that.$message.success("用户[" + row.username + "]已删除");
+          that.loadUserList("/users");
+        })
+        .catch(res => {
+          console.log(res);
+          that.$message.error("服务器连接异常");
+        });
       });
     }
   }

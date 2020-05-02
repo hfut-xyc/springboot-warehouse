@@ -34,7 +34,6 @@
         <if test="keyword != null">
             and u.username like concat('%',#{keyword},'%')
         </if>
-        limit #{offset}, #{count}
     </select>
 
     <select id="getUserCount" resultType="java.lang.Integer">

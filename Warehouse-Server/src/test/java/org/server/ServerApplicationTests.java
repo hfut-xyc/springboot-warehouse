@@ -3,11 +3,15 @@ package org.server;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.server.entity.User;
+import org.server.mapper.UserMapper;
 import org.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -16,6 +20,9 @@ class ServerApplicationTests {
 	@Autowired
 	private UserService userService;
 
+	@Resource
+	private UserMapper userMapper;
+
 	@Test
 	void getUserById() {
 		System.out.println(userService.getUserById(1000));
@@ -23,7 +30,8 @@ class ServerApplicationTests {
 
 	@Test
 	void getUserList() {
-		System.out.println(userService.getUserList(1, 10, null));
+		List<User> list = userMapper.getUserList(null);
+		System.out.println(list.size());
 	}
 
 	@Test
