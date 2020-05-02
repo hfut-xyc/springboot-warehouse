@@ -7,20 +7,20 @@ export default new Vuex.Store({
   state: {
     username: window.localStorage.getItem("username") == null 
       ? "" : window.localStorage.getItem("username"),
-    is_remember: window.localStorage.getItem("is_remember") == null 
-    ? false : (window.localStorage.getItem("is_remember") == "true"),
+    isRemember: window.localStorage.getItem("isRemember") == null 
+    ? false : (window.localStorage.getItem("isRemember") == "true"),
   },
 	
   mutations: {
     login(state, data) {
       state.username = data.username;
-      state.is_remember = data.checked;
+      state.isRemember = data.checked;
       window.localStorage.setItem("username", data.username);
-      window.localStorage.setItem("is_remember", data.checked);
+      window.localStorage.setItem("isRemember", data.checked);
     },
 		
 		logout(state) {
-      if (!state.is_remember) {
+      if (!state.isRemember) {
         state.username = "";
         window.localStorage.setItem("username", "");
       }
