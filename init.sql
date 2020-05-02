@@ -18,7 +18,7 @@ drop table if exists tb_role;
 create table tb_role(
     `id` int(11) not null auto_increment,
     `name` varchar(255) not null,
-		`remark` varchar(255) not null,
+	`remark` varchar(255) not null comment '备注',
     primary key(id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
