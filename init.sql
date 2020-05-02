@@ -1,6 +1,7 @@
-
--- create database warehouse;
--- use warehouse;
+-- 第一次使用时，初始化数据库
+-- cat init.sql | mysql -u root -p
+create database if not exists warehouse;
+use warehouse;
 
 drop table if exists tb_user;
 create table tb_user(
