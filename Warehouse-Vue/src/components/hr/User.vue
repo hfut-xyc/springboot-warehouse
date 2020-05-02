@@ -21,21 +21,12 @@
       <el-table-column prop="registerTime" label="注册时间" sortable></el-table-column>
       <el-table-column prop="roles" label="角色权限">
         <template slot-scope="scope">
-          <el-tag
-            v-for="role in roleList[scope.$index]"
-            :key="role.id"
-            effect="plain"
-          >{{role.remark}}</el-tag>
+          <el-tag v-for="role in roleList[scope.$index]" :key="role.id" effect="plain">{{role.remark}}</el-tag>
         </template>
       </el-table-column>
       <el-table-column prop="enabled" label="用户状态" width="150">
         <template slot-scope="scope">
-          <el-switch
-            @change="setUserEnabled(scope.row)"
-            v-model="scope.row.enabled"
-            active-text="启用"
-            inactive-text="禁用"
-          ></el-switch>
+          <el-switch @change="setUserEnabled(scope.row)" v-model="scope.row.enabled" active-text="启用" inactive-text="禁用"></el-switch>
         </template>
       </el-table-column>
       <el-table-column label="操作">
