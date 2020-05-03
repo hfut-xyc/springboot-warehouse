@@ -64,6 +64,9 @@
         <el-form-item label="密码" prop="password">
           <el-input v-model="addForm.password" show-password prefix-icon="el-icon-lock"></el-input>
         </el-form-item>
+        <el-form-item label="再次输入密码" prop="password2">
+          <el-input v-model="addForm.password2" show-password prefix-icon="el-icon-lock"></el-input>
+        </el-form-item>
         <el-form-item label="联系电话" prop="phone">
           <el-input v-model="addForm.phone" prefix-icon="el-icon-phone"></el-input>
         </el-form-item>
@@ -80,6 +83,15 @@
 export default {
   name: "User",
   data: function() {
+    // 二次密码校验
+    var validatorPassword = (rule, value, callback) => {
+      if (value === '')
+        callback(new Error('请再次输入密码'))
+      else if (value !== this.addForm.password)
+        callback(new Error('两次输入密码不一致'))
+      else
+        callback()
+    };
     return {
       total: 0, // 查询到的用户总数
       page: 1, // 当前页码
@@ -92,11 +104,13 @@ export default {
       addForm: {    // 添加用户表单
         username: "",
         password: "",
+        password2: "",
         phone: ""
       },
       rules: {
         username: [{ required: true, message: "用户名不能为空", trigger: "blur" }],
         password: [{ required: true, message: "密码不能为空", trigger: "blur" }],
+        password2: [{ required: true, validator: validatorPassword, trigger: "blur" }],
         phone: [{ required: true, message: "联系电话不能为空", trigger: "blur" }]
       }
     };
