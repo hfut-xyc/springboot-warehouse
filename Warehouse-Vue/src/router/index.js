@@ -21,7 +21,7 @@ export default new VueRouter({
 		},
 		{
 			path: '/login',
-			name: '仓库管理系统登陆',
+			name: '用户登录',
 			component: Login
 		},
 		{

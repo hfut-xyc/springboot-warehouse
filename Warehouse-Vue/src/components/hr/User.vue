@@ -21,13 +21,8 @@
       <el-table-column prop="registerTime" label="注册时间" sortable></el-table-column>
       <el-table-column prop="roles" label="角色权限">
         <template slot-scope="scope">
-          <el-checkbox checked="true" disabled>普通用户</el-checkbox>
-          <div v-if="scope.row.roles.length == 2">
-            <el-checkbox checked="true">超级管理员</el-checkbox>
-          </div>
-          <div v-else>
-            <el-checkbox>超级管理员</el-checkbox>
-          </div>
+          <el-checkbox :checked="true" disabled>普通用户</el-checkbox>
+          <el-checkbox :checked="scope.row.roles.length == 2" @change="change(scope.row.roles)">超级管理员</el-checkbox>
         </template>
       </el-table-column>
       <el-table-column prop="enabled" label="用户状态" width="150">
@@ -64,8 +59,8 @@
         <el-form-item label="密码" prop="password">
           <el-input v-model="addForm.password" show-password prefix-icon="el-icon-lock"></el-input>
         </el-form-item>
-        <el-form-item label="再次输入密码" prop="password2">
-          <el-input v-model="addForm.password2" show-password prefix-icon="el-icon-lock"></el-input>
+        <el-form-item label="再次输入密码" prop="confirmPassword">
+          <el-input v-model="addForm.confirmPassword" show-password prefix-icon="el-icon-lock"></el-input>
         </el-form-item>
         <el-form-item label="联系电话" prop="phone">
           <el-input v-model="addForm.phone" prefix-icon="el-icon-phone"></el-input>
@@ -104,13 +99,13 @@ export default {
       addForm: {    // 添加用户表单
         username: "",
         password: "",
-        password2: "",
+        confirmPassword: "",
         phone: ""
       },
       rules: {
         username: [{ required: true, message: "用户名不能为空", trigger: "blur" }],
         password: [{ required: true, message: "密码不能为空", trigger: "blur" }],
-        password2: [{ required: true, validator: validatorPassword, trigger: "blur" }],
+        confirmPassword: [{ required: true, validator: validatorPassword, trigger: "blur" }],
         phone: [{ required: true, message: "联系电话不能为空", trigger: "blur" }]
       }
     };
@@ -130,7 +125,7 @@ export default {
           that.userList = res.data.userList;
           that.total = res.data.total;
           that.loading = false;
-          this.$message.success("数据加载成功");
+          that.$message.success("数据加载成功");
         } else {
           that.loading = false;
           that.$message.error("数据加载失败");
@@ -164,6 +159,10 @@ export default {
 
     onPageSizeChange(val) {
       this.pageSize = val;
+      if (this.pageSize * (this.page - 1) >= this.total) {
+        this.page = 1;
+        this.pageSize = 10;
+      }
       this.loading = true;
       var url = "/users?page=" + this.page + "&pageSize=" + this.pageSize;
       if (this.keyword !== "") {
@@ -187,7 +186,11 @@ export default {
       this.$refs["addForm"].validate(valid => {
         if (valid) {
           var that = this;
-          this.$axios.post("/user/add", this.addForm)
+          this.$axios.post("/user/add", {
+            username: this.addForm.username,
+            password: this.addForm.password,
+            phone: this.addForm.phone
+          })
           .then(res => {
             if (res.status === 200) {
               if (res.data === 1) {
@@ -230,6 +233,10 @@ export default {
           that.$message.error("服务器连接异常");
         });
       });
+    },
+
+    change(row) {
+      console.log(row);
     }
   }
 };

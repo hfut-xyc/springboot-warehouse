@@ -53,6 +53,7 @@ public class UserController {
 		List<User> list = userService.getUserList(keyword);
 		int start = (page - 1) * pageSize;
 		int end = Math.min(start + pageSize, list.size());
+
 		// 此处返回的total和userList的长度并不一定相等，userList的长度仅表示一页的数据量
 		Map<String, Object> map = new HashMap<>();
 		map.put("userList", list.subList(start, end));
