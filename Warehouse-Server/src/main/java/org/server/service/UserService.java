@@ -61,7 +61,7 @@ public class UserService implements UserDetailsService {
 
 		// 表单传递的user默认id为0, 添加到tb_user之后才有一个新id
 		user = userMapper.getUserByUsername(user.getUsername());
-		int res2 = roleMapper.addUserRole(user.getId());
+		int res2 = roleMapper.addUserRole(user.getId(), 2);
 		if (res1 + res2 != 2) {
 			throw new UserInsertException("添加用户失败");
 		}

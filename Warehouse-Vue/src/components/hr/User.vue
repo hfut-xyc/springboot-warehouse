@@ -21,7 +21,13 @@
       <el-table-column prop="registerTime" label="注册时间" sortable></el-table-column>
       <el-table-column prop="roles" label="角色权限">
         <template slot-scope="scope">
-          <el-tag v-for="role in roleList[scope.$index]" :key="role.id" effect="plain">{{role.remark}}</el-tag>
+          <el-checkbox checked="true" disabled>普通用户</el-checkbox>
+          <div v-if="scope.row.roles.length == 2">
+            <el-checkbox checked="true">超级管理员</el-checkbox>
+          </div>
+          <div v-else>
+            <el-checkbox>超级管理员</el-checkbox>
+          </div>
         </template>
       </el-table-column>
       <el-table-column prop="enabled" label="用户状态" width="150">
@@ -96,16 +102,6 @@ export default {
     };
   },
 
-  computed: {
-    roleList: function() {
-      var result = [];
-      this.userList.forEach(user => {
-        result.push(user.roles);
-      });
-      return result;
-    }
-  },
-
   mounted: function() {
     this.loading = true;
     this.loadUserList("/users");
@@ -163,8 +159,7 @@ export default {
     },
 
     setUserEnabled(row) {
-      this.$axios
-        .post("/user/" + row.id + "/enabled" + "?enabled=" + row.enabled, {})
+      this.$axios.post("/user/" + row.id + "/enabled" + "?enabled=" + row.enabled, {})
         .then(res => {
           console.log(res);
           this.$message.success("用户[" + row.username + "]状态已改变");

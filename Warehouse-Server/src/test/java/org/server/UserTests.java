@@ -15,7 +15,7 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-class ServerApplicationTests {
+class UserTests {
 
 	@Autowired
 	private UserService userService;

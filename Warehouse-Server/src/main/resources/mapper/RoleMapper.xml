@@ -9,8 +9,17 @@
         where ur.uid=#{uid} and ur.rid=r.id
     </select>
 
+    <select id="getRoleList" resultType="org.server.entity.Role">
+        select * from tb_role
+    </select>
+
     <insert id="addUserRole">
         insert into tb_user_role(uid, rid)
-        values (#{uid}, 2)
+        values (#{uid}, #{rid})
     </insert>
+
+    <delete id="deleteUserRole">
+        delete from tb_user_role
+        where uid=#{uid} and rid=#{rid}
+    </delete>
 </mapper>

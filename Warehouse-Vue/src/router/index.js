@@ -8,7 +8,6 @@ import Inventory from '@/components/product/Inventory.vue'
 import Stock from '@/components/product/Stock.vue'
 import Chart from '@/components/product/Chart.vue'
 import User from '@/components/hr/User.vue'
-import Role from '@/components/hr/Role.vue'
 import Employee from '@/components/hr/Employee.vue'
 
 Vue.use(VueRouter);
@@ -57,12 +56,6 @@ export default new VueRouter({
 					path: 'user',
 					name: "用户管理",
 					component: User,
-					meta: { requireAuth: true }
-				},
-				{
-					path: 'role',
-					name: "角色管理",
-					component: Role,
 					meta: { requireAuth: true }
 				},
 				{

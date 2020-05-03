@@ -25,10 +25,10 @@ public class UserController {
 		try {
 			userService.addUser(user);
 			return 1;
-		} catch (RegisterException e1) {
-			logger.error(e1.getMessage());
-		} catch (Exception e2) {
-			logger.error(e2.getMessage());
+		} catch (RegisterException e) {
+			logger.error(e.getMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
 		}
 		return 0;
 	}

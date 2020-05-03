@@ -55,9 +55,6 @@
             <el-menu-item index="/home/user">
               <i class="el-icon-user"></i>用户管理
             </el-menu-item>
-            <el-menu-item index="/home/role">
-              <i class="el-icon-setting"></i>角色管理
-            </el-menu-item>
           </el-submenu>
         </el-menu>
       </el-aside>
