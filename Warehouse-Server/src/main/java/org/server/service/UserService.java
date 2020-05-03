@@ -74,6 +74,15 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Transactional
+	public int updateUserRole(boolean isAdmin, int id) {
+		if (isAdmin) {
+			return roleMapper.addUserRole(id, 1);
+		} else {
+			return roleMapper.deleteUserRole(id, 1);
+		}
+	}
+
+	@Transactional
 	public int deleteUserById(int id) {
 		return userMapper.deleteUserById(id);
 	}

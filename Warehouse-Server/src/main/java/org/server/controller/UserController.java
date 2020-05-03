@@ -38,6 +38,11 @@ public class UserController {
 		return userService.updateUserEnabled(enabled, id);
 	}
 
+	@PostMapping("/user/{id}/isadmin")
+	public int updateUserRole(@RequestParam("isAdmin") boolean enabled, @PathVariable int id) {
+		return userService.updateUserRole(enabled, id);
+	}
+
 	@DeleteMapping("/user/{id}/delete")
 	public int deleteUserById(@PathVariable int id) {
 		return userService.deleteUserById(id);

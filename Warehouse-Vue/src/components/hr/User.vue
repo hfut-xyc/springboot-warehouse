@@ -22,7 +22,7 @@
       <el-table-column prop="roles" label="角色权限">
         <template slot-scope="scope">
           <el-checkbox :checked="true" disabled>普通用户</el-checkbox>
-          <el-checkbox :checked="scope.row.roles.length == 2" @change="change(scope.row.roles)">超级管理员</el-checkbox>
+          <el-checkbox v-model="isAdmin[scope.$index]" @change="changeRole(scope.row, scope.$index)">超级管理员</el-checkbox>
         </template>
       </el-table-column>
       <el-table-column prop="enabled" label="用户状态" width="150">
@@ -111,6 +111,16 @@ export default {
     };
   },
 
+  computed: {
+    isAdmin: function() {
+      var list = [];
+      this.userList.forEach(user => {
+        list.push(user.roles.length == 2);
+      });
+      return list;
+    }
+  },
+
   mounted: function() {
     this.loading = true;
     this.loadUserList("/users");
@@ -133,7 +143,7 @@ export default {
       })
       .catch(res => {
         that.loading = false;
-        that.$message.error("服务器连接异常");
+        that.$message.error("服务器异常");
       });
     },
 
@@ -207,7 +217,7 @@ export default {
           })
           .catch(err => {
             console.log(err);
-            that.$message.error("服务器连接异常");
+            that.$message.error("服务器异常");
           });
         } else {
           return false;
@@ -230,13 +240,29 @@ export default {
         })
         .catch(res => {
           console.log(res);
-          that.$message.error("服务器连接异常");
+          that.$message.error("服务器异常");
         });
       });
     },
 
-    change(row) {
-      console.log(row);
+    changeRole(row, index) {
+      console.log(this.isAdmin);
+      var that = this;
+      console.log(this.isAdmin[index]);
+      this.$axios.post("/user/" + row.id + "/isadmin" + "?isAdmin=" + this.isAdmin[index], {})
+      .then(res => {
+        if (res.status === 200) {
+          if (res.data === 1) {
+            that.$message.success("用户[" + row.username + "]角色修改成功");
+            that.loadUserList("/users");
+          } else {
+            that.$message.warning("修改用户角色失败");
+          }
+        }
+      })
+      .catch(err => {
+        this.$message.error("服务器异常")
+      });
     }
   }
 };
