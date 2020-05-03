@@ -6,9 +6,10 @@
         <el-input v-model="loginForm.username" prefix-icon="el-icon-user" placeholder="请输入用户名"></el-input>
       </el-form-item>
       <el-form-item prop="password">
+        <!-- 这样可以在输入时查看密码 -->
         <el-input
           v-model="loginForm.password"
-          type="password"
+          show-password
           prefix-icon="el-icon-lock"
           placeholder="请输入密码"
         ></el-input>
@@ -32,7 +33,7 @@ export default {
   data() {
     return {
       checked: false,
-      loginForm: { username: "", password: "" },
+      loginForm: { username: this.$store.state.username, password: "" },
       rules: {
         username: [
           { required: true, message: "账号不能为空", trigger: "blur" }
@@ -52,7 +53,7 @@ export default {
             .then(res => {
               console.log(res);
               if (res.data === "success") {
-                // that.$store.commit("login", that.loginForm.username);
+                that.$store.commit("login", { 'username': that.loginForm.username, 'checked': that.checked });
                 that.$router.replace("/home");
                 that.$message.success("登录成功^_^");
               } else {
