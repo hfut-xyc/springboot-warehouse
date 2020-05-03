@@ -6,8 +6,11 @@ Course Design of DataBase, HFUT, 2020
 #### 软件运行截图
 
 ##### 用户管理界面
-![用户管理界面](https://gitee.com/hfut-xyc/Warehouse-Management-System/master/screenshot/user.jpg)
-
+![用户管理界面](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/user.jpg)
+前期为了调试方便，暂时把登录验证给去掉了，可以直接通过localhost:8080/home访问主页
+测试登录接口可以用
+- 用户名：admin
+- 密码：admin
 
 #### 项目运行
 1. 安装Java 8+、Maven、node.js和npm
