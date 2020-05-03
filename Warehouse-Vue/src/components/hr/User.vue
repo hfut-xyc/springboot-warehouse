@@ -56,7 +56,7 @@
           <el-input v-model="addForm.username" prefix-icon="el-icon-user"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="addForm.password" type="password" prefix-icon="el-icon-lock"></el-input>
+          <el-input v-model="addForm.password" show-password prefix-icon="el-icon-lock"></el-input>
         </el-form-item>
         <el-form-item label="联系电话" prop="phone">
           <el-input v-model="addForm.phone" prefix-icon="el-icon-phone"></el-input>
