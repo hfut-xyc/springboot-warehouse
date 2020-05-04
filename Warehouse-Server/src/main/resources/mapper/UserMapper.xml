@@ -53,7 +53,6 @@
     </update>
 
     <delete id="deleteUserById">
-		delete from tb_user where id=#{id};
-		delete from tb_user_role where uid=#{id};
+        delete from tb_user where id=#{id}
     </delete>
 </mapper>
