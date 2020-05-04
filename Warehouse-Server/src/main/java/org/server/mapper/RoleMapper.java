@@ -14,4 +14,6 @@ public interface RoleMapper {
 
 	int deleteUserRole(int uid, int rid);
 
+	int clearRolesByUid(int uid);
+
 }

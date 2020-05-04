@@ -10,12 +10,14 @@
     </select>
 
     <insert id="addUserRole">
-        insert into tb_user_role(uid, rid)
-        values (#{uid}, #{rid})
+        insert into tb_user_role values (#{uid}, #{rid})
     </insert>
 
     <delete id="deleteUserRole">
-        delete from tb_user_role
-        where uid=#{uid} and rid=#{rid}
+        delete from tb_user_role where uid=#{uid} and rid=#{rid}
+    </delete>
+
+    <delete id="clearRolesByUid">
+        delete from tb_user_role where uid=#{uid}
     </delete>
 </mapper>
