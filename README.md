@@ -24,7 +24,7 @@ Course Design of DataBase, HFUT, 2020
 5. 启动数据库服务程序`systemctl start mysql`(Linux)
 6. 启动后端服务器`mvn spring-boot:run`
 7. 启动前端服务器`npm run serve`
-8. 实体类通过使用Lombok库的注解来自动生成setter和getter方法，提高了开发效率，代码变得简洁易读。如果在`Intellij Idea`上运行，记得要去`settings->plugins`下搜索安装Lombok插件(==需要科学上网==)，不然代码会报错(不安装的话不影响运行，但是报错总会让人不舒服=_=)
+8. 实体类通过使用Lombok库的注解来自动生成setter和getter方法，提高了开发效率，代码变得简洁易读。如果在**Intellij Idea**上运行，记得要去**settings->plugins**下搜索安装Lombok插件 (**需要科学上网**)，不然代码会报错 (不安装的话不影响运行，但是报错总会让人不舒服=_=)
 9. 后端程序运行后，可以访问 [localhost:8081/swagger-ui.html](localhost:8081/swagger-ui.html) 来查看所有的API文档，并且支持在文档上测试接口
 
 #### RESTful API设计约定

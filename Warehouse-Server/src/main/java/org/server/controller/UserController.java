@@ -3,7 +3,10 @@ package org.server.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.server.entity.User;
-import org.server.exception.RegisterException;
+import org.server.exception.UserDeleteException;
+import org.server.exception.UserInsertException;
+import org.server.exception.UserRepeatException;
+import org.server.exception.UserUpdateException;
 import org.server.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,29 +51,45 @@ public class UserController {
 		try {
 			userService.addUser(user);
 			return 1;
-		} catch (RegisterException e) {
+		} catch (UserRepeatException | UserInsertException e) {
 			logger.error(e.getMessage());
-		} catch (Exception e) {
-			logger.error(e.getMessage());
+			return 0;
 		}
-		return 0;
 	}
 
 	@ApiOperation("按id启用或禁用账户")
 	@PostMapping("/user/{id}/enabled")
 	public int updateUserEnabled(@RequestParam("enabled") boolean enabled, @PathVariable int id) {
-		return userService.updateUserEnabled(enabled, id);
+		try {
+			userService.updateUserEnabled(enabled, id);
+			return 1;
+		} catch (UserUpdateException e) {
+			logger.error(e.getMessage());
+			return 0;
+		}
 	}
 
 	@ApiOperation("按id设置用户是否为管理员")
 	@PostMapping("/user/{id}/set-admin")
 	public int updateUserRole(@RequestParam("isAdmin") boolean enabled, @PathVariable int id) {
-		return userService.updateUserRole(enabled, id);
+		try {
+			userService.updateUserRole(enabled, id);
+			return 1;
+		} catch (UserUpdateException e) {
+			logger.error(e.getMessage());
+			return 0;
+		}
 	}
 
 	@ApiOperation("按id删除用户")
 	@DeleteMapping("/user/{id}/delete")
 	public int deleteUserById(@PathVariable int id) {
-		return userService.deleteUserById(id);
+		try {
+			userService.deleteUserById(id);
+			return 1;
+		} catch (UserDeleteException e) {
+			logger.error(e.getMessage());
+			return 0;
+		}
 	}
 }

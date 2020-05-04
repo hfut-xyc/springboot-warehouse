@@ -2,9 +2,10 @@ package org.server.service;
 
 import org.server.entity.Role;
 import org.server.entity.User;
-import org.server.exception.RegisterException;
+import org.server.exception.UserDeleteException;
 import org.server.exception.UserInsertException;
 import org.server.exception.UserRepeatException;
+import org.server.exception.UserUpdateException;
 import org.server.mapper.RoleMapper;
 import org.server.mapper.UserMapper;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -50,7 +51,7 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Transactional
-	public int addUser(User user) throws RegisterException {
+	public int addUser(User user) throws UserRepeatException, UserInsertException {
 		User temp = userMapper.getUserByUsername(user.getUsername());
 		if (temp != null) {
 			throw new UserRepeatException("用户名重复");
@@ -69,21 +70,41 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Transactional
-	public int updateUserEnabled(boolean enabled, int id) {
-		return userMapper.updateUserEnabled(enabled, id);
+	public int updateUserEnabled(boolean enabled, int id) throws UserUpdateException {
+		int res = userMapper.updateUserEnabled(enabled, id);
+		if (res != 1) {
+			throw new UserUpdateException("用户" + id + "状态修改失败");
+		}
+		return res;
 	}
 
 	@Transactional
-	public int updateUserRole(boolean isAdmin, int id) {
+	public int updateUserRole(boolean isAdmin, int id) throws UserUpdateException {
+		int res;
 		if (isAdmin) {
-			return roleMapper.addUserRole(id, 1);
+			res = roleMapper.addUserRole(id, 1);
+			if (res != 1) {
+				throw new UserUpdateException("用户" + id + "设置管理员权限失败");
+			}
+			return res;
 		} else {
-			return roleMapper.deleteUserRole(id, 1);
+			res = roleMapper.deleteUserRole(id, 1);
+			if (res != 1) {
+				throw new UserUpdateException("用户" + id + "取消管理员权限失败");
+			}
+			return res;
 		}
 	}
 
 	@Transactional
-	public int deleteUserById(int id) {
-		return userMapper.deleteUserById(id);
+	public int deleteUserById(int id) throws UserDeleteException {
+		int res1 = userMapper.deleteUserById(id);
+		int res2 = roleMapper.deleteUserRole(id, 1);    // 删除管理员权限
+		int res3 = roleMapper.deleteUserRole(id, 2);    // 删除普通用户权限
+		if (res1 + res3 == 2 && res2 >= 0) {
+			return 1;
+		} else {
+			throw new UserDeleteException("用户删除失败");
+		}
 	}
 }
