@@ -53,6 +53,10 @@
     </update>
 
     <delete id="deleteUserById">
+<<<<<<< HEAD
 		delete from tb_user where id=#{id};
+=======
+        delete from tb_user where id=#{id}
+>>>>>>> 3854017bf7ec3642757d94715edc1bd69fd7d991
     </delete>
 </mapper>
