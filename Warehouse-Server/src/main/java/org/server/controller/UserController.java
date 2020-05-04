@@ -1,5 +1,7 @@
 package org.server.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.server.entity.User;
 import org.server.exception.RegisterException;
 import org.server.service.UserService;
@@ -12,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Api(tags = "UserController", description = "用户信息管理")
 @RestController
 public class UserController {
 
@@ -20,34 +23,7 @@ public class UserController {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@PostMapping("/user/add")
-	public int addUser(@RequestBody User user) {
-		try {
-			userService.addUser(user);
-			return 1;
-		} catch (RegisterException e) {
-			logger.error(e.getMessage());
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-		}
-		return 0;
-	}
-
-	@PostMapping("/user/{id}/enabled")
-	public int updateUserEnabled(@RequestParam("enabled") boolean enabled, @PathVariable int id) {
-		return userService.updateUserEnabled(enabled, id);
-	}
-
-	@PostMapping("/user/{id}/isadmin")
-	public int updateUserRole(@RequestParam("isAdmin") boolean enabled, @PathVariable int id) {
-		return userService.updateUserRole(enabled, id);
-	}
-
-	@DeleteMapping("/user/{id}/delete")
-	public int deleteUserById(@PathVariable int id) {
-		return userService.deleteUserById(id);
-	}
-
+	@ApiOperation("按页获取用户列表")
 	@GetMapping("/users")
 	public Map<String, Object> getUserList(
 			@RequestParam(value = "page", defaultValue = "1") int page,
@@ -64,5 +40,37 @@ public class UserController {
 		map.put("userList", list.subList(start, end));
 		map.put("total",total);
 		return map;
+	}
+
+	@ApiOperation("添加新用户")
+	@PostMapping("/user/add")
+	public int addUser(@RequestBody User user) {
+		try {
+			userService.addUser(user);
+			return 1;
+		} catch (RegisterException e) {
+			logger.error(e.getMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return 0;
+	}
+
+	@ApiOperation("按id启用或禁用账户")
+	@PostMapping("/user/{id}/enabled")
+	public int updateUserEnabled(@RequestParam("enabled") boolean enabled, @PathVariable int id) {
+		return userService.updateUserEnabled(enabled, id);
+	}
+
+	@ApiOperation("按id设置用户是否为管理员")
+	@PostMapping("/user/{id}/set-admin")
+	public int updateUserRole(@RequestParam("isAdmin") boolean enabled, @PathVariable int id) {
+		return userService.updateUserRole(enabled, id);
+	}
+
+	@ApiOperation("按id删除用户")
+	@DeleteMapping("/user/{id}/delete")
+	public int deleteUserById(@PathVariable int id) {
+		return userService.deleteUserById(id);
 	}
 }

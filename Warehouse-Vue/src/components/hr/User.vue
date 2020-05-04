@@ -249,7 +249,7 @@ export default {
       console.log(this.isAdmin);
       var that = this;
       console.log(this.isAdmin[index]);
-      this.$axios.post("/user/" + row.id + "/isadmin" + "?isAdmin=" + this.isAdmin[index], {})
+      this.$axios.post("/user/" + row.id + "/set-admin" + "?isAdmin=" + this.isAdmin[index], {})
       .then(res => {
         if (res.status === 200) {
           if (res.data === 1) {

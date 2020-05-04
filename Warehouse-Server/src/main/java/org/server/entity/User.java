@@ -2,6 +2,8 @@ package org.server.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Getter
+@Setter
 public class User implements UserDetails {
 
 	private int id;
@@ -20,62 +24,6 @@ public class User implements UserDetails {
 	private Date registerTime;
 	private List<Role> roles;
 	private boolean enabled;
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
-	}
-
-	public void setRegisterTime(Date registerTime) {
-		this.registerTime = registerTime;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public String getUsername() {
-		return this.username;
-	}
-
-	public String getPassword() {
-		return this.password;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public boolean isEnabled() {
-		return this.enabled;
-	}
-
-	public Date getRegisterTime() {
-		return registerTime;
-	}
-
-	public List<Role> getRoles() {
-		return this.roles;
-	}
 
 	@Override
 	@JsonIgnore
