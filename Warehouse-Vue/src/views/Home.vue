@@ -5,7 +5,7 @@
 
       <el-dropdown @command="logout" class="dropdown">
         <span class="userinfo">
-          <el-avatar src="https://imgsa.baidu.com/forum/w%3D580/sign=552b39e2d9ca7bcb7d7bc7278e096b3f/a192c71349540923fa71635f9c58d109b3de499d.jpg"></el-avatar>
+          <el-avatar src=""></el-avatar>
           {{currentUsername}}
         </span>
         <el-dropdown-menu slot="dropdown">
