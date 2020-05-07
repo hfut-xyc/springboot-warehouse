@@ -30,6 +30,11 @@ export default new VueRouter({
 			meta: { requireAuth: true },
 			children: [
 				{
+					// 现在 /home 重定向到 /home/warehouse
+					path: '', 
+					redirect: 'warehouse'
+				},
+				{
 					path: 'warehouse',
 					name: "仓库信息",
 					component: Warehouse,

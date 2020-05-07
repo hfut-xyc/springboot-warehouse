@@ -22,6 +22,7 @@
           :default-openeds="['1', '2', '3']"
           style="background-color: rgb(216, 239, 255)"
           router
+          :default-active="this.$route.path"
         >
           <el-submenu index="1">
             <template slot="title">
@@ -61,7 +62,11 @@
 
       <el-main>
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+          <!--
+            面包屑首个项目不再指向 /home
+            :to="{ path: '/home' }"
+          -->
+          <el-breadcrumb-item>首页</el-breadcrumb-item>
           <el-breadcrumb-item v-text="this.$route.name"></el-breadcrumb-item>
         </el-breadcrumb>
         <!-- show children components here-->
