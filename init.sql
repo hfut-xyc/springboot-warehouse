@@ -54,7 +54,6 @@ drop table if exists tb_warehouse;
 create table tb_warehouse(
     `id` int(11) not null auto_increment,
     `name` varchar(255) not null,
-    `address` varchar(255) not null,
     primary key(id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
