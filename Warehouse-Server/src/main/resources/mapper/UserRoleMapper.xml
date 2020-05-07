@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.server.mapper.RoleMapper">
+<mapper namespace="org.server.mapper.UserRoleMapper">
 
     <select id="getRolesByUid" resultType="org.server.entity.Role">
         select r.* from tb_role r, tb_user_role ur

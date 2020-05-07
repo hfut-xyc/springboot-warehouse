@@ -43,17 +43,18 @@ create table tb_employee(
     `id` int(11) not null auto_increment,
     `name` varchar(255) not null,
     `gender` char(4),
-    `phone` int(11),
+    `phone` varchar(11),
     `birthday` date,
-    `hire_date` date default curdate(),
-    `salary` decimal(10,2)
+    `hire_date` date default current_date(),
+    `salary` decimal(10,2),
+    primary key(id)
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8;
 
 drop table if exists tb_warehouse;
 create table tb_warehouse(
     `id` int(11) not null auto_increment,
     `name` varchar(255) not null,
-    `address` varchar(255) not null,
+    primary key(id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 drop table if exists tb_product;
@@ -61,20 +62,23 @@ create table tb_product(
     `id` int(11) not null auto_increment,
     `name` varchar(255) not null,
     `supplier` varchar(255),
-    `total` int(11) not null
-) ENGINE=InnoDB AUTO_INCREMENT=202000 DEFAULT CHARSET=utf8;
+    `total` int(11) not null,
+    primary key(id)
+) ENGINE=InnoDB AUTO_INCREMENT=20000 DEFAULT CHARSET=utf8;
 
 drop table if exists tb_employee_warehouse;
 create table tb_employee_warehouse(
     `eid` int(11) not null,
-    `wid` int(11) not null
+    `wid` int(11) not null,
+    primary key(eid, wid)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 drop table if exists tb_warehouse_product;
 create table tb_warehouse_product(
     `wid` int(11) not null,
     `pid` int(11) not null,
-    `amount` int not null
+    `amount` int not null,
+    primary key(wid, pid)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 drop table if exists tb_order;
@@ -83,9 +87,10 @@ create table tb_order(
     `eid` int(11) not null,
     `wid` int(11) not null,
     `pid` int(11) not null,
-    `amount` int not null,
-    `status` tinyint not null,
+    `amount` int not null comment '订单处理数量',
+    `status` tinyint not null comment '订单状态：-1表示订单被删除, 0表示订单是入库, 1表示订单是出库',
     `create_time` timestamp default current_timestamp(),
-    `update_time` timestamp default current_timestamp()
+    `update_time` timestamp default current_timestamp(),
+    primary key(id)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 

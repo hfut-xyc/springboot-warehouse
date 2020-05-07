@@ -3,12 +3,12 @@ import VueRouter from 'vue-router'
 
 import Login from "@/views/Login.vue"
 import Home from '@/views/Home.vue'
-import Warehouse from '@/components/Warehouse.vue'
+import Warehouse from '@/components/warehouse/Warehouse.vue'
 import Inventory from '@/components/product/Inventory.vue'
-import Stock from '@/components/product/Stock.vue'
+import Order from '@/components/product/Order.vue'
 import Chart from '@/components/product/Chart.vue'
-import User from '@/components/hr/User.vue'
-import Employee from '@/components/hr/Employee.vue'
+import User from '@/components/human/User.vue'
+import Employee from '@/components/human/Employee.vue'
 
 Vue.use(VueRouter);
 
@@ -49,7 +49,7 @@ export default new VueRouter({
 				{
 					path: 'stock-io',
 					name: "进销记录",
-					component: Stock,
+					component: Order,
 					meta: { requireAuth: true }
 				},
 				{

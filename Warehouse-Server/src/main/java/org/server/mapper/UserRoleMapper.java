@@ -6,14 +6,16 @@ import org.server.entity.Role;
 import java.util.List;
 
 @Mapper
-public interface RoleMapper {
+public interface UserRoleMapper {
 
 	List<Role> getRolesByUid(int uid);
+
+	int clearRolesByUid(int uid);
 
 	int addUserRole(int uid, int rid);
 
 	int deleteUserRole(int uid, int rid);
 
-	int clearRolesByUid(int uid);
+
 
 }

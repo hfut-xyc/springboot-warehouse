@@ -3,10 +3,10 @@ package org.server.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.server.entity.User;
-import org.server.exception.UserDeleteException;
-import org.server.exception.UserInsertException;
-import org.server.exception.UserRepeatException;
-import org.server.exception.UserUpdateException;
+import org.server.exception.DeleteException;
+import org.server.exception.InsertException;
+import org.server.exception.RepeatException;
+import org.server.exception.UpdateException;
 import org.server.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +51,7 @@ public class UserController {
 		try {
 			userService.addUser(user);
 			return 1;
-		} catch (UserRepeatException | UserInsertException e) {
+		} catch (RepeatException | InsertException e) {
 			logger.error(e.getMessage());
 			return 0;
 		}
@@ -63,7 +63,7 @@ public class UserController {
 		try {
 			userService.updateUserEnabled(enabled, id);
 			return 1;
-		} catch (UserUpdateException e) {
+		} catch (UpdateException e) {
 			logger.error(e.getMessage());
 			return 0;
 		}
@@ -75,7 +75,7 @@ public class UserController {
 		try {
 			userService.updateUserRole(enabled, id);
 			return 1;
-		} catch (UserUpdateException e) {
+		} catch (UpdateException e) {
 			logger.error(e.getMessage());
 			return 0;
 		}
@@ -87,7 +87,7 @@ public class UserController {
 		try {
 			userService.deleteUserById(id);
 			return 1;
-		} catch (UserDeleteException e) {
+		} catch (DeleteException e) {
 			logger.error(e.getMessage());
 			return 0;
 		}

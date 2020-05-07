@@ -62,10 +62,6 @@
 
       <el-main>
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <!--
-            面包屑首个项目不再指向 /home
-            :to="{ path: '/home' }"
-          -->
           <el-breadcrumb-item>首页</el-breadcrumb-item>
           <el-breadcrumb-item v-text="this.$route.name"></el-breadcrumb-item>
         </el-breadcrumb>

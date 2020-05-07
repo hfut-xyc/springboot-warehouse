@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.server.mapper.EmployeeMapper">
+
+    <select id="getEmployeeList" resultType="org.server.entity.Employee">
+        select * from tb_employee
+        <if test="keyword != null">
+            where name like concat('%',#{keyword},'%')
+        </if>
+    </select>
+
+    <select id="getEmployeeCount" resultType="java.lang.Integer">
+        select count(*) from tb_employee
+        <if test="keyword != null">
+            where username like concat('%',#{keyword},'%')
+        </if>
+    </select>
+</mapper>

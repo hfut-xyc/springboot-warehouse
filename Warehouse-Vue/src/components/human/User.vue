@@ -79,7 +79,7 @@ export default {
   name: "User",
   data: function() {
     // 二次密码校验
-    var validatorPassword = (rule, value, callback) => {
+    const validatorPassword = (rule, value, callback) => {
       if (value === '')
         callback(new Error('请再次输入密码'))
       else if (value !== this.addForm.password)
@@ -115,7 +115,7 @@ export default {
     isAdmin: function() {
       var list = [];
       this.userList.forEach(user => {
-        list.push(user.roles.length == 2);
+        list.push(user.roles.length === 2);
       });
       return list;
     }
