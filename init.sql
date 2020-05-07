@@ -43,9 +43,9 @@ create table tb_employee(
     `id` int(11) not null auto_increment,
     `name` varchar(255) not null,
     `gender` char(4),
-    `phone` int(11),
+    `phone` varchar(11),
     `birthday` date,
-    `hire_date` date default curdate(),
+    `hire_date` date default current_date(),
     `salary` decimal(10,2),
     primary key(id)
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8;
@@ -88,8 +88,8 @@ create table tb_order(
     `eid` int(11) not null,
     `wid` int(11) not null,
     `pid` int(11) not null,
-    `amount` int not null,
-    `status` tinyint not null comment '-1表示订单被删除, 0表示订单是出库, 1表示订单是入库',
+    `amount` int not null comment '订单处理数量',
+    `status` tinyint not null comment '订单状态：-1表示订单被删除, 0表示订单是入库, 1表示订单是出库',
     `create_time` timestamp default current_timestamp(),
     `update_time` timestamp default current_timestamp(),
     primary key(id)
