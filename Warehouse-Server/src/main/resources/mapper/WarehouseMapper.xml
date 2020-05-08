@@ -6,7 +6,44 @@
     <resultMap id="WarehouseResultMap" type="org.server.entity.Warehouse">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
-
+        <collection property="operators" ofType="org.server.entity.Employee">
+            <id column="eid" property="id"/>
+            <result column="ename" property="name"/>
+            <result column="gender" property="gender"/>
+            <result column="phone" property="phone"/>
+            <result column="birthday" property="birthday"/>
+            <result column="hire_date" property="hireDate"/>
+            <result column="salary" property="salary"/>
+        </collection>
     </resultMap>
 
+    <select id="getWarehouseList" resultMap="WarehouseResultMap">
+        select w.*, e.id as eid, e.name as ename, e.gender, e.phone, e.birthday, e.hire_date, e.salary
+        from tb_warehouse w 
+        left join tb_employee_warehouse ew on w.id = ew.wid 
+        left join tb_employee e on e.id = ew.eid
+        <if test="keyword != null">
+            where w.name like concat('%',#{keyword},'%')
+        </if>
+    </select>
+
+    <select id="getWarehouseByName" resultType="org.server.entity.Warehouse">
+        select * from tb_warehouse where name=#{name}
+    </select>
+
+    <select id="getWarehouseCount" resultType="java.lang.Integer">
+        select count(*) from tb_warehouse
+        <if test="keyword != null">
+            where name like concat('%',#{keyword},'%')
+        </if>
+    </select>
+
+    <insert id="addWarehouse" parameterType="org.server.entity.Warehouse">
+        insert ignore into tb_warehouse(name)
+        values (#{name})
+    </insert>
+
+    <delete id="deleteWarehouseById">
+        delete from tb_warehouse where id=#{id}
+    </delete>
 </mapper>
