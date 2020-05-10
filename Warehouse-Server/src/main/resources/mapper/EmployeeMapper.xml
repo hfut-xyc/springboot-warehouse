@@ -4,8 +4,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.server.mapper.EmployeeMapper">
 
-    <select id="getEmployeeList" resultType="org.server.entity.Employee">
-        select * from tb_employee
+    <resultMap id="EmployeeMap" type="org.server.entity.Employee">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="gender" property="gender"/>
+        <result column="phone" property="phone"/>
+        <result column="birthday" property="birthday"/>
+        <result column="hire_date" property="hireDate"/>
+        <result column="salary" property="salary"/>
+        <collection property="warehouses" ofType="org.server.entity.Warehouse">
+            <id column="wid" property="id"/>
+            <result column="wname" property="name"/>
+        </collection>
+    </resultMap>
+
+    <select id="getEmployeeList" resultMap="EmployeeMap">
+        select * from view_employee_warehouse
         <if test="keyword != null">
             where name like concat('%',#{keyword},'%')
         </if>
@@ -17,4 +31,20 @@
             where username like concat('%',#{keyword},'%')
         </if>
     </select>
+
+    <insert id="addEmployee">
+        insert into tb_employee(name, gender, phone, birthday, hire_date, salary)
+        values (#{name}, #{gender}, #{phone}, #{birthday}, #{hireDate}, #{salary})
+    </insert>
+
+    <update id="updateEmployee">
+        update tb_employee
+        set name=#{name}, gender=#{gender}, phone=#{phone}
+        birthday=#{birthday}, hire_date=#{hireDate}, salary=#{salary}
+        where id=#{id}
+    </update>
+
+    <delete id="deleteEmployee">
+        delete from tb_employee where id=#{id}
+    </delete>
 </mapper>

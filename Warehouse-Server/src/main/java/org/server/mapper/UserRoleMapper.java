@@ -15,7 +15,4 @@ public interface UserRoleMapper {
 	int addUserRole(int uid, int rid);
 
 	int deleteUserRole(int uid, int rid);
-
-
-
 }

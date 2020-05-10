@@ -20,6 +20,7 @@ import java.util.Map;
 @Api(tags = "WarehouseController", description = "仓库信息管理")
 @RestController
 public class WarehouseController {
+
 	@Autowired
 	private WarehouseService warehouseService;
 

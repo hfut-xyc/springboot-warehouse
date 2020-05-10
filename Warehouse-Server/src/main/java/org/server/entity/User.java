@@ -20,10 +20,10 @@ public class User implements UserDetails {
 	private String username;
 	private String password;
 	private String phone;
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+	private boolean enabled;
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "UTC+8")
 	private Date registerTime;
 	private List<Role> roles;
-	private boolean enabled;
 
 	@Override
 	@JsonIgnore
@@ -52,7 +52,6 @@ public class User implements UserDetails {
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
-
 
 	@Override
 	public String toString() {

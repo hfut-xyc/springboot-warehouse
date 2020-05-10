@@ -3,11 +3,13 @@ package org.server.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.server.entity.Employee;
+import org.server.exception.DeleteException;
+import org.server.exception.InsertException;
 import org.server.service.EmployeeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +21,8 @@ public class EmployeeController {
 
 	@Autowired
 	private EmployeeService employeeService;
+
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@ApiOperation("按页获取员工列表")
 	@GetMapping("/employees")
@@ -32,10 +36,48 @@ public class EmployeeController {
 		int start = (page - 1) * pageSize;
 		int end = Math.min(start + pageSize, list.size());
 
-		// 此处返回的total和userList的长度并不一定相等，userList的长度仅表示一页的数据量
 		Map<String, Object> map = new HashMap<>();
-		map.put("userList", list.subList(start, end));
+		map.put("employeeList", list.subList(start, end));
 		map.put("total",total);
 		return map;
+	}
+
+	@ApiOperation("添加新员工")
+	@PostMapping("/employee/add")
+	public int addEmployee(@RequestBody Employee employee) {
+		try {
+			return employeeService.addEmployee(employee);
+		} catch (InsertException e) {
+			logger.error(e.getMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return 0;
+	}
+
+	@ApiOperation("修改员工信息")
+	@PostMapping("/employee/update")
+	public int updateEmployee(@RequestBody Employee employee) {
+		try {
+			return employeeService.updateEmployee(employee);
+		} catch (InsertException e) {
+			logger.error(e.getMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return 0;
+	}
+
+	@ApiOperation("按id删除员工")
+	@DeleteMapping("/employee/{id}/delete")
+	public int deleteEmployee(@PathVariable int id) {
+		try {
+			return employeeService.deleteEmployee(id);
+		} catch (DeleteException e) {
+			logger.error(e.getMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return 0;
 	}
 }

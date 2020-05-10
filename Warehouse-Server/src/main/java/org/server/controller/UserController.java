@@ -49,47 +49,51 @@ public class UserController {
 	@PostMapping("/user/add")
 	public int addUser(@RequestBody User user) {
 		try {
-			userService.addUser(user);
-			return 1;
+			return userService.addUser(user);
 		} catch (RepeatException | InsertException e) {
 			logger.error(e.getMessage());
-			return 0;
+		} catch (Exception e) {
+			logger.error(e.getMessage());
 		}
+		return 0;
 	}
 
 	@ApiOperation("按id启用或禁用账户")
 	@PostMapping("/user/{id}/enabled")
 	public int updateUserEnabled(@RequestParam("enabled") boolean enabled, @PathVariable int id) {
 		try {
-			userService.updateUserEnabled(enabled, id);
-			return 1;
+			return userService.updateUserEnabled(enabled, id);
 		} catch (UpdateException e) {
 			logger.error(e.getMessage());
-			return 0;
+		} catch (Exception e) {
+			logger.error(e.getMessage());
 		}
+		return 0;
 	}
 
 	@ApiOperation("按id设置用户是否为管理员")
 	@PostMapping("/user/{id}/set-admin")
 	public int updateUserRole(@RequestParam("isAdmin") boolean enabled, @PathVariable int id) {
 		try {
-			userService.updateUserRole(enabled, id);
-			return 1;
+			return userService.updateUserRole(enabled, id);
 		} catch (UpdateException e) {
 			logger.error(e.getMessage());
-			return 0;
+		} catch (Exception e) {
+			logger.error(e.getMessage());
 		}
+		return 0;
 	}
 
 	@ApiOperation("按id删除用户")
 	@DeleteMapping("/user/{id}/delete")
 	public int deleteUserById(@PathVariable int id) {
 		try {
-			userService.deleteUserById(id);
-			return 1;
+			return userService.deleteUserById(id);
 		} catch (DeleteException e) {
 			logger.error(e.getMessage());
-			return 0;
+		} catch (Exception e) {
+			logger.error(e.getMessage());
 		}
+		return 0;
 	}
 }

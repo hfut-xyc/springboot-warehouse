@@ -9,11 +9,9 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-	User getUserById(int id);
+	List<User> getUserList(@Param("keyword") String keyword);
 
 	User getUserByUsername(String username);
-
-	List<User> getUserList(@Param("keyword") String keyword);
 
 	int getUserCount(@Param("keyword") String keyword);
 

@@ -38,10 +38,6 @@ public class UserService implements UserDetailsService {
 		return user;
 	}
 
-	public User getUserById(int id) {
-		return userMapper.getUserById(id);
-	}
-
 	public List<User> getUserList(String keyword) {
 		return userMapper.getUserList(keyword);
 	}

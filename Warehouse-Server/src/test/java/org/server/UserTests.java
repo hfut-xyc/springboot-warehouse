@@ -6,6 +6,7 @@ import org.server.entity.User;
 import org.server.mapper.UserMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.StopWatch;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -18,14 +19,12 @@ class UserTests {
 	private UserMapper userMapper;
 
 	@Test
-	void getUserById() {
-		System.out.println(userMapper.getUserById(1000));
-	}
-
-	@Test
 	void getUserList() {
-		List<User> list = userMapper.getUserList(null);
-		System.out.println(list.size());
+		StopWatch stopwatch = new StopWatch();
+		stopwatch.start();
+//		List<User> list1 = userMapper.getUserList(null);
+		stopwatch.stop();
+		System.out.println(stopwatch.getLastTaskTimeMillis());
 	}
 
 	@Test
