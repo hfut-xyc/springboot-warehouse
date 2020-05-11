@@ -25,6 +25,17 @@ public class User implements UserDetails {
 	private Date registerTime;
 	private List<Role> roles;
 
+	public User() {}
+
+	public User(int id, String username, String password, String phone, boolean enabled, Date registerTime) {
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.phone = phone;
+		this.enabled = enabled;
+		this.registerTime = registerTime;
+	}
+
 	@Override
 	@JsonIgnore
 	public List<GrantedAuthority> getAuthorities() {

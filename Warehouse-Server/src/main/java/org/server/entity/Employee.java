@@ -22,4 +22,30 @@ public class Employee {
 	private Date hireDate;
 	private BigDecimal salary;
 	private List<Warehouse> warehouses;
+
+	public Employee() {}
+
+	public Employee(int id, String name, String gender, String phone, Date birthday, Date hireDate, BigDecimal salary) {
+		this.id = id;
+		this.name = name;
+		this.gender = gender;
+		this.phone = phone;
+		this.birthday = birthday;
+		this.hireDate = hireDate;
+		this.salary = salary;
+	}
+
+	@Override
+	public String toString() {
+		return "Employee{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", gender='" + gender + '\'' +
+				", phone='" + phone + '\'' +
+				", birthday=" + birthday +
+				", hireDate=" + hireDate +
+				", salary=" + salary +
+				", warehouses=" + warehouses +
+				'}';
+	}
 }

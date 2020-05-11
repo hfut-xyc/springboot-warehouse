@@ -11,4 +11,14 @@ public class Product {
 	private String name;
 	private String supplier;
 	private int total;
+
+	@Override
+	public String toString() {
+		return "Product{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", supplier='" + supplier + '\'' +
+				", total=" + total +
+				'}';
+	}
 }

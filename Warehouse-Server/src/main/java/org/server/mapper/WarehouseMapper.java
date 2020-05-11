@@ -11,8 +11,6 @@ public interface WarehouseMapper {
 
 	Warehouse getWarehouseByName(String name);
 
-	// Warehouse getWarehouseById(int id);
-
     List<Warehouse> getWarehouseList(@Param("keyword") String keyword);
 
 	int getWarehouseCount(@Param("keyword") String keyword);

@@ -61,6 +61,7 @@ insert into tb_employee(name, gender, phone, birthday, hire_date, salary) values
 insert into tb_employee(name, gender, phone, birthday, hire_date, salary) values ('bbb', '女', '153212314', '1999-08-01', '2017-09-01', 6000.50);
 insert into tb_employee(name, gender, phone, birthday, hire_date, salary) values ('ccc', '男', '153222314', '1999-08-01', '2017-09-01', 7000.50);
 insert into tb_employee(name, gender, phone, birthday, hire_date, salary) values ('ddd', '男', '1123122414', '1999-08-01', '2017-09-01', 5000.50);
+insert into tb_employee(name, gender, phone, birthday, hire_date, salary) values ('eee', '男', '2351411124', '1999-08-01', '2017-09-01', 8200.99);
 
 -- *********************************************************************
 drop table if exists tb_warehouse;
@@ -74,6 +75,7 @@ insert into tb_warehouse(name) values ('1号仓库');
 insert into tb_warehouse(name) values ('2号仓库');
 insert into tb_warehouse(name) values ('3号仓库');
 insert into tb_warehouse(name) values ('4号仓库');
+insert into tb_warehouse(name) values ('5号仓库');
 
 -- *********************************************************************
 drop table if exists tb_product;
@@ -81,9 +83,13 @@ create table tb_product(
     `id` int(11) not null auto_increment,
     `name` varchar(255) not null,
     `supplier` varchar(255),
-    `total` int(11) not null,
     primary key(id)
 ) ENGINE=InnoDB AUTO_INCREMENT=20000 DEFAULT CHARSET=utf8;
+
+insert into tb_product(name, supplier) values ('华为p30', 'HUAWEI');
+insert into tb_product(name, supplier) values ('小米8', '小米科技');
+insert into tb_product(name, supplier) values ('iPhone X', '苹果');
+insert into tb_product(name, supplier) values ('Vivo 10', 'Vivo');
 
 -- *********************************************************************
 drop table if exists tb_employee_warehouse;
@@ -102,7 +108,6 @@ insert into tb_employee_warehouse values (10001, 4);
 insert into tb_employee_warehouse values (10002, 1);
 insert into tb_employee_warehouse values (10002, 2);
 insert into tb_employee_warehouse values (10002, 3);
-insert into tb_employee_warehouse values (10003, 1);
 
 -- *********************************************************************
 drop table if exists tb_warehouse_product;
@@ -114,6 +119,15 @@ create table tb_warehouse_product(
 		key idx_wid(wid),
 		key idx_pid(pid)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+insert into tb_warehouse_product values (1, 20000, 100);
+insert into tb_warehouse_product values (1, 20001, 200);
+insert into tb_warehouse_product values (2, 20001, 300);
+insert into tb_warehouse_product values (2, 20002, 400);
+insert into tb_warehouse_product values (3, 20001, 500);
+insert into tb_warehouse_product values (3, 20002, 200);
+
+-- *********************************************************************
 
 drop table if exists tb_order;
 create table tb_order(
@@ -142,7 +156,26 @@ where u.id=ur.uid and r.id=ur.rid;
 drop view if exists view_employee_warehouse;
 create view view_employee_warehouse as
 select e.*, w.id as wid, w.name as wname
-from tb_employee e, tb_warehouse w, tb_employee_warehouse ew
-where e.id=ew.eid and w.id=ew.wid;
+from tb_employee e 
+left join tb_employee_warehouse ew on e.id=ew.eid
+left join tb_warehouse w on w.id=ew.wid;
  
--- 创建仓库-商品视图
+-- 创建仓库-员工视图
+drop view if exists view_warehouse_employee;
+create view view_warehouse_employee as
+select w.*, e.id as eid, e.name as ename, e.gender, e.phone, e.birthday, e.hire_date, e.salary
+from tb_warehouse w
+left join tb_employee_warehouse ew on w.id = ew.wid 
+left join tb_employee e on e.id = ew.eid;
+ 
+-- 创建产品-仓库视图，用于统计每个产品总数量，这里不需要left join
+drop view if exists view_product_warehouse;
+create view view_product_warehouse as
+select p.*, sum(wp.amount) as total
+from tb_product p, tb_warehouse w, tb_warehouse_product wp
+where p.id=wp.pid and w.id=wp.wid
+group by p.id;
+
+
+
+

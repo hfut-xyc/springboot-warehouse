@@ -40,7 +40,7 @@ public class WarehouseService {
 
 	public int deleteWarehouseById(int id) {
         int res = warehouseMapper.deleteWarehouseById(id);
-        if(res != 1) {
+        if (res != 1) {
             throw new DeleteException("删除仓库时发生异常");
         }
         else

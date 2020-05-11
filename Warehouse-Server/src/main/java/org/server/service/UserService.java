@@ -6,7 +6,7 @@ import org.server.exception.DeleteException;
 import org.server.exception.InsertException;
 import org.server.exception.RepeatException;
 import org.server.exception.UpdateException;
-import org.server.mapper.UserRoleMapper;
+import org.server.mapper.RoleMapper;
 import org.server.mapper.UserMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,7 +25,7 @@ public class UserService implements UserDetailsService {
 	private UserMapper userMapper;
 
 	@Resource
-	private UserRoleMapper userRoleMapper;
+	private RoleMapper roleMapper;
 
 	@Override
 	public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
@@ -33,7 +33,7 @@ public class UserService implements UserDetailsService {
 		if (user == null) {
 			throw new UsernameNotFoundException("用户名不存在");
 		}
-		List<Role> roles = userRoleMapper.getRolesByUid(user.getId());
+		List<Role> roles = roleMapper.getRolesByUid(user.getId());
 		user.setRoles(roles);
 		return user;
 	}
@@ -58,7 +58,7 @@ public class UserService implements UserDetailsService {
 
 		// 表单传递的user默认id为0, 添加到tb_user之后才有一个新id
 		user = userMapper.getUserByUsername(user.getUsername());
-		int res2 = userRoleMapper.addUserRole(user.getId(), 2);
+		int res2 = roleMapper.addRoleByUid(user.getId(), 2);
 		if (res1 + res2 != 2) {
 			throw new InsertException("添加用户失败");
 		}
@@ -78,12 +78,12 @@ public class UserService implements UserDetailsService {
 	public int updateUserRole(boolean isAdmin, int id) throws UpdateException {
 		int res;
 		if (isAdmin) {
-			res = userRoleMapper.addUserRole(id, 1);
+			res = roleMapper.addRoleByUid(id, 1);
 			if (res != 1) {
 				throw new UpdateException("用户" + id + "设置管理员权限失败");
 			}
 		} else {
-			res = userRoleMapper.deleteUserRole(id, 1);
+			res = roleMapper.deleteRoleByUid(id, 1);
 			if (res != 1) {
 				throw new UpdateException("用户" + id + "取消管理员权限失败");
 			}
@@ -94,7 +94,7 @@ public class UserService implements UserDetailsService {
 	@Transactional
 	public int deleteUserById(int id) throws DeleteException {
 		int res1 = userMapper.deleteUserById(id);
-		int res2 = userRoleMapper.clearRolesByUid(id);
+		int res2 = roleMapper.clearRolesByUid(id);
 		if (res1 + res2 >= 2) {
 			return 1;
 		} else {

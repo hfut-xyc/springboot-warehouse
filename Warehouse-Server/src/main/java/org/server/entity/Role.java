@@ -11,6 +11,8 @@ public class Role {
 	private String name;
 	private String remark;
 
+	public Role() {}
+
 	public Role(int id, String name, String remark) {
 		this.id = id;
 		this.name = name;
