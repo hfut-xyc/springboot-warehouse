@@ -22,7 +22,7 @@ drop table if exists tb_role;
 create table tb_role(
     `id` int(11) not null auto_increment,
     `name` varchar(255) not null,
-		`remark` varchar(255) not null comment '备注',
+	`remark` varchar(255) not null comment '备注',
     primary key(id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -35,8 +35,8 @@ create table tb_user_role(
     `uid` int(11) not null,
     `rid` int(11) not null,
     primary key(uid, rid),
-		key idx_uid(uid),
-		key idx_rid(rid)
+	key idx_uid(uid),
+	key idx_rid(rid)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 insert into tb_user_role values(1000, 1);
@@ -89,7 +89,6 @@ create table tb_product(
 insert into tb_product(name, supplier) values ('华为p30', 'HUAWEI');
 insert into tb_product(name, supplier) values ('小米8', '小米科技');
 insert into tb_product(name, supplier) values ('iPhone X', '苹果');
-insert into tb_product(name, supplier) values ('Vivo 10', 'Vivo');
 
 -- *********************************************************************
 drop table if exists tb_employee_warehouse;
@@ -97,8 +96,8 @@ create table tb_employee_warehouse(
     `eid` int(11) not null,
     `wid` int(11) not null,
     primary key(eid, wid),
-		key idx_eid(eid),
-		key idx_wid(wid)
+	key idx_eid(eid),
+	key idx_wid(wid)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 insert into tb_employee_warehouse values (10000, 1);
@@ -116,14 +115,15 @@ create table tb_warehouse_product(
     `pid` int(11) not null,
     `amount` int not null,
     primary key(wid, pid),
-		key idx_wid(wid),
-		key idx_pid(pid)
+	key idx_wid(wid),
+	key idx_pid(pid)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 insert into tb_warehouse_product values (1, 20000, 100);
 insert into tb_warehouse_product values (1, 20001, 200);
 insert into tb_warehouse_product values (2, 20001, 300);
 insert into tb_warehouse_product values (2, 20002, 400);
+insert into tb_warehouse_product values (3, 20000, 200);
 insert into tb_warehouse_product values (3, 20001, 500);
 insert into tb_warehouse_product values (3, 20002, 200);
 
@@ -136,46 +136,84 @@ create table tb_order(
     `wid` int(11) not null,
     `pid` int(11) not null,
     `amount` int not null comment '订单处理数量',
-    `status` tinyint not null comment '订单状态：-1表示订单被删除, -2表示商品报废操作, 0表示订单是入库, 1表示订单是出库',
+    `status` tinyint not null comment '订单状态：0表示订单是入库, 1表示订单是出库, -1表示订单被删除, -2表示商品报废操作',
     `create_time` timestamp default current_timestamp(),
     `update_time` timestamp default current_timestamp(),
     primary key(id),
-		key idx_eid(eid),		
-		key idx_wid(wid),
-		key idx_pid(pid)
+	key idx_eid(eid),		
+	key idx_wid(wid),
+	key idx_pid(pid)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
 -- 创建用户-角色视图
 drop view if exists view_user_role;
 create view view_user_role as
-select u.*, r.id as rid, r.name as rname, remark
-from tb_user u, tb_role r, tb_user_role ur
-where u.id=ur.uid and r.id=ur.rid;
+select
+    u.*,
+    r.id as rid,
+    r.name as rname,
+    r.remark as remark
+from
+    tb_user u,
+    tb_role r,
+    tb_user_role ur
+where
+    u.id = ur.uid and r.id = ur.rid;
 
 -- 创建员工-仓库视图
 drop view if exists view_employee_warehouse;
 create view view_employee_warehouse as
-select e.*, w.id as wid, w.name as wname
-from tb_employee e 
-left join tb_employee_warehouse ew on e.id=ew.eid
-left join tb_warehouse w on w.id=ew.wid;
- 
+select
+    e.*,
+    w.id as wid,
+    w.name as wname
+from
+    tb_employee e
+    left join tb_employee_warehouse ew on e.id = ew.eid
+    left join tb_warehouse w on w.id = ew.wid;
+
 -- 创建仓库-员工视图
 drop view if exists view_warehouse_employee;
 create view view_warehouse_employee as
-select w.*, e.id as eid, e.name as ename, e.gender, e.phone, e.birthday, e.hire_date, e.salary
-from tb_warehouse w
-left join tb_employee_warehouse ew on w.id = ew.wid 
-left join tb_employee e on e.id = ew.eid;
- 
+select
+    w.*,
+    e.id as eid,
+    e.name as ename,
+    e.gender,
+    e.phone,
+    e.birthday,
+    e.hire_date,
+    e.salary
+from
+    tb_warehouse w
+    left join tb_employee_warehouse ew on w.id = ew.wid
+    left join tb_employee e on e.id = ew.eid;
+
+-- 创建仓库-产品视图
+drop view if exists view_warehouse_product;
+create view view_warehouse_product as
+select
+    w.*,
+    p.id as pid,
+    p.name as pname,
+    p.supplier as supplier,
+    wp.amount as amount
+from
+    tb_warehouse w
+    left join tb_warehouse_product wp on w.id = wp.wid
+    left join tb_product p on p.id = wp.pid;
+
 -- 创建产品-仓库视图，用于统计每个产品总数量，这里不需要left join
 drop view if exists view_product_warehouse;
 create view view_product_warehouse as
-select p.*, sum(wp.amount) as total
-from tb_product p, tb_warehouse w, tb_warehouse_product wp
-where p.id=wp.pid and w.id=wp.wid
-group by p.id;
-
-
-
-
+select
+    p.*,
+    sum(wp.amount) as total
+from
+    tb_product p,
+    tb_warehouse w,
+    tb_warehouse_product wp
+where
+    p.id = wp.pid and w.id = wp.wid
+group by
+    p.id;

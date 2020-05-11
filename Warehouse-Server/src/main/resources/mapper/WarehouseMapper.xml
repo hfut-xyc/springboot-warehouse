@@ -3,7 +3,8 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.server.mapper.WarehouseMapper">
-    <resultMap id="WarehouseMap" type="org.server.entity.Warehouse">
+
+    <resultMap id="WarehouseEmployeeMap" type="org.server.entity.Warehouse">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <collection property="operators" ofType="org.server.entity.Employee">
@@ -17,8 +18,26 @@
         </collection>
     </resultMap>
 
-    <select id="getWarehouseList" resultMap="WarehouseMap">
+    <resultMap id="WarehouseProductMap" type="org.server.entity.Warehouse">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <collection property="products" ofType="org.server.entity.Product">
+            <id column="pid" property="id"/>
+            <result column="pname" property="name"/>
+            <result column="supplier" property="supplier"/>
+            <result column="amount" property="total"/>
+        </collection>
+    </resultMap>
+
+    <select id="listWarehouseWithEmployee" resultMap="WarehouseEmployeeMap">
         select * from view_warehouse_employee
+        <if test="keyword != null">
+            where name like concat('%',#{keyword},'%')
+        </if>
+    </select>
+
+    <select id="listWarehouseWithProduct" resultMap="WarehouseEmployeeMap">
+        select * from view_employee_warehouse
         <if test="keyword != null">
             where name like concat('%',#{keyword},'%')
         </if>
