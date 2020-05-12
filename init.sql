@@ -189,7 +189,8 @@ from
     left join tb_employee_warehouse ew on w.id = ew.wid
     left join tb_employee e on e.id = ew.eid;
 
--- 创建仓库-产品视图
+-- 创建仓库-产品视图，无需left join，
+-- 因为会造成返回产品列表为[null]，而我们需要的是[]
 drop view if exists view_warehouse_product;
 create view view_warehouse_product as
 select
@@ -199,9 +200,11 @@ select
     p.supplier as supplier,
     wp.amount as amount
 from
-    tb_warehouse w
-    left join tb_warehouse_product wp on w.id = wp.wid
-    left join tb_product p on p.id = wp.pid;
+    tb_warehouse w, 
+	tb_warehouse_product wp,
+    tb_product p
+where
+	w.id = wp.wid and p.id = wp.pid;
 
 -- 创建产品-仓库视图，用于统计每个产品总数量，这里不需要left join
 drop view if exists view_product_warehouse;

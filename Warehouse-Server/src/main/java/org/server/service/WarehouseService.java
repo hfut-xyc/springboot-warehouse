@@ -1,9 +1,11 @@
 package org.server.service;
 
 import org.server.mapper.WarehouseMapper;
+import org.server.entity.Product;
 import org.server.entity.Warehouse;
 import org.server.exception.RepeatException;
 import org.server.exception.InsertException;
+import org.server.exception.NotFoundException;
 import org.server.exception.DeleteException;
 
 import org.springframework.stereotype.Service;
@@ -21,8 +23,14 @@ public class WarehouseService {
         return warehouseMapper.getWarehouseList(keyword);
     }
 
-	public int getWarehouseCount(String keyword) {
-        return warehouseMapper.getWarehouseCount(keyword);
+	public List<Product> getProductListById(int id, String keyword) {
+        Warehouse temp = warehouseMapper.getWarehouseById(id);
+		if (temp == null) {
+            throw new NotFoundException("没有找到这个仓库ID");
+		}
+		else {
+            return warehouseMapper.getProductListById(id, keyword);
+        }
     }
 
     @Transactional
@@ -38,8 +46,14 @@ public class WarehouseService {
         return 1;
     }
 
+    @Transactional
 	public int deleteWarehouseById(int id) {
         int res = warehouseMapper.deleteWarehouseById(id);
+        // TODO 这里需要级联删除掉其他的表中对应项
+        // 但有些表的Mapper都没有，所以先暂时放着，目前请勿调用这个API
+        // 包括tb_employee_warehouse, tb_warehouse_product, tb_order 的所有对应项
+        // 对 tb_order 需进行伪删除？
+
         if (res != 1) {
             throw new DeleteException("删除仓库时发生异常");
         }

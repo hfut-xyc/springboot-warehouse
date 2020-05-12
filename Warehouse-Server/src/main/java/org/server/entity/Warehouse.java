@@ -11,8 +11,7 @@ public class Warehouse {
 	private int id;
 	private String name;
 	private List<Employee> operators;   // 负责该仓库的操作人员
-	private List<Product> products;     // 该仓库存放的产品类别
-
+	
 	public Warehouse() {}
 
     public Warehouse(int id, String name) {
@@ -26,7 +25,6 @@ public class Warehouse {
 				"id=" + id +
 				", name='" + name + '\'' +
 				", operators='" + operators.toString() + '\'' +
-				 ", products='" + products.toString() + '\'' +
 				'}';
 	}
 }
