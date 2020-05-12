@@ -34,8 +34,7 @@
 
     <!-- 仓库中产品信息 -->
     <select id="getProductListById" resultMap="WarehouseProductMap">
-        select * from view_warehouse_product
-        where id=#{id}
+        select * from view_warehouse_product where id=#{id}
         <if test="keyword != null">
             and pname like concat('%',#{keyword},'%')
         </if>

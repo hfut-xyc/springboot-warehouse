@@ -128,7 +128,6 @@ insert into tb_warehouse_product values (3, 20001, 500);
 insert into tb_warehouse_product values (3, 20002, 200);
 
 -- *********************************************************************
-
 drop table if exists tb_order;
 create table tb_order(
     `id` int(11) not null auto_increment,
@@ -136,15 +135,16 @@ create table tb_order(
     `wid` int(11) not null,
     `pid` int(11) not null,
     `amount` int not null comment '订单处理数量',
-    `status` tinyint not null comment '订单状态：0表示订单是入库, 1表示订单是出库, -1表示订单被删除, -2表示商品报废操作',
+    `status` enum('入库', '出库', '报废', '删除') not null,
     `create_time` timestamp default current_timestamp(),
     `update_time` timestamp default current_timestamp(),
     primary key(id),
 	key idx_eid(eid),		
 	key idx_wid(wid),
 	key idx_pid(pid)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
+-- *********************************************************************
 -- 创建用户-角色视图
 drop view if exists view_user_role;
 create view view_user_role as

@@ -20,7 +20,7 @@
     <select id="getUserList" resultMap="UserMap">
         select * from view_user_role
         <if test="keyword != null">
-            and username like concat('%',#{keyword},'%')
+            where username like concat('%',#{keyword},'%')
         </if>
     </select>
 

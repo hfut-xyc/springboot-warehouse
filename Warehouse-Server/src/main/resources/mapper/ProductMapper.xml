@@ -4,15 +4,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.server.mapper.ProductMapper">
 
-    <resultMap id="ProductMap" type="org.server.entity.Product">
-        <id column="id" property="id"/>
-        <result column="name" property="name"/>
-        <result column="supplier" property="supplier"/>
-        <result column="total" property="total"/>
-    </resultMap>
-
-    <select id="getProductList" resultMap="ProductMap">
+    <select id="getProductList" resultType="org.server.entity.Product">
         select * from view_product_warehouse
+        <if test="keyword != null">
+            where name like concat('%',#{keyword},'%')
+        </if>
     </select>
+
+    <insert id="addProduct">
+        insert into tb_product(name, supplier)
+        values (#{name}, #{supplier});
+    </insert>
+
+    <delete id="deleteProductById">
+        delete from tb_product where id=#{id}
+    </delete>
 
 </mapper>

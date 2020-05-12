@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.server.mapper.OrderMapper">
+
+    <select id="getOrderList" resultType="org.server.entity.Order">
+        select * from tb_order
+        <if test="keyword != null">
+            where id like concat('%',#{keyword},'%')
+        </if>
+    </select>
+
+    <insert id="addOrder">
+        insert into tb_order(eid, wid, pid, amount, status)
+        values (#{eid}, #{wid}, #{pid}, #{amount}, #{status})
+    </insert>
+
+    <delete id="deleteOrder">
+        delete from tb_order where id=#{id}
+    </delete>
+
+    <update id="updateOrder">
+        update tb_order
+        set amount=#{amount}, update_time=current_timestamp()
+        where id=#{id}
+    </update>
+</mapper>

@@ -33,17 +33,14 @@ public class WarehouseController {
 			@RequestParam(value = "keyword", required = false) String keyword)
 	{
 		List<Warehouse> list = warehouseService.getWarehouseList(keyword);
-		int total = list.size();
 		int start = (page - 1) * pageSize;
 		int end = Math.min(start + pageSize, list.size());
 
-		// total是总长度，warehouseList是请求的某页的内容
 		Map<String, Object> map = new HashMap<>();
 		map.put("warehouseList", list.subList(start, end));
-		map.put("total",total);
+		map.put("total", list.size());
 		return map;
 	}
-
 
 	@ApiOperation("按id获取仓库商品列表，并且分页")
 	@GetMapping("/warehouse/{id}/products")
@@ -54,13 +51,12 @@ public class WarehouseController {
 		@RequestParam(value = "keyword", required = false) String keyword)
 	{
 		List<Product> list = warehouseService.getProductListById(id, keyword);
-		int total = list.size();
 		int start = (page - 1) * pageSize;
 		int end = Math.min(start + pageSize, list.size());
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("productList", list.subList(start, end));
-		map.put("total", total);
+		map.put("total", list.size());
 		return map;
 	}
 
@@ -68,8 +64,7 @@ public class WarehouseController {
 	@PostMapping("/warehouse/add")
 	public int addWarehouse(@RequestBody Warehouse warehouse) {
 		try {
-			warehouseService.addWarehouse(warehouse);
-			return 1;
+			return warehouseService.addWarehouse(warehouse);
 		} catch (RepeatException | InsertException e) {
 			logger.error(e.getMessage());
 			return 0;
@@ -81,8 +76,7 @@ public class WarehouseController {
 	@DeleteMapping("/warehouse/{id}/delete")
 	public int deleteWarehouseById(@PathVariable int id) {
 		try {
-			warehouseService.deleteWarehouseById(id);
-			return 1;
+			return warehouseService.deleteWarehouseById(id);
 		} catch (DeleteException e) {
 			logger.error(e.getMessage());
 			return 0;

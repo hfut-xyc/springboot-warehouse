@@ -8,5 +8,11 @@ import java.util.List;
 @Mapper
 public interface ProductMapper {
 
-	List<Product> getProductList();
+	// 根据名称模糊查询商品
+	List<Product> getProductList(String keyword);
+
+	int addProduct(Product product);
+
+	int deleteProductById(int id);
+
 }
