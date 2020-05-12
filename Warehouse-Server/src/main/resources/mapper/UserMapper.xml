@@ -28,13 +28,6 @@
         select * from tb_user where username=#{username}
     </select>
 
-    <select id="getUserCount" resultType="java.lang.Integer">
-        select count(*) from tb_user
-        <if test="keyword != null">
-            where username like concat('%',#{keyword},'%')
-        </if>
-    </select>
-
     <insert id="addUser" parameterType="org.server.entity.User">
         insert ignore into tb_user(username, password, phone)
         values (#{username}, #{password}, #{phone})

@@ -42,10 +42,6 @@ public class UserService implements UserDetailsService {
 		return userMapper.getUserList(keyword);
 	}
 
-	public int getUserCount(String keyword) {
-		return userMapper.getUserCount(keyword);
-	}
-
 	@Transactional
 	public int addUser(User user) throws RepeatException, InsertException {
 		User temp = userMapper.getUserByUsername(user.getUsername());

@@ -31,14 +31,13 @@ public class EmployeeController {
 			@RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
 			@RequestParam(value = "keyword", required = false) String keyword)
 	{
-		int total = employeeService.getEmployeeCount(keyword);
 		List<Employee> list = employeeService.getEmployeeList(keyword);
 		int start = (page - 1) * pageSize;
 		int end = Math.min(start + pageSize, list.size());
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("employeeList", list.subList(start, end));
-		map.put("total",total);
+		map.put("total",list.size());
 		return map;
 	}
 

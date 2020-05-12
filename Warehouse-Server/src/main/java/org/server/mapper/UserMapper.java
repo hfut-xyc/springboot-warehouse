@@ -13,8 +13,6 @@ public interface UserMapper {
 
 	User getUserByUsername(String username);
 
-	int getUserCount(@Param("keyword") String keyword);
-
 	int addUser(User user);
 
 	int updateUserEnabled(@Param("enabled") boolean enabled, @Param("id") int id);

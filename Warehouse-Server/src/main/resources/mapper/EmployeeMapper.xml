@@ -25,13 +25,6 @@
         </if>
     </select>
 
-    <select id="getEmployeeCount" resultType="java.lang.Integer">
-        select count(*) from tb_employee
-        <if test="keyword != null">
-            where username like concat('%',#{keyword},'%')
-        </if>
-    </select>
-
     <insert id="addEmployee">
         insert into tb_employee(name, gender, phone, birthday, hire_date, salary)
         values (#{name}, #{gender}, #{phone}, #{birthday}, #{hireDate}, #{salary})

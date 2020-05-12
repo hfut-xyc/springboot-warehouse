@@ -21,10 +21,6 @@ public class EmployeeService {
 		return employeeMapper.getEmployeeList(keyword);
 	}
 
-	public int getEmployeeCount(String keyword) {
-		return employeeMapper.getEmployeeCount(keyword);
-	}
-
 	@Transactional
 	public int addEmployee(Employee employee) {
 		if (employeeMapper.addEmployee(employee) == 1) {
