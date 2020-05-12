@@ -15,6 +15,7 @@ public class Order {
 	private int wid;
 	private int pid;
 	private int amount;
+	private String status;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "UTC+8")
 	private Date createTime;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "UTC+8")

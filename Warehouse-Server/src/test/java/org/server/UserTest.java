@@ -13,7 +13,7 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-class UserTests {
+class UserTest {
 
 	@Resource
 	private UserMapper userMapper;

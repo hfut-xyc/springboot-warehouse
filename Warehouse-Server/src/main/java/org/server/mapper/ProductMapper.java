@@ -11,8 +11,8 @@ public interface ProductMapper {
 	// 根据名称模糊查询商品
 	List<Product> getProductList(String keyword);
 
-	int addProduct(Product product);
+	Product getProductByName(String name);
 
-	int deleteProductById(int id);
+	int addProduct(Product product);
 
 }

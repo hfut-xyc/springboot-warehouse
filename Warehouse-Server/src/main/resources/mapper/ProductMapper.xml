@@ -11,13 +11,15 @@
         </if>
     </select>
 
+    <select id="getProductByName" resultType="org.server.entity.Product">
+        select * from view_product_warehouse
+        where name=#{name}
+    </select>
+
     <insert id="addProduct">
         insert into tb_product(name, supplier)
         values (#{name}, #{supplier});
     </insert>
 
-    <delete id="deleteProductById">
-        delete from tb_product where id=#{id}
-    </delete>
 
 </mapper>

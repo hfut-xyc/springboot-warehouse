@@ -47,10 +47,9 @@ public class WarehouseController {
 	public Map<String, Object> getProductListById(
 		@PathVariable int id,
 		@RequestParam(value = "page", defaultValue = "1") int page,
-		@RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-		@RequestParam(value = "keyword", required = false) String keyword)
+		@RequestParam(value = "pageSize", defaultValue = "10") int pageSize)
 	{
-		List<Product> list = warehouseService.getProductListById(id, keyword);
+		List<Product> list = warehouseService.getProductListById(id);
 		int start = (page - 1) * pageSize;
 		int end = Math.min(start + pageSize, list.size());
 
@@ -72,15 +71,15 @@ public class WarehouseController {
 	}
 
 
-	@ApiOperation("按id删除仓库")
-	@DeleteMapping("/warehouse/{id}/delete")
-	public int deleteWarehouseById(@PathVariable int id) {
-		try {
-			return warehouseService.deleteWarehouseById(id);
-		} catch (DeleteException e) {
-			logger.error(e.getMessage());
-			return 0;
-		}
-	}
+//	@ApiOperation("按id删除仓库")
+//	@DeleteMapping("/warehouse/{id}/delete")
+//	public int deleteWarehouseById(@PathVariable int id) {
+//		try {
+//			return warehouseService.deleteWarehouseById(id);
+//		} catch (DeleteException e) {
+//			logger.error(e.getMessage());
+//			return 0;
+//		}
+//	}
 
 }

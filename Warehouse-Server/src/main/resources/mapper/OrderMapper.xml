@@ -12,7 +12,7 @@
     </select>
 
     <insert id="addOrder">
-        insert into tb_order(eid, wid, pid, amount, status)
+        insert ignore into tb_order(eid, wid, pid, amount, status)
         values (#{eid}, #{wid}, #{pid}, #{amount}, #{status})
     </insert>
 

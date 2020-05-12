@@ -52,7 +52,7 @@ public class UserService implements UserDetailsService {
 		user.setPassword(encoder.encode(user.getPassword()));
 		int res1 = userMapper.addUser(user);
 
-		// 表单传递的user默认id为0, 添加到tb_user之后才有一个新id
+		// 表单传递的user还未分配, 添加到tb_user之后才有一个新id
 		user = userMapper.getUserByUsername(user.getUsername());
 		int res2 = roleMapper.addRoleByUid(user.getId(), 2);
 		if (res1 + res2 != 2) {

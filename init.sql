@@ -116,7 +116,8 @@ create table tb_warehouse_product(
     `amount` int not null,
     primary key(wid, pid),
 	key idx_wid(wid),
-	key idx_pid(pid)
+	key idx_pid(pid),
+	check(amount >= 0)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 insert into tb_warehouse_product values (1, 20000, 100);
@@ -134,8 +135,8 @@ create table tb_order(
     `eid` int(11) not null,
     `wid` int(11) not null,
     `pid` int(11) not null,
-    `amount` int not null comment '订单处理数量',
-    `status` enum('入库', '出库', '报废', '删除') not null,
+    `amount` int not null comment '订单处理数量:正数表示入库, 负数表示出库',
+    `status` enum('正常', '报废') not null,
     `create_time` timestamp default current_timestamp(),
     `update_time` timestamp default current_timestamp(),
     primary key(id),
