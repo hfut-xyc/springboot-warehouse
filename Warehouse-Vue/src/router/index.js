@@ -9,6 +9,7 @@ import Order from '@/components/product/Order.vue'
 import Chart from '@/components/product/Chart.vue'
 import User from '@/components/human/User.vue'
 import Employee from '@/components/human/Employee.vue'
+import WarehouseDetail from "@/components/warehouse/WarehouseDetail";
 
 Vue.use(VueRouter);
 
@@ -30,8 +31,7 @@ export default new VueRouter({
 			meta: { requireAuth: true },
 			children: [
 				{
-					// 现在 /home 重定向到 /home/warehouse
-					path: '', 
+					path: '',
 					redirect: 'warehouse'
 				},
 				{
@@ -39,6 +39,12 @@ export default new VueRouter({
 					name: "仓库信息",
 					component: Warehouse,
 					meta: { requireAuth: true }
+				},
+				{
+					path: 'warehouse/:id/detail',
+					name: "仓库详情",
+					component: WarehouseDetail,
+					meta: { requireAuth: true}
 				},
 				{
 					path: 'inventory',
