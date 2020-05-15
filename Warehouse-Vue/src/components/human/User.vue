@@ -1,6 +1,6 @@
 ﻿<template>
   <el-container>
-    <el-header class="header">
+    <el-header style="margin-top: 20px;">
       <el-row :gutter="12">
         <el-col :span="8">
           <el-input v-model="keyword" placeholder="通过用户名搜索" prefix-icon="el-icon-search"></el-input>
@@ -42,12 +42,12 @@
         layout="total, sizes, prev, pager, next, jumper"
         background
         style="margin-top: 10px;"
-        @size-change="onPageSizeChange"
-        @current-change="onPageChange"
-        :page-sizes="[5, 10, 15, 20, 25]"
-        :page-size="pageSize"
-        :current-page="page"
         :total="total"
+        :current-page="page"
+        :page-size="pageSize"
+        @current-change="onPageChange"
+        @size-change="onPageSizeChange"
+        :page-sizes="[5, 10, 15, 20, 25]"
       ></el-pagination>
     </el-footer>
 
@@ -59,7 +59,7 @@
         <el-form-item label="密码" prop="password">
           <el-input v-model="addForm.password" show-password prefix-icon="el-icon-lock"></el-input>
         </el-form-item>
-        <el-form-item label="再次输入密码" prop="confirmPassword">
+        <el-form-item label="确认密码" prop="confirmPassword">
           <el-input v-model="addForm.confirmPassword" show-password prefix-icon="el-icon-lock"></el-input>
         </el-form-item>
         <el-form-item label="联系电话" prop="phone">
@@ -269,7 +269,4 @@ export default {
 </script>
 
 <style>
-.header {
-  margin-top: 20px;
-}
 </style>

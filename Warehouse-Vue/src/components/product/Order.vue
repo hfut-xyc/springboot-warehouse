@@ -2,13 +2,13 @@
   <el-container style="margin-top: 5px;">
     <el-main>
       <el-tabs v-model="activeName" type="border-card">
-        <el-tab-pane label="入库记录" name="input">
+        <el-tab-pane label="入库订单" name="input">
           <order-input></order-input>
         </el-tab-pane>
-        <el-tab-pane label="出库记录" name="output">
+        <el-tab-pane label="出库订单" name="output">
           <order-output></order-output>
         </el-tab-pane>
-        <el-tab-pane label="添加新记录" name="add">
+        <el-tab-pane label="添加新订单" name="add">
           <order-add></order-add>
         </el-tab-pane>
         <el-tab-pane label="回收站" name="dustbin">
@@ -32,11 +32,6 @@ export default {
       activeName: "input"
     };
   },
-
-  mounted() {
-    
-  },
-
   components: {
     "order-input": OrderInput,
     "order-output": OrderOutput,

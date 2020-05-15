@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-card style="width: 800px; margin-top: 15px">
-      <div slot="header" class="clearfix">
+      <div slot="header">
         <el-page-header @back="goBack" content="详情页面">
         </el-page-header>
       </div>
@@ -15,18 +15,24 @@
           <template slot="prepend">仓库名称</template>
         </el-input>
       </div>
-      <div style="margin-top: 15px;">
+      <el-divider>
         <el-tag effect="dark">仓库负责人</el-tag>
-        <el-tooltip placement="top" v-for="operator in info.operators" :key="operator.name">
-          <div slot="content">工号：{{operator.id}}<br/>姓名：{{operator.name}}<br/>性别：{{operator.gender}}<br/>电话号码：{{operator.phone}}
-          </div>
-          <el-tag>{{operator.name}}</el-tag>
-        </el-tooltip>
-      </div>
-      <el-divider></el-divider>
+      </el-divider>
+      <el-tooltip placement="top" v-for="operator in info.operators" :key="operator.name">
+        <div slot="content">
+          工号：{{operator.id}}<br/>
+          姓名：{{operator.name}}<br/>
+          性别：{{operator.gender}}<br/>
+          电话号码：{{operator.phone}}
+        </div>
+        <el-tag>{{operator.name}}</el-tag>
+      </el-tooltip>
+      <el-divider>
+        <el-tag type="success" effect="dark">仓库存储清单</el-tag>
+      </el-divider>
       <el-table :data="productList" v-loading="loading" border stripe>
-        <el-table-column prop="id" label="商品编号" sortable width="150"></el-table-column>
-        <el-table-column prop="name" label="商品名"></el-table-column>
+        <el-table-column prop="id" label="产品编号" sortable width="150"></el-table-column>
+        <el-table-column prop="name" label="产品名"></el-table-column>
         <el-table-column prop="supplier" label="供应商"></el-table-column>
         <el-table-column prop="total" label="数量" sortable></el-table-column>
       </el-table>
@@ -52,7 +58,7 @@
 
     methods: {
       goBack() {
-        this.$router.go(-1);
+        this.$router.replace("/home/warehouse");
       },
 
       loadProductList(url) {
@@ -77,13 +83,13 @@
 
       onPageChange(val) {
         this.productLoading = true;
-        var url = "/warehouse/" + this.info.id + "/products?page=" + val;
+        let url = "/warehouse/" + this.info.id + "/products?page=" + val;
         this.loadProductList(url);
       },
     }
   }
 </script>
 
-<style scoped>
+<style>
 
 </style>

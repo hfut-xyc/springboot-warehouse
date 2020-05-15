@@ -1,11 +1,10 @@
 package org.server;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.Test;
 
-import org.server.entity.OrderStatus;
+import org.server.enums.OrderStatus;
 
 public class OrderStatusTest {
     @Test

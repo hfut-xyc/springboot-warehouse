@@ -1,16 +1,13 @@
 <template>
   <el-container>
-    <el-header class="header">
+    <el-header style="margin-top: 20px">
       <el-row :gutter="12">
         <el-col :span="8">
-          <el-input v-model="keyword" placeholder="搜索仓库" prefix-icon="el-icon-search"></el-input>
+          <el-input v-model="keyword" placeholder="按仓库名搜索" prefix-icon="el-icon-search"></el-input>
         </el-col>
         <el-col :span="3">
           <el-button @click="searchWarehouse()" type="primary" icon="el-icon-search">查询</el-button>
         </el-col>
-        <!-- <el-col :span="3">
-          <el-button @click="isDialogVisible=true" type="success" icon="el-icon-plus">添加仓库</el-button>
-        </el-col> -->
       </el-row>
     </el-header>
 
@@ -25,11 +22,13 @@
       <el-table-column prop="operators" label="管理人员">
         <template slot-scope="scope">
           <el-tooltip placement="top" v-for="operator in scope.row.operators" :key="operator.name">
-            <div slot="content">工号：{{operator.id}}<br/>姓名：{{operator.name}}<br/>性别：{{operator.gender}}<br/>电话号码：{{operator.phone}}
+            <div slot="content">
+              工号：{{operator.id}}<br/>
+              姓名：{{operator.name}}<br/>
+              性别：{{operator.gender}}<br/>
+              电话号码：{{operator.phone}}
             </div>
-            <el-tag>
-              {{operator.name}}
-            </el-tag>
+            <el-tag>{{operator.name}}</el-tag>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -101,14 +100,14 @@
           return;
         }
         this.loading = true;
-        var url = "/warehouses?page=" + this.page + "&pageSize=" + this.pageSize + "&keyword=" + this.keyword.trim();
+        let url = "/warehouses?page=" + this.page + "&pageSize=" + this.pageSize + "&keyword=" + this.keyword.trim();
         this.loadWarehouseList(url);
       },
 
       onPageChange(val) {
         this.page = val;
         this.loading = true;
-        var url = "/warehouses?page=" + this.page + "&pageSize=" + this.pageSize;
+        let url = "/warehouses?page=" + this.page + "&pageSize=" + this.pageSize;
         if (this.keyword !== "") {
           url += "&keyword=" + this.keyword.trim();
         }
@@ -142,9 +141,5 @@
     color: #99a9bf;
     text-align: end;
     margin-right: 20px;
-  }
-
-  .el-form-item {
-    margin-bottom: 10px;
   }
 </style>

@@ -42,7 +42,7 @@ public class WarehouseController {
 		return map;
 	}
 
-	@ApiOperation("按id获取仓库商品列表，并且分页")
+	@ApiOperation("按仓库id获取其存放的商品列表，并且分页")
 	@GetMapping("/warehouse/{id}/products")
 	public Map<String, Object> getProductListById(
 		@PathVariable int id,
@@ -69,17 +69,5 @@ public class WarehouseController {
 			return 0;
 		}
 	}
-
-
-//	@ApiOperation("按id删除仓库")
-//	@DeleteMapping("/warehouse/{id}/delete")
-//	public int deleteWarehouseById(@PathVariable int id) {
-//		try {
-//			return warehouseService.deleteWarehouseById(id);
-//		} catch (DeleteException e) {
-//			logger.error(e.getMessage());
-//			return 0;
-//		}
-//	}
 
 }

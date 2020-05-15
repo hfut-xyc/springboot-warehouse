@@ -37,10 +37,10 @@
               <i class="el-icon-menu"></i>产品管理
             </template>
             <el-menu-item index="/home/inventory">
-              <i class="el-icon-s-operation"></i>产品库存
+              <i class="el-icon-s-operation"></i>产品清单
             </el-menu-item>
             <el-menu-item index="/home/stock-io">
-              <i class="el-icon-date"></i>进销记录
+              <i class="el-icon-date"></i>订单管理
             </el-menu-item>
             <el-menu-item index="/home/chart">
               <i class="el-icon-s-data"></i>数据统计

@@ -1,4 +1,4 @@
-package org.server.entity;
+package org.server.enums;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
