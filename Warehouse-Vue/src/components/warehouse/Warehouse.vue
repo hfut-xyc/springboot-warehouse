@@ -135,11 +135,4 @@
   .el-tag + .el-tag {
     margin-left: 10px;
   }
-
-  .detail-form label {
-    width: 100px;
-    color: #99a9bf;
-    text-align: end;
-    margin-right: 20px;
-  }
 </style>

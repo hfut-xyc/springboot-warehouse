@@ -27,7 +27,12 @@
       </el-table-column>
       <el-table-column prop="enabled" label="用户状态" width="150">
         <template slot-scope="scope">
-          <el-switch @change="setUserEnabled(scope.row)" v-model="scope.row.enabled" active-text="启用" inactive-text="禁用"></el-switch>
+          <el-switch
+            @change="setUserEnabled(scope.row)"
+            v-model="scope.row.enabled"
+            active-text="启用"
+            inactive-text="禁用">
+          </el-switch>
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -75,197 +80,197 @@
 </template>
 
 <script>
-export default {
-  name: "User",
-  data: function() {
-    // 二次密码校验
-    const validatorPassword = (rule, value, callback) => {
-      if (value === '')
-        callback(new Error('请再次输入密码'))
-      else if (value !== this.addForm.password)
-        callback(new Error('两次输入密码不一致'))
-      else
-        callback()
-    };
-    return {
-      total: 0, // 查询到的用户总数
-      page: 1, // 当前页码
-      pageSize: 10, // 当前页面大小
-      keyword: "", // 查询用户名的关键字
-      userList: [], // 获得的查询结果
-      loading: false, // 页面表格是否处于加载状态
+  export default {
+    name: "User",
+    data: function () {
+      // 二次密码校验
+      const validatorPassword = (rule, value, callback) => {
+        if (value === '')
+          callback(new Error('请再次输入密码'))
+        else if (value !== this.addForm.password)
+          callback(new Error('两次输入密码不一致'))
+        else
+          callback()
+      };
+      return {
+        total: 0, // 查询到的用户总数
+        page: 1, // 当前页码
+        pageSize: 10, // 当前页面大小
+        keyword: "", // 查询用户名的关键字
+        userList: [], // 获得的查询结果
+        loading: false, // 页面表格是否处于加载状态
 
-      isDialogVisible: false,   // 添加用户的对话框是否可见
-      addForm: {    // 添加用户表单
-        username: "",
-        password: "",
-        confirmPassword: "",
-        phone: ""
-      },
-      rules: {
-        username: [{ required: true, message: "用户名不能为空", trigger: "blur" }],
-        password: [{ required: true, message: "密码不能为空", trigger: "blur" }],
-        confirmPassword: [{ required: true, validator: validatorPassword, trigger: "blur" }],
-        phone: [{ required: true, message: "联系电话不能为空", trigger: "blur" }]
-      }
-    };
-  },
-
-  computed: {
-    isAdmin: function() {
-      var list = [];
-      this.userList.forEach(user => {
-        list.push(user.roles.length === 2);
-      });
-      return list;
-    }
-  },
-
-  mounted: function() {
-    this.loading = true;
-    this.loadUserList("/users");
-  },
-
-  methods: {
-    loadUserList(url) {
-      var that = this;
-      this.$axios.get(url).then(res => {
-        if (res.status === 200) {
-          console.log(res);
-          that.userList = res.data.userList;
-          that.total = res.data.total;
-          that.loading = false;
-          that.$message.success("数据加载成功");
-        } else {
-          that.loading = false;
-          that.$message.error("数据加载失败");
+        isDialogVisible: false,   // 添加用户的对话框是否可见
+        addForm: {    // 添加用户表单
+          username: "",
+          password: "",
+          confirmPassword: "",
+          phone: ""
+        },
+        rules: {
+          username: [{required: true, message: "用户名不能为空", trigger: "blur"}],
+          password: [{required: true, message: "密码不能为空", trigger: "blur"}],
+          confirmPassword: [{required: true, validator: validatorPassword, trigger: "blur"}],
+          phone: [{required: true, message: "联系电话不能为空", trigger: "blur"}]
         }
-      })
-      .catch(res => {
-        that.loading = false;
-        that.$message.error("服务器异常");
-      });
+      };
     },
 
-    searchUser() {
-      if (this.keyword.trim() === "") {
-        this.$message.warning("请输入关键字");
-        return;
-      }
-      this.loading = true;
-      var url ="/users?page=" + this.page + "&pageSize=" + this.pageSize + "&keyword=" + this.keyword.trim();
-      this.loadUserList(url);
-    },
-
-    onPageChange(val) {
-      this.page = val;
-      this.loading = true;
-      var url = "/users?page=" + this.page + "&pageSize=" + this.pageSize;
-      if (this.keyword !== "") {
-        url += "&keyword=" + this.keyword.trim();
-      }
-      this.loadUserList(url);
-    },
-
-    onPageSizeChange(val) {
-      this.pageSize = val;
-      if (this.pageSize * (this.page - 1) >= this.total) {
-        this.page = 1;
-        this.pageSize = 10;
-      }
-      this.loading = true;
-      var url = "/users?page=" + this.page + "&pageSize=" + this.pageSize;
-      if (this.keyword !== "") {
-        url += "&keyword=" + this.keyword.trim();
-      }
-      this.loadUserList(url);
-    },
-
-    setUserEnabled(row) {
-      this.$axios.post("/user/" + row.id + "/enabled" + "?enabled=" + row.enabled, {})
-        .then(res => {
-          console.log(res);
-          this.$message.success("用户[" + row.username + "]状态已改变");
-        })
-        .catch(res => {
-          console.log(res);
+    computed: {
+      isAdmin: function () {
+        var list = [];
+        this.userList.forEach(user => {
+          list.push(user.roles.length === 2);
         });
+        return list;
+      }
     },
 
-    addUser() {
-      this.$refs["addForm"].validate(valid => {
-        if (valid) {
-          var that = this;
-          this.$axios.post("/user/add", {
-            username: this.addForm.username,
-            password: this.addForm.password,
-            phone: this.addForm.phone
+    mounted: function () {
+      this.loading = true;
+      this.loadUserList("/users");
+    },
+
+    methods: {
+      loadUserList(url) {
+        var that = this;
+        this.$axios.get(url).then(res => {
+          if (res.status === 200) {
+            console.log(res);
+            that.userList = res.data.userList;
+            that.total = res.data.total;
+            that.loading = false;
+            that.$message.success("数据加载成功");
+          } else {
+            that.loading = false;
+            that.$message.error("数据加载失败");
+          }
+        })
+          .catch(res => {
+            that.loading = false;
+            that.$message.error("服务器异常");
+          });
+      },
+
+      searchUser() {
+        if (this.keyword.trim() === "") {
+          this.$message.warning("请输入关键字");
+          return;
+        }
+        this.loading = true;
+        var url = "/users?page=" + this.page + "&pageSize=" + this.pageSize + "&keyword=" + this.keyword.trim();
+        this.loadUserList(url);
+      },
+
+      onPageChange(val) {
+        this.page = val;
+        this.loading = true;
+        var url = "/users?page=" + this.page + "&pageSize=" + this.pageSize;
+        if (this.keyword !== "") {
+          url += "&keyword=" + this.keyword.trim();
+        }
+        this.loadUserList(url);
+      },
+
+      onPageSizeChange(val) {
+        this.pageSize = val;
+        if (this.pageSize * (this.page - 1) >= this.total) {
+          this.page = 1;
+          this.pageSize = 10;
+        }
+        this.loading = true;
+        var url = "/users?page=" + this.page + "&pageSize=" + this.pageSize;
+        if (this.keyword !== "") {
+          url += "&keyword=" + this.keyword.trim();
+        }
+        this.loadUserList(url);
+      },
+
+      setUserEnabled(row) {
+        this.$axios.post("/user/" + row.id + "/enabled" + "?enabled=" + row.enabled, {})
+          .then(res => {
+            console.log(res);
+            this.$message.success("用户[" + row.username + "]状态已改变");
           })
+          .catch(res => {
+            console.log(res);
+          });
+      },
+
+      addUser() {
+        this.$refs["addForm"].validate(valid => {
+          if (valid) {
+            var that = this;
+            this.$axios.post("/user/add", {
+              username: this.addForm.username,
+              password: this.addForm.password,
+              phone: this.addForm.phone
+            })
+              .then(res => {
+                if (res.status === 200) {
+                  if (res.data === 1) {
+                    that.$message.success("用户添加成功");
+                    that.isDialogVisible = false;
+                    that.addForm = {username: "", password: "", phone: ""};
+                    that.loadUserList("/users");
+                  } else {
+                    that.$message.warning("用户添加失败, 用户名可能已存在");
+                  }
+                } else if (res.status === 403) {
+                  that.$message.warning("权限不足，请联系管理员");
+                }
+              })
+              .catch(err => {
+                console.log(err);
+                that.$message.error("服务器异常");
+              });
+          } else {
+            return false;
+          }
+        });
+      },
+
+      deleteUser(row) {
+        this.$confirm("是否删除该用户?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(() => {
+          var that = this;
+          this.$axios.delete("/user/" + row.id + "/delete")
+            .then(res => {
+              console.log(res);
+              that.$message.success("用户[" + row.username + "]已删除");
+              that.loadUserList("/users");
+            })
+            .catch(res => {
+              console.log(res);
+              that.$message.error("服务器异常");
+            });
+        });
+      },
+
+      changeRole(row, index) {
+        console.log(this.isAdmin);
+        var that = this;
+        console.log(this.isAdmin[index]);
+        this.$axios.post("/user/" + row.id + "/set-admin" + "?isAdmin=" + this.isAdmin[index], {})
           .then(res => {
             if (res.status === 200) {
               if (res.data === 1) {
-                that.$message.success("用户添加成功");
-                that.isDialogVisible = false;
-                that.addForm = { username: "", password: "", phone: "" };
+                that.$message.success("用户[" + row.username + "]角色修改成功");
                 that.loadUserList("/users");
               } else {
-                that.$message.warning("用户添加失败, 用户名可能已存在");
+                that.$message.warning("修改用户角色失败");
               }
-            } else if (res.status === 403) {
-              that.$message.warning("权限不足，请联系管理员");
             }
           })
           .catch(err => {
-            console.log(err);
-            that.$message.error("服务器异常");
+            this.$message.error("服务器异常")
           });
-        } else {
-          return false;
-        }
-      });
-    },
-
-    deleteUser(row) {
-      this.$confirm("是否删除该用户?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(() => {
-        var that = this;
-        this.$axios.delete("/user/" + row.id + "/delete")
-        .then(res => {
-          console.log(res);
-          that.$message.success("用户[" + row.username + "]已删除");
-          that.loadUserList("/users");
-        })
-        .catch(res => {
-          console.log(res);
-          that.$message.error("服务器异常");
-        });
-      });
-    },
-
-    changeRole(row, index) {
-      console.log(this.isAdmin);
-      var that = this;
-      console.log(this.isAdmin[index]);
-      this.$axios.post("/user/" + row.id + "/set-admin" + "?isAdmin=" + this.isAdmin[index], {})
-      .then(res => {
-        if (res.status === 200) {
-          if (res.data === 1) {
-            that.$message.success("用户[" + row.username + "]角色修改成功");
-            that.loadUserList("/users");
-          } else {
-            that.$message.warning("修改用户角色失败");
-          }
-        }
-      })
-      .catch(err => {
-        this.$message.error("服务器异常")
-      });
+      }
     }
-  }
-};
+  };
 </script>
 
 <style>

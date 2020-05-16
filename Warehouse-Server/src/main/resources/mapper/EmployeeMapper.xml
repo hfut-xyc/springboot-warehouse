@@ -27,13 +27,13 @@
 
     <insert id="addEmployee">
         insert into tb_employee(name, gender, phone, birthday, hire_date, salary)
-        values (#{name}, #{gender}, #{phone}, #{birthday}, #{hireDate}, #{salary})
+        values (#{name}, #{gender}, #{phone}, #{birthday}, CURRENT_DATE(), #{salary})
     </insert>
 
     <update id="updateEmployee">
         update tb_employee
-        set name=#{name}, gender=#{gender}, phone=#{phone}
-        birthday=#{birthday}, hire_date=#{hireDate}, salary=#{salary}
+        set name=#{name}, gender=#{gender}, phone=#{phone},
+        birthday=#{birthday}, salary=#{salary}
         where id=#{id}
     </update>
 

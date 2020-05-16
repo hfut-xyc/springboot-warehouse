@@ -1,5 +1,6 @@
 package org.server.controller;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.server.entity.Product;
 import org.server.service.ProductService;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Api(tags = "ProductController", description = "产品管理")
 @RestController
 public class ProductController {
 

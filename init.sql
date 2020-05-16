@@ -51,9 +51,9 @@ create table tb_employee(
     `name` varchar(255) not null,
     `gender` enum('男','女'),
     `phone` varchar(11),
+		`salary` decimal(10,2),
     `birthday` date,
     `hire_date` date,
-    `salary` decimal(10,2),
     primary key(id)
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8;
 

@@ -53,7 +53,7 @@ export default new VueRouter({
 					meta: { requireAuth: true }
 				},
 				{
-					path: 'stock-io',
+					path: 'order',
 					name: "订单管理",
 					component: Order,
 					meta: { requireAuth: true }

@@ -39,7 +39,7 @@
             <el-menu-item index="/home/inventory">
               <i class="el-icon-s-operation"></i>产品清单
             </el-menu-item>
-            <el-menu-item index="/home/stock-io">
+            <el-menu-item index="/home/order">
               <i class="el-icon-date"></i>订单管理
             </el-menu-item>
             <el-menu-item index="/home/chart">
