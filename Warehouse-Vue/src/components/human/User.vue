@@ -82,7 +82,7 @@
 <script>
   export default {
     name: "User",
-    data: function () {
+    data() {
       // 二次密码校验
       const validatorPassword = (rule, value, callback) => {
         if (value === '')

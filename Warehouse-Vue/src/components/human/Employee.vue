@@ -9,7 +9,7 @@
           <el-button @click="searchEmployee()" type="primary" icon="el-icon-search">查询</el-button>
         </el-col>
         <el-col :span="3">
-          <el-button @click="isDialogVisible=true" type="success" icon="el-icon-plus">添加新员工</el-button>
+          <el-button @click="isAddDialogVisible=true" type="success" icon="el-icon-plus">添加新员工</el-button>
         </el-col>
       </el-row>
     </el-header>
@@ -56,8 +56,8 @@
         :page-sizes="[5, 10, 15, 20, 25]"
       ></el-pagination>
     </el-footer>
-
-    <el-dialog title="添加新员工" :visible.sync="isDialogVisible">
+    <!--添加员工对话框-->
+    <el-dialog title="添加新员工" :visible.sync="isAddDialogVisible">
       <el-form ref="addForm" :model="addForm" :rules="rules" status-icon label-width="120px">
         <el-form-item label="用户名" prop="name">
           <el-input v-model="addForm.name" prefix-icon="el-icon-user"></el-input>
@@ -82,7 +82,20 @@
       </el-form>
       <div slot="footer">
         <el-button @click="addEmployee()" type="primary">添加</el-button>
-        <el-button @click="isDialogVisible=false">取消</el-button>
+        <el-button @click="isAddDialogVisible=false">取消</el-button>
+      </div>
+    </el-dialog>
+    <!--编辑员工对话框-->
+    <el-dialog title="编辑员工" :visible.sync="isEditDialogVisible">
+      <el-transfer
+        :titles="['未分配仓库', '已分配仓库']"
+        :data="transferLeft"
+        v-model="transferRight"
+        filterable>
+      </el-transfer>
+      <div slot="footer">
+        <el-button @click="" type="primary">修改</el-button>
+        <el-button @click="isEditDialogVisible=false">取消</el-button>
       </div>
     </el-dialog>
   </el-container>
@@ -97,9 +110,12 @@
         page: 1, // 当前页码
         pageSize: 10, // 当前页面大小
         keyword: "", // 查询用户名的关键字
+        loading: true,
         employeeList: [],
-
-        isDialogVisible: false,   // 添加员工的对话框是否可见
+        isAddDialogVisible: false,   // 添加员工的对话框是否可见
+        isEditDialogVisible: false,  // 编辑员工的对话框是否可见
+        transferLeft: [],
+        transferRight: [],
         addForm: {    // 添加员工表单
           name: "",
           gender: "",
@@ -182,7 +198,7 @@
               if (res.status === 200) {
                 if (res.data === 1) {
                   that.$message.success("员工添加成功");
-                  that.isDialogVisible = false;
+                  that.isAddDialogVisible = false;
                   that.addForm = {name: "", phone: "", salary: ""};
                   that.loadEmployeeList("/employees");
                 } else {
@@ -202,6 +218,25 @@
       },
 
       updateEmployee(row) {
+        let left = [];
+        let right = [];
+        // 加载该员工未管理的仓库
+        this.$axios.get("/warehouses?page=1&pageSize=10").then(res => {
+          res.data.warehouseList.forEach((item, index) => {
+            left.push({
+              label: item.name,
+              key: index + 1,
+              disabled: false
+            });
+          });
+        });
+        // 加载该员工已经管理的仓库
+        row.warehouses.forEach(item => {
+          right.push(item.id);
+        });
+        this.transferLeft = left;
+        this.transferRight = right;
+        this.isEditDialogVisible = true;
       },
 
       deleteEmployee(row) {
