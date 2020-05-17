@@ -10,9 +10,9 @@ public interface RoleMapper {
 
 	List<Role> getRolesByUid(int uid);
 
-	int addRoleByUid(int uid, int rid);
+	int addUserRole(int uid, int rid);
 
-	int deleteRoleByUid(int uid, int rid);
+	int deleteRole(int uid, int rid);
 
-	int clearRolesByUid(int uid);
+	int deleteAllRole(int uid);
 }

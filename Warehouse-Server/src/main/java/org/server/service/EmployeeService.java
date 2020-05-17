@@ -31,11 +31,22 @@ public class EmployeeService {
 	}
 
 	@Transactional
-	public int updateEmployee(Employee employee) {
-		if (employeeMapper.updateEmployee(employee) == 1) {
+	public int updateEmployeeInfo(Employee employee) {
+		if (employeeMapper.updateEmployeeInfo(employee) == 1) {
 			return 1;
 		} else {
 			throw new UpdateException("修改员工信息失败");
+		}
+	}
+
+	@Transactional
+	public int updateEmployeeWarehouse(int eid, List<Integer> widList) {
+		employeeMapper.deleteAllWarehouse(eid);
+		int res = employeeMapper.addEmployeeWarehouse(eid, widList);
+		if (widList.size() == res) {
+			return 1;
+		} else {
+			throw new UpdateException("未能成功修改员工负责的仓库");
 		}
 	}
 

@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,11 +55,24 @@ public class EmployeeController {
 		return 0;
 	}
 
-	@ApiOperation("修改员工信息")
-	@PostMapping("/employee/update")
-	public int updateEmployee(@RequestBody Employee employee) {
+	@ApiOperation("修改员工的基本信息")
+	@PostMapping("/employee/{id}/update/info")
+	public int updateEmployeeInfo(@RequestBody Employee employee) {
 		try {
-			return employeeService.updateEmployee(employee);
+			return employeeService.updateEmployeeInfo(employee);
+		} catch (InsertException e) {
+			logger.error(e.getMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return 0;
+	}
+
+	@ApiOperation("修改员工的管辖仓库")
+	@PostMapping("/employee/{id}/update/warehouse")
+	public int updateEmployeeWarehouse(@PathVariable int id, @RequestBody Map<String, List<Integer>> map) {
+		try {
+			return employeeService.updateEmployeeWarehouse(id, map.get("widList"));
 		} catch (InsertException e) {
 			logger.error(e.getMessage());
 		} catch (Exception e) {
@@ -79,4 +93,6 @@ public class EmployeeController {
 		}
 		return 0;
 	}
+
+
 }

@@ -9,15 +9,15 @@
         where ur.uid=#{uid} and ur.rid=r.id
     </select>
 
-    <insert id="addRoleByUid">
+    <insert id="addUserRole">
         insert into tb_user_role values (#{uid}, #{rid})
     </insert>
 
-    <delete id="deleteRoleByUid">
+    <delete id="deleteRole">
         delete from tb_user_role where uid=#{uid} and rid=#{rid}
     </delete>
 
-    <delete id="clearRolesByUid">
+    <delete id="deleteAllRole">
         delete from tb_user_role where uid=#{uid}
     </delete>
 </mapper>

@@ -3,12 +3,15 @@ package org.server;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.server.entity.User;
+import org.server.mapper.EmployeeMapper;
 import org.server.mapper.UserMapper;
+import org.server.service.EmployeeService;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.StopWatch;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -17,6 +20,9 @@ class UserTest {
 
 	@Resource
 	private UserMapper userMapper;
+
+	@Resource
+	private EmployeeService employeeService;
 
 	@Test
 	void getUserList() {
@@ -43,8 +49,8 @@ class UserTest {
 
 	@Test
 	void test() {
-//		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//		System.out.println(encoder.encode("admin"));
+		List<Integer> list = Arrays.asList(1, 2, 3);
+		System.out.println(employeeService.updateEmployeeWarehouse(10000, list));
 	}
 
 }

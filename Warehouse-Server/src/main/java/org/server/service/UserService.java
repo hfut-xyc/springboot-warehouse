@@ -54,7 +54,7 @@ public class UserService implements UserDetailsService {
 
 		// 表单传递的user还未分配, 添加到tb_user之后才有一个新id
 		user = userMapper.getUserByUsername(user.getUsername());
-		int res2 = roleMapper.addRoleByUid(user.getId(), 2);
+		int res2 = roleMapper.addUserRole(user.getId(), 2);
 		if (res1 + res2 != 2) {
 			throw new InsertException("添加用户失败");
 		}
@@ -74,12 +74,12 @@ public class UserService implements UserDetailsService {
 	public int updateUserRole(boolean isAdmin, int id) throws UpdateException {
 		int res;
 		if (isAdmin) {
-			res = roleMapper.addRoleByUid(id, 1);
+			res = roleMapper.addUserRole(id, 1);
 			if (res != 1) {
 				throw new UpdateException("用户" + id + "设置管理员权限失败");
 			}
 		} else {
-			res = roleMapper.deleteRoleByUid(id, 1);
+			res = roleMapper.deleteRole(id, 1);
 			if (res != 1) {
 				throw new UpdateException("用户" + id + "取消管理员权限失败");
 			}
@@ -90,7 +90,7 @@ public class UserService implements UserDetailsService {
 	@Transactional
 	public int deleteUserById(int id) throws DeleteException {
 		int res1 = userMapper.deleteUserById(id);
-		int res2 = roleMapper.clearRolesByUid(id);
+		int res2 = roleMapper.deleteAllRole(id);
 		if (res1 + res2 >= 2) {
 			return 1;
 		} else {
