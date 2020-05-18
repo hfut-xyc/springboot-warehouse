@@ -9,7 +9,7 @@
           <el-button @click="searchWarehouse()" type="primary" icon="el-icon-search">查询</el-button>
         </el-col>
         <el-col :span="3">
-          <el-button @click="isDialogVisible=true" type="primary" icon="el-icon-plus">添加新仓库</el-button>
+          <el-button @click="isDialogVisible=true" type="primary" icon="el-icon-plus" plain>添加新仓库</el-button>
         </el-col>
       </el-row>
     </el-header>
@@ -19,20 +19,23 @@
       <el-table-column prop="name" label="仓库名" width="300">
         <template slot-scope="scope">
           <span style="color: #0083ee;cursor: pointer" @click="goToDetail(scope.row)"
-                title="点击查看详情">{{ scope.row.name}}</span>
+                title="点击查看详情">{{ scope.row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="operators" label="管理人员">
         <template slot-scope="scope">
-          <el-tooltip placement="top" v-for="operator in scope.row.operators" :key="operator.name">
-            <div slot="content">
-              工号：{{operator.id}}<br/>
-              姓名：{{operator.name}}<br/>
-              性别：{{operator.gender}}<br/>
-              电话号码：{{operator.phone}}
-            </div>
-            <el-tag>{{operator.name}}</el-tag>
-          </el-tooltip>
+          <template v-if="scope.row.operators.length != 0">
+            <el-tooltip placement="top" v-for="operator in scope.row.operators" :key="operator.name">
+              <div slot="content">
+                工号：{{operator.id}}<br/>
+                姓名：{{operator.name}}<br/>
+                性别：{{operator.gender}}<br/>
+                电话号码：{{operator.phone}}
+              </div>
+              <el-tag>{{operator.name}}</el-tag>
+            </el-tooltip>
+          </template>
+          <template v-else>暂未分配</template>
         </template>
       </el-table-column>
     </el-table>
