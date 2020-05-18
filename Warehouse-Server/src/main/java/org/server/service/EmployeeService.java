@@ -44,7 +44,7 @@ public class EmployeeService {
 		int res1 = employeeMapper.deleteAllWarehouseByEid(eid);
 		int res2 = employeeMapper.addWarehouseByEid(eid, widList);
 		if (widList.size() != res2) {
-			throw new UpdateException("未能成功修改员工负责的仓库");
+			throw new UpdateException("修改员工仓库失败");
 		}
 		return 1;
 	}

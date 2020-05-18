@@ -51,7 +51,6 @@
       ></el-pagination>
     </el-footer>
 
-
     <el-dialog title="添加新仓库" :visible.sync="isDialogVisible">
       <el-form ref="addForm" :model="addForm" :rules="rules" status-icon label-width="120px">
         <el-form-item label="仓库名" prop="name">

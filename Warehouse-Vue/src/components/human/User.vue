@@ -9,14 +9,14 @@
           <el-button @click="searchUser()" type="primary" icon="el-icon-search">查询</el-button>
         </el-col>
         <el-col :span="3">
-          <el-button @click="isDialogVisible=true" type="success" icon="el-icon-plus">添加新用户</el-button>
+          <el-button @click="isDialogVisible=true" type="success" icon="el-icon-plus" plain>添加新用户</el-button>
         </el-col>
       </el-row>
     </el-header>
 
     <el-table :data="userList" v-loading="loading" border stripe>
       <el-table-column prop="id" label="用户ID" sortable width="100"></el-table-column>
-      <el-table-column prop="username" label="用户名" sortable></el-table-column>
+      <el-table-column prop="username" label="用户名" sortable width="150"></el-table-column>
       <el-table-column prop="phone" label="联系电话" width="120"></el-table-column>
       <el-table-column prop="registerTime" label="注册时间" sortable></el-table-column>
       <el-table-column prop="roles" label="角色权限">
@@ -35,9 +35,9 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="150">
         <template slot-scope="scope">
-          <el-button @click="deleteUser(scope.row)" size="mini" icon="el-icon-delete" type="danger">删除</el-button>
+          <el-button @click="deleteUser(scope.row)" size="mini" icon="el-icon-delete" type="danger" plain>删除</el-button>
         </template>
       </el-table-column>
     </el-table>

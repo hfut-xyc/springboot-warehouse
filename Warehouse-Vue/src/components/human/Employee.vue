@@ -9,7 +9,7 @@
           <el-button @click="searchEmployee()" type="primary" icon="el-icon-search">查询</el-button>
         </el-col>
         <el-col :span="3">
-          <el-button @click="isAddDialogVisible=true" type="success" icon="el-icon-plus">添加新员工</el-button>
+          <el-button @click="isAddDialogVisible=true" type="success" icon="el-icon-plus" plain>添加新员工</el-button>
         </el-col>
       </el-row>
     </el-header>
@@ -21,7 +21,7 @@
       <el-table-column prop="phone" label="联系电话" width="130"></el-table-column>
       <el-table-column prop="salary" label="薪水" width="130"></el-table-column>
       <el-table-column prop="birthday" label="出生日期" sortable width="120"></el-table-column>
-      <el-table-column prop="hireDate" label="入职时间" sortable width="120"></el-table-column>
+      <el-table-column prop="hireDate" label="入职日期" sortable width="120"></el-table-column>
       <el-table-column prop="warehouse" label="仓库管辖">
         <template slot-scope="scope">
           <el-tooltip placement="top" v-for="item in scope.row.warehouses" :key="item.name">
@@ -86,17 +86,58 @@
       </div>
     </el-dialog>
     <!--编辑员工对话框-->
-    <el-dialog title="编辑员工" :visible.sync="isEditDialogVisible">
-      <el-transfer
-        :titles="['未分配仓库', '已分配仓库']"
-        :data="transferLeft"
-        v-model="transferRight"
-        filterable>
-      </el-transfer>
-      <div slot="footer">
-        <el-button @click="" type="primary">修改</el-button>
-        <el-button @click="isEditDialogVisible=false">取消</el-button>
-      </div>
+    <el-dialog title="编辑员工信息" :visible.sync="isEditDialogVisible">
+      <el-collapse accordion>
+        <el-collapse-item>
+          <template slot="title">
+            <i class="el-icon-info"></i>基本信息
+          </template>
+          <el-form ref="editForm" :model="editForm" :rules="rules" status-icon label-width="120px">
+            <el-form-item label="工号" prop="id">
+              <el-input v-model="editForm.id" prefix-icon="el-icon-user" disabled></el-input>
+            </el-form-item>
+            <el-form-item label="姓名" prop="name">
+              <el-input v-model="editForm.name" prefix-icon="el-icon-user"></el-input>
+            </el-form-item>
+            <el-form-item label="联系电话" prop="phone">
+              <el-input v-model="editForm.phone" prefix-icon="el-icon-phone"></el-input>
+            </el-form-item>
+            <el-form-item label="薪水" prop="salary">
+              <el-input v-model="editForm.salary" prefix-icon="el-icon-money"></el-input>
+            </el-form-item>
+            <el-form-item label="性别">
+              <el-radio-group v-model="editForm.gender">
+                <el-radio label="男"></el-radio>
+                <el-radio label="女"></el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="出生日期">
+              <el-col :span="8">
+                <el-date-picker v-model="editForm.birthday" :editable="false" placeholder="选择日期"></el-date-picker>
+              </el-col>
+            </el-form-item>
+            <el-form-item label="入职日期">
+              <el-col :span="8">
+                <el-date-picker v-model="editForm.hireDate" disabled></el-date-picker>
+              </el-col>
+            </el-form-item>
+          </el-form>
+          <div style="float: right; margin-top: 15px; margin-bottom: 10px">
+            <el-button @click="" type="primary">修改基本信息</el-button>
+            <el-button @click="isEditDialogVisible=false">取消</el-button>
+          </div>
+        </el-collapse-item>
+        <el-collapse-item>
+          <template slot="title">
+            <i class="el-icon-s-home"></i>仓库信息
+          </template>
+          <el-transfer :titles="['未分配仓库', '已分配仓库']" :data="transferLeft" v-model="transferRight" filterable></el-transfer>
+          <div style="float: right; margin-top: 15px; margin-bottom: 10px">
+            <el-button @click="" type="primary">修改仓库信息</el-button>
+            <el-button @click="isEditDialogVisible=false">取消</el-button>
+          </div>
+        </el-collapse-item>
+      </el-collapse>
     </el-dialog>
   </el-container>
 </template>
@@ -116,13 +157,14 @@
         isEditDialogVisible: false,  // 编辑员工的对话框是否可见
         transferLeft: [],
         transferRight: [],
-        addForm: {    // 添加员工表单
+        addForm: {      // 添加员工表单
           name: "",
           gender: "",
           phone: "",
           birthday: "",
           salary: ""
         },
+        editForm: {},   // 编辑员工表单
         rules: {
           name: [{required: true, message: "姓名不能为空", trigger: "blur"}],
           phone: [{required: true, message: "电话不能为空", trigger: "blur"}],
@@ -236,6 +278,7 @@
         });
         this.transferLeft = left;
         this.transferRight = right;
+        this.editForm = row
         this.isEditDialogVisible = true;
       },
 
