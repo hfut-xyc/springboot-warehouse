@@ -42,6 +42,25 @@ Course Design of DataBase, HFUT, 2020
 > - 删除员工： /employee/{id}/delete
 > - 修改员工：/employee/{id}/edit
 
+#### CRUD操作的函数命名建议
+##### 在命名Service和Mapper层的函数时，建议遵循以下风格:
+- 如果是对实体类的insert操作，函数命名为**addXXX**。例如
+> 添加用户: addUser
+> 添加员工: addEmpolyee
+
+- 如果是对实体类的delete操作，函数命名为**deleteXXXById**。例如
+> 删除用户: deleteUserById
+> 删除员工: deleteEmployeeById
+
+- 如果实体类的field属于Primitive Type，进行update操作时，命名为update**FieldName**ById，例如
+> 修改用户的可用性状态: updateEnabledById
+
+- 如果实体类的field属于Reference Type，进行update操作时，命名为update**FieldName**By**XId**.例如
+> 修改用户的角色列表：update**Role**By**Uid**
+> 修改员工的仓库列表：update**Warehouse**By**Eid** 
+> 修改仓库的员工列表：update**Employee**By**Wid**
+
+
 #### 后端技术
 
 | 技术                 | 说明                | 官网                                                 |

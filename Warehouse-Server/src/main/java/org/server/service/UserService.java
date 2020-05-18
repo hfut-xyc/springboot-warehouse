@@ -67,7 +67,7 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Transactional
-	public int updateUserRole(boolean isAdmin, int id) throws UpdateException {
+	public int updateRoleByUid(boolean isAdmin, int id) throws UpdateException {
 		int res;
 		if (isAdmin) {
 			res = userMapper.addRoleByUid(id, 1);

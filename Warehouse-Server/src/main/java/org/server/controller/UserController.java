@@ -73,7 +73,7 @@ public class UserController {
 	@PostMapping("/user/{id}/set-admin")
 	public int updateUserRole(@RequestParam("isAdmin") boolean enabled, @PathVariable int id) {
 		try {
-			return userService.updateUserRole(enabled, id);
+			return userService.updateRoleByUid(enabled, id);
 		} catch (UpdateException e) {
 			logger.error(e.getMessage());
 		} catch (Exception e) {
