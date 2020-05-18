@@ -51,6 +51,12 @@
         insert ignore into tb_warehouse(name) values (#{name})
     </insert>
 
+    <update id="updateWarehouse" parameterType="org.server.entity.Warehouse">
+        update tb_warehouse
+        set name=#{name}
+        where id=#{id}
+    </update>
+
     <insert id="addWarehouseProduct">
         insert into tb_warehouse_product(wid, pid, amount)
         values (#{wid}, #{pid}, #{amount})
@@ -61,6 +67,17 @@
         set amount = amount + #{amount}
         where wid=#{wid} and pid=#{pid}
     </update>
+
+    <insert id="addEmployeeByWid">
+        insert ignore into tb_employee_warehouse(wid, eid) values
+        <foreach collection="eidList" item="item" separator=",">
+            (#{wid}, #{item})
+        </foreach>
+    </insert>
+
+    <delete id="deleteAllEmployeeByWid">
+        delete from tb_employee_warehouse where wid=#{wid}
+    </delete>
 
 <!--    <delete id="deleteWarehouseById">-->
 <!--        delete from tb_warehouse where id=#{id}-->

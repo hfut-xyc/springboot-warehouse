@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.server.entity.Employee;
 import org.server.exception.DeleteException;
 import org.server.exception.InsertException;
+import org.server.exception.UpdateException;
 import org.server.service.EmployeeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +60,7 @@ public class EmployeeController {
 	public int updateEmployeeInfo(@RequestBody Employee employee) {
 		try {
 			return employeeService.updateEmployeeInfo(employee);
-		} catch (InsertException e) {
+		} catch (UpdateException e) {
 			logger.error(e.getMessage());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -72,7 +73,7 @@ public class EmployeeController {
 	public int updateWarehouse(@PathVariable int id, @RequestBody Map<String, List<Integer>> map) {
 		try {
 			return employeeService.updateWarehouseByEid(id, map.get("widList"));
-		} catch (InsertException e) {
+		} catch (UpdateException e) {
 			logger.error(e.getMessage());
 		} catch (Exception e) {
 			logger.error(e.getMessage());

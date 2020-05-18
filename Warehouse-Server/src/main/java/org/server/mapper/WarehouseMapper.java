@@ -20,11 +20,16 @@ public interface WarehouseMapper {
 
 	int addWarehouse(Warehouse warehouse);
 
+	int updateWarehouse(Warehouse warehouse);
+
 	// 处理新增产品的订单时，添加一条库存记录
 	int addWarehouseProduct(@Param("wid") int wid, @Param("pid") int pid, @Param("amount") int amount);
 
 	// 处理原有产品的订单时，更新原有库存记录
 	int updateWarehouseProduct(@Param("wid") int wid, @Param("pid") int pid, @Param("amount") int amount);
 
+	int addEmployeeByWid(int wid, List<Integer> eidList);
+
+	int deleteAllEmployeeByWid(int wid);
 	//	int deleteWarehouseById(int id);
 }

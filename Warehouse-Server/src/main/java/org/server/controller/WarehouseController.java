@@ -42,6 +42,32 @@ public class WarehouseController {
 		return map;
 	}
 
+	@ApiOperation("修改仓库基本信息")
+	@PostMapping("/warehouse/update/info")
+	public int updateWarehouse(@RequestBody Warehouse warehouse) {
+		try {
+			return warehouseService.updateWarehouse(warehouse);
+		} catch (UpdateException e) {
+			logger.error(e.getMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return 0;
+	}
+
+	@ApiOperation("修改仓库管理员")
+	@PostMapping("/warehouse/{wid}/employees")
+	public int updateEmployeeByWid(@PathVariable int wid, @RequestBody List<Integer> eidList) {
+		try {
+			return warehouseService.updateEmployeeByWid(wid, eidList);
+		} catch (UpdateException e) {
+			logger.error(e.getMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return 0;
+	}
+	
 	@ApiOperation("按仓库id获取其存放的商品列表，并且分页")
 	@GetMapping("/warehouse/{id}/products")
 	public Map<String, Object> getProductListById(

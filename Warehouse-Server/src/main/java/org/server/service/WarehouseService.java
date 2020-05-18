@@ -3,10 +3,7 @@ package org.server.service;
 import org.server.mapper.WarehouseMapper;
 import org.server.entity.Product;
 import org.server.entity.Warehouse;
-import org.server.exception.RepeatException;
-import org.server.exception.InsertException;
-import org.server.exception.NotFoundException;
-import org.server.exception.DeleteException;
+import org.server.exception.*;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +40,26 @@ public class WarehouseService {
             throw new InsertException("仓库插入失败");
         }
         return 1;
+    }
+
+
+	@Transactional
+	public int updateWarehouse(Warehouse warehouse) {
+		if (warehouseMapper.updateWarehouse(warehouse) == 1) {
+			return 1;
+		} else {
+			throw new UpdateException("修改仓库信息失败");
+		}
+    }
+    
+    @Transactional
+    public int updateEmployeeByWid(int wid, List<Integer> eidList) {
+		warehouseMapper.deleteAllEmployeeByWid(wid);
+		int res = warehouseMapper.addEmployeeByWid(wid, eidList);
+		if (eidList.size() != res) {
+			throw new UpdateException("未能成功修改员工负责的仓库");
+		}
+		return 1;
     }
 
 //    @Transactional

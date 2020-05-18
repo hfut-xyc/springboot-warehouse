@@ -8,6 +8,9 @@
         <el-col :span="3">
           <el-button @click="searchWarehouse()" type="primary" icon="el-icon-search">查询</el-button>
         </el-col>
+        <el-col :span="3">
+          <el-button @click="isDialogVisible=true" type="primary" icon="el-icon-plus">添加新仓库</el-button>
+        </el-col>
       </el-row>
     </el-header>
 
@@ -47,6 +50,20 @@
         :total="total"
       ></el-pagination>
     </el-footer>
+
+
+    <el-dialog title="添加新仓库" :visible.sync="isDialogVisible">
+      <el-form ref="addForm" :model="addForm" :rules="rules" status-icon label-width="120px">
+        <el-form-item label="仓库名" prop="name">
+          <el-input v-model="addForm.name" prefix-icon="el-icon-box"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+        <el-button @click="addWarehouse()" type="primary">添加</el-button>
+        <el-button @click="isDialogVisible=false">取消</el-button>
+      </div>
+    </el-dialog>
+
   </el-container>
 </template>
 
@@ -60,7 +77,16 @@
         pageSize: 10, // 当前页面大小
         keyword: "", // 查询仓库名的关键字
         warehouseList: [], // 获得的查询结果
-        loading: false // 页面表格是否处于加载状态
+        loading: false, // 页面表格是否处于加载状态
+
+        isDialogVisible: false,
+        addForm: {
+          name: ''
+        },
+        rules: {
+          name: [{required: true, message: "仓库名称不能为空", trigger: "blur"}],
+        }
+
       };
     },
     mounted: function () {
@@ -127,6 +153,37 @@
         }
         this.loadWarehouseList(url);
       },
+
+      addWarehouse() {
+        this.$refs["addForm"].validate(valid => {
+          if (valid) {
+            var that = this;
+            this.$axios.post("/warehouse/add", {
+              name: this.addForm.name,
+            })
+              .then(res => {
+                if (res.status === 200) {
+                  if (res.data === 1) {
+                    that.$message.success("仓库添加成功");
+                    that.isDialogVisible = false;
+                    that.addForm = {name: ""};
+                    that.loadWarehouseList("/warehouses");
+                  } else {
+                    that.$message.warning("仓库添加失败, 同样名称的仓库可能已存在");
+                  }
+                } else if (res.status === 403) {
+                  that.$message.warning("权限不足，请联系管理员");
+                }
+              })
+              .catch(err => {
+                console.log(err);
+                that.$message.error("服务器异常");
+              });
+          } else {
+            return false;
+          }
+        });
+      }
     }
   };
 </script>
@@ -134,5 +191,12 @@
 <style>
   .el-tag + .el-tag {
     margin-left: 10px;
+  }
+
+  .detail-form label {
+    width: 100px;
+    color: #99a9bf;
+    text-align: end;
+    margin-right: 20px;
   }
 </style>
