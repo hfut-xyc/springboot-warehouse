@@ -13,11 +13,12 @@ public interface EmployeeMapper {
 
 	int addEmployee(Employee employee);
 
-	int addEmployeeWarehouse(int eid, List<Integer> widList);
-
 	int updateEmployeeInfo(Employee employee);
 
-	int deleteEmployee(int id);
+	int deleteEmployeeById(int id);
 
-	int deleteAllWarehouse(int eid);
+	int addWarehouseByEid(int eid, List<Integer> widList);
+
+	int deleteAllWarehouseByEid(int eid);
+
 }

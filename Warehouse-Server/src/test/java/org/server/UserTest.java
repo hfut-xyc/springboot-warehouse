@@ -3,7 +3,6 @@ package org.server;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.server.entity.User;
-import org.server.mapper.EmployeeMapper;
 import org.server.mapper.UserMapper;
 import org.server.service.EmployeeService;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -50,7 +49,7 @@ class UserTest {
 	@Test
 	void test() {
 		List<Integer> list = Arrays.asList(1, 2, 3);
-		System.out.println(employeeService.updateEmployeeWarehouse(10000, list));
+		System.out.println(employeeService.updateWarehouseByEid(10000, list));
 	}
 
 }

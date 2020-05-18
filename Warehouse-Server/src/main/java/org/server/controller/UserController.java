@@ -60,7 +60,7 @@ public class UserController {
 	@PostMapping("/user/{id}/enabled")
 	public int updateUserEnabled(@RequestParam("enabled") boolean enabled, @PathVariable int id) {
 		try {
-			return userService.updateUserEnabled(enabled, id);
+			return userService.updateEnabledById(enabled, id);
 		} catch (UpdateException e) {
 			logger.error(e.getMessage());
 		} catch (Exception e) {

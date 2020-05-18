@@ -23,39 +23,39 @@ public class EmployeeService {
 
 	@Transactional
 	public int addEmployee(Employee employee) {
-		if (employeeMapper.addEmployee(employee) == 1) {
-			return 1;
-		} else {
+		int res = employeeMapper.addEmployee(employee);
+		if (res != 1) {
 			throw new InsertException("添加员工失败");
 		}
+		return 1;
 	}
 
 	@Transactional
 	public int updateEmployeeInfo(Employee employee) {
-		if (employeeMapper.updateEmployeeInfo(employee) == 1) {
-			return 1;
-		} else {
+		int res = employeeMapper.updateEmployeeInfo(employee);
+		if (res != 1) {
 			throw new UpdateException("修改员工信息失败");
 		}
+		return 1;
 	}
 
 	@Transactional
-	public int updateEmployeeWarehouse(int eid, List<Integer> widList) {
-		employeeMapper.deleteAllWarehouse(eid);
-		int res = employeeMapper.addEmployeeWarehouse(eid, widList);
-		if (widList.size() == res) {
-			return 1;
-		} else {
+	public int updateWarehouseByEid(int eid, List<Integer> widList) {
+		int res1 = employeeMapper.deleteAllWarehouseByEid(eid);
+		int res2 = employeeMapper.addWarehouseByEid(eid, widList);
+		if (widList.size() != res2) {
 			throw new UpdateException("未能成功修改员工负责的仓库");
 		}
+		return 1;
 	}
 
 	@Transactional
-	public int deleteEmployee(int id) {
-		if (employeeMapper.deleteEmployee(id) == 1) {
-			return 1;
-		} else {
+	public int deleteEmployeeById(int id) throws DeleteException {
+		int res1 = employeeMapper.deleteEmployeeById(id);
+		int res2 = employeeMapper.deleteAllWarehouseByEid(id);
+		if (res1 != 1) {
 			throw new DeleteException("删除员工失败");
 		}
+		return 1;
 	}
 }
