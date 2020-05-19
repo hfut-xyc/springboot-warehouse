@@ -79,6 +79,11 @@
             <el-table-column prop="supplier" label="供应商"></el-table-column>
             <el-table-column prop="total" label="数量" sortable></el-table-column>
           </el-table>
+          <el-pagination
+            layout="prev, pager, next"
+            @current-change="onPageChange"
+            :total="totalPages">
+          </el-pagination>
         </el-collapse-item>
       </el-collapse>
     </el-card>
@@ -104,6 +109,7 @@
 
         loading: false,
         isEditingEmployees: false,
+        totalPages: 0,
 
         updateForm: {
           id: 0,
@@ -134,6 +140,7 @@
           if (res.status === 200) {
             console.log(res);
             that.productList = res.data.productList;
+            that.totalPages = res.data.total;
             that.loading = false;
             that.$message.success("数据加载成功");
           } else {
@@ -190,7 +197,7 @@
         this.$refs.employeeTable.clearSelection();
       },
 
-      // 商品分页，Required!
+      // 商品分页
       onPageChange(val) {
         this.productLoading = true;
         let url = "/warehouse/" + this.info.id + "/products?page=" + val;
