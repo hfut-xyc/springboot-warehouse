@@ -25,17 +25,17 @@ public class ProductService {
 
 	// 商品没必要有删除操作，如果某一商品在所有仓库的合计数量告罄，直接显示0，方便后续补货
 
-//	@Transactional
-//	public int addProduct(Product product) throws RepeatException, InsertException {
-//		Product temp = productMapper.getProductByName(product.getName());
-//		if (temp != null) {
-//			throw new RepeatException("商品名已存在");
-//		}
-//		if (productMapper.addProduct(product) == 1) {
-//			return 1;
-//		} else {
-//			throw new InsertException("添加商品失败");
-//		}
-//	}
+	@Transactional
+	public int addProduct(Product product) throws RepeatException, InsertException {
+		Product temp = productMapper.getProductByName(product.getName());
+		if (temp != null) {
+			throw new RepeatException("产品名已存在");
+		}
+		int res = productMapper.addProduct(product);
+		if (res != 1) {
+			throw new InsertException("添加产品失败");
+		}
+		return 1;
+	}
 
 }

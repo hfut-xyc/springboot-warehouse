@@ -44,9 +44,9 @@ public class WarehouseController {
 
 	@ApiOperation("修改仓库基本信息")
 	@PostMapping("/warehouse/update/info")
-	public int updateWarehouse(@RequestBody Warehouse warehouse) {
+	public int updateWarehouseInfo(@RequestBody Warehouse warehouse) {
 		try {
-			return warehouseService.updateWarehouse(warehouse);
+			return warehouseService.updateWarehouseInfo(warehouse);
 		} catch (UpdateException e) {
 			logger.error(e.getMessage());
 		} catch (Exception e) {

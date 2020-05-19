@@ -3,11 +3,13 @@ package org.server.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.server.entity.Product;
+import org.server.exception.InsertException;
+import org.server.exception.RepeatException;
 import org.server.service.ProductService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +22,9 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 
-	@ApiOperation("按页获取商品列表")
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+	@ApiOperation("按页获取产品列表")
 	@GetMapping("/products")
 	public Map<String, Object> getUserList(
 			@RequestParam(value = "page", defaultValue = "1") int page,
@@ -35,5 +39,18 @@ public class ProductController {
 		map.put("productList", list.subList(start, end));
 		map.put("total", list.size());
 		return map;
+	}
+
+	@ApiOperation("添加新产品")
+	@PostMapping("/product/add")
+	public int addProduct(@RequestBody Product product) {
+		try {
+			productService.addProduct(product);
+		} catch (RepeatException | InsertException e) {
+			logger.error(e.getMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return 0;
 	}
 }

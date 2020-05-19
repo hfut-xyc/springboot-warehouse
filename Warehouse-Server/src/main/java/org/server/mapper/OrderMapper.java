@@ -14,7 +14,5 @@ public interface OrderMapper {
 
 	int addOrder(Order order);
 
-	int updateOrder(Order order);
-
 	int deleteOrderById(int id);
 }

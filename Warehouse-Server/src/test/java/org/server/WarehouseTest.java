@@ -45,7 +45,12 @@ class WarehouseTest {
         System.out.println(stopwatch.getLastTaskTimeMillis());
         System.out.println(list);
     }
-    
+
+    @Test
+    void getProductStock() {
+        Integer amount = warehouseMapper.getProductStockByWid(1, 20000);
+        System.out.println(amount);
+    }
     // passed, nothing failed. 
 
 }

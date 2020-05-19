@@ -24,9 +24,8 @@ public class WarehouseService {
         Warehouse temp = warehouseMapper.getWarehouseById(id);
 		if (temp == null) {
             throw new NotFoundException("仓库ID不存在");
-		} else {
-            return warehouseMapper.getProductListById(id);
-        }
+		}
+		return warehouseMapper.getProductListById(id);
     }
 
     @Transactional
@@ -44,8 +43,8 @@ public class WarehouseService {
 
 
 	@Transactional
-	public int updateWarehouse(Warehouse warehouse) {
-		if (warehouseMapper.updateWarehouse(warehouse) == 1) {
+	public int updateWarehouseInfo(Warehouse warehouse) {
+		if (warehouseMapper.updateWarehouseInfo(warehouse) == 1) {
 			return 1;
 		} else {
 			throw new UpdateException("修改仓库信息失败");

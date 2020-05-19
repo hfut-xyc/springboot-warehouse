@@ -18,18 +18,24 @@ public interface WarehouseMapper {
 
 	Warehouse getWarehouseByName(String name);
 
+	// 添加新仓库
 	int addWarehouse(Warehouse warehouse);
 
-	int updateWarehouse(Warehouse warehouse);
+	// 修改仓库基本信息
+	int updateWarehouseInfo(Warehouse warehouse);
 
-	// 处理新增产品的订单时，添加一条库存记录
-	int addWarehouseProduct(@Param("wid") int wid, @Param("pid") int pid, @Param("amount") int amount);
-
-	// 处理原有产品的订单时，更新原有库存记录
-	int updateWarehouseProduct(@Param("wid") int wid, @Param("pid") int pid, @Param("amount") int amount);
-
+	// 按仓库id为该仓库添加员工
 	int addEmployeeByWid(int wid, List<Integer> eidList);
 
+	// 按仓库id删除管理该仓库的所有员工
 	int deleteAllEmployeeByWid(int wid);
-	//	int deleteWarehouseById(int id);
+
+	// 通过仓库id和产品id查询该仓库中对应产品的库存
+	Integer getProductStockByWid(@Param("wid") int wid, @Param("pid") int pid);
+
+	// 处理旧产品的订单时，更新原有库存记录
+	int updateProductByWid(@Param("wid") int wid, @Param("pid") int pid, @Param("amount") int amount);
+
+	// 处理新产品的订单时，添加一条库存记录
+	int addProductByWid(@Param("wid") int wid, @Param("pid") int pid, @Param("amount") int amount);
 }

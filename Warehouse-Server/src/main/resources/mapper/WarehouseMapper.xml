@@ -25,7 +25,6 @@
         <result column="amount" property="total"/>
     </resultMap>
 
-    <!-- 查询仓库列表及其负责人 -->
     <select id="getWarehouseList" resultMap="WarehouseEmployeeMap">
         select * from view_warehouse_employee
         <if test="keyword != null">
@@ -33,7 +32,6 @@
         </if>
     </select>
 
-    <!-- 按id查询仓库中产品信息 -->
     <select id="getProductListById" resultMap="WarehouseProductMap">
         select pid, pname, supplier, amount
         from view_warehouse_product where id=#{id}
@@ -47,25 +45,13 @@
         select * from tb_warehouse where name=#{name}
     </select>
 
-    <insert id="addWarehouse" parameterType="org.server.entity.Warehouse">
+    <insert id="addWarehouse">
         insert ignore into tb_warehouse(name) values (#{name})
     </insert>
 
-    <update id="updateWarehouse" parameterType="org.server.entity.Warehouse">
-        update tb_warehouse
-        set name=#{name}
+    <update id="updateWarehouseInfo">
+        update tb_warehouse set name=#{name}
         where id=#{id}
-    </update>
-
-    <insert id="addWarehouseProduct">
-        insert into tb_warehouse_product(wid, pid, amount)
-        values (#{wid}, #{pid}, #{amount})
-    </insert>
-
-    <update id="updateWarehouseProduct">
-        update tb_warehouse_product
-        set amount = amount + #{amount}
-        where wid=#{wid} and pid=#{pid}
     </update>
 
     <insert id="addEmployeeByWid">
@@ -79,7 +65,19 @@
         delete from tb_employee_warehouse where wid=#{wid}
     </delete>
 
-<!--    <delete id="deleteWarehouseById">-->
-<!--        delete from tb_warehouse where id=#{id}-->
-<!--    </delete>-->
+    <select id="getProductStockByWid" resultType="java.lang.Integer">
+        select amount from tb_warehouse_product
+        where wid=#{wid} and pid=#{pid}
+    </select>
+
+    <update id="updateProductByWid">
+        update tb_warehouse_product
+        set amount = amount + #{amount}
+        where wid=#{wid} and pid=#{pid}
+    </update>
+
+    <insert id="addProductByWid">
+        insert into tb_warehouse_product(wid, pid, amount)
+        values (#{wid}, #{pid}, #{amount})
+    </insert>
 </mapper>

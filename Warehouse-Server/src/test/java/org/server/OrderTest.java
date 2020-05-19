@@ -26,7 +26,7 @@ class OrderTest {
 		order.setPid(20000);
 		order.setStatus("正常");
 		order.setAmount(-300);
-		orderService.addOrderWithOldProduct(order);
+//		orderService.addOrderWithOldProduct(order);
 
 	}
 

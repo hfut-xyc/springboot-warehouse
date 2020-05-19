@@ -20,9 +20,4 @@
         delete from tb_order where id=#{id}
     </delete>
 
-    <update id="updateOrder">
-        update tb_order
-        set amount=#{amount}, update_time=current_timestamp()
-        where id=#{id}
-    </update>
 </mapper>
