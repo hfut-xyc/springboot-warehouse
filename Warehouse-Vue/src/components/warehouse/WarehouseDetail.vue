@@ -29,49 +29,59 @@
             <i class="el-icon-user-solid"></i>仓库负责人
           </template>
           <template v-if="!isEditingEmployees">
-            <el-tooltip placement="top" v-for="operator in info.operators" :key="operator.name">
-              <div slot="content">
-                工号：{{operator.id}}<br/>
-                姓名：{{operator.name}}<br/>
-                性别：{{operator.gender}}<br/>
-                电话号码：{{operator.phone}}
-              </div>
-              <el-tag>{{operator.name}}</el-tag>
-            </el-tooltip>
-            <el-button icon="el-icon-edit" size="small" @click="editEmployeeTag()">编辑</el-button>
+            <span class="tags">
+              <el-tooltip placement="top" v-for="operator in info.operators" :key="operator.name">
+                <div slot="content">
+                  工号：{{operator.id}}<br/>
+                  姓名：{{operator.name}}<br/>
+                  性别：{{operator.gender}}<br/>
+                  电话号码：{{operator.phone}}
+                </div>
+                <el-tag>{{operator.name}}</el-tag>
+              </el-tooltip>
+              <el-button icon="el-icon-edit" size="small" @click="editEmployeeTag()">编辑</el-button>
+            </span>
           </template>
           <template v-else>
-            <el-tooltip placement="top" v-for="operator in info.operators" :key="operator.name">
-              <div slot="content">
-                工号：{{operator.id}}<br/>
-                姓名：{{operator.name}}<br/>
-                性别：{{operator.gender}}<br/>
-                电话号码：{{operator.phone}}<br/>
-              </div>
-              <el-tag closable @close="deleteEmployeeTag(operator.id)">{{operator.name}}</el-tag>
-            </el-tooltip>
-            <span class="el-button-like">
-            <el-popover
-              placement="bottom"
-              width="400"
-              trigger="click">
-              <el-table :data="employeeListSelection" v-loading="employeeLoading" ref="employeeTable" @selection-change="handleEmployeeListSelction">
-                <el-table-column type="selection"></el-table-column>
-                <el-table-column property="id" label="工号" width="100px"></el-table-column>
-                <el-table-column property="name" label="姓名"></el-table-column>
-              </el-table>
-              <el-pagination
-                layout="prev, pager, next"
-                @current-change="onEmployeePageChange"
-                :total="totalEmployee"
-                page-size="5"
-                style="text-align: center;"
-              >
-              </el-pagination>
-              <el-button slot="reference" :loading="employeeLoading" icon="el-icon-plus" size="small" type="primary" @click="updateEmployeeListSelction()">添加员工</el-button>
-            </el-popover>
+            <span class="tags">
+              <el-tooltip placement="top" v-for="operator in info.operators" :key="operator.name">
+                <div slot="content">
+                  工号：{{operator.id}}<br/>
+                  姓名：{{operator.name}}<br/>
+                  性别：{{operator.gender}}<br/>
+                  电话号码：{{operator.phone}}<br/>
+                </div>
+                <el-tag closable @close="deleteEmployeeTag(operator.id)">{{operator.name}}</el-tag>
+              </el-tooltip>
+              <span class="el-button-like">
+              <el-popover
+                placement="bottom"
+                width="400"
+                trigger="click">
+                <el-table 
+                  :data="employeeListSelection" 
+                  v-loading="employeeLoading" 
+                  ref="employeeTable" 
+                  @selection-change="handleEmployeeListSelction"
+                  empty-text="本页员工已经全部分配"
+                >
+                  <el-table-column type="selection"></el-table-column>
+                  <el-table-column property="id" label="工号" width="100px"></el-table-column>
+                  <el-table-column property="name" label="姓名"></el-table-column>
+                </el-table>
+                <el-pagination
+                  layout="prev, pager, next"
+                  @current-change="onEmployeePageChange"
+                  :total="totalEmployee"
+                  :page-size="5"
+                  style="text-align: center;"
+                >
+                </el-pagination>
+                <el-button slot="reference" :loading="employeeLoading" icon="el-icon-plus" size="small" type="primary" @click="updateEmployeeListSelction()">添加员工</el-button>
+              </el-popover>
+              </span>
+              <el-button icon="el-icon-check" size="small" @click="updateWarehouseEmployee()" type="success">确定</el-button>
             </span>
-            <el-button icon="el-icon-check" size="small" @click="updateWarehouseEmployee()" type="success">确定</el-button>
             <p class="edit-tip">单击<i class="el-icon-close"></i>以移除该员工和仓库的管理关系</p>
           </template>
         </el-collapse-item>
@@ -120,7 +130,6 @@
         // el-collapse 默认打开的 item
         activeCollapseItems: ['基本信息', '仓库负责人', '仓库存储清单'],
 
-        
         productLoading: false, // 产品列表是否在加载
         employeeLoading: false, // 雇员列表是否在加载
         isEditingEmployees: false, // 是否在编辑雇员
@@ -198,7 +207,6 @@
         this.info.operators.forEach((employee, index, array) => {
           this.employeeListSelection.find((v, i, obj) => {
             if(v.id == employee.id) {
-              // this.$refs.employeeTable.toggleRowSelection(employee, true);
               this.employeeListSelection.splice(i, 1);
               return true;
             }
@@ -343,5 +351,9 @@
 .edit-tip {
   color: gray;
   font-size: small;
+}
+
+.tags {
+  line-height: 40px;
 }
 </style>
