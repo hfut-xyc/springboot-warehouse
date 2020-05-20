@@ -41,7 +41,7 @@ public class EmployeeService {
 
 	@Transactional
 	public int updateWarehouseByEid(int eid, List<Integer> widList) {
-		int res1 = employeeMapper.deleteAllWarehouseByEid(eid);
+		employeeMapper.deleteAllWarehouseByEid(eid);
 		int res2 = employeeMapper.addWarehouseByEid(eid, widList);
 		if (widList.size() != res2) {
 			throw new UpdateException("修改员工仓库失败");
@@ -52,7 +52,7 @@ public class EmployeeService {
 	@Transactional
 	public int deleteEmployeeById(int id) throws DeleteException {
 		int res1 = employeeMapper.deleteEmployeeById(id);
-		int res2 = employeeMapper.deleteAllWarehouseByEid(id);
+		employeeMapper.deleteAllWarehouseByEid(id);
 		if (res1 != 1) {
 			throw new DeleteException("删除员工失败");
 		}

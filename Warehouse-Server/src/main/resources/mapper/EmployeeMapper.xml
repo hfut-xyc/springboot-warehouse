@@ -30,7 +30,7 @@
         values (#{name}, #{gender}, #{phone}, #{birthday}, CURRENT_DATE(), #{salary})
     </insert>
 
-    <insert id="addEmployeeWarehouse">
+    <insert id="addWarehouseByEid">
         insert ignore into tb_employee_warehouse(eid, wid) values
         <foreach collection="widList" item="item" separator=",">
             (#{eid}, #{item})
@@ -44,11 +44,11 @@
         where id=#{id}
     </update>
 
-    <delete id="deleteEmployee">
+    <delete id="deleteEmployeeById">
         delete from tb_employee where id=#{id}
     </delete>
 
-    <delete id="deleteAllWarehouse">
+    <delete id="deleteAllWarehouseByEid">
         delete from tb_employee_warehouse where eid=#{eid}
     </delete>
 </mapper>

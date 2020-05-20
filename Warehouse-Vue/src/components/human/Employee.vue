@@ -16,13 +16,13 @@
 
     <el-table :data="employeeList" v-loading="loading" border stripe>
       <el-table-column prop="id" label="工号" sortable width="100"></el-table-column>
-      <el-table-column prop="name" label="姓名" width="150"></el-table-column>
+      <el-table-column prop="name" label="姓名" width="100"></el-table-column>
       <el-table-column prop="gender" label="性别" width="50"></el-table-column>
       <el-table-column prop="phone" label="联系电话" width="130"></el-table-column>
       <el-table-column prop="salary" label="薪水" width="130"></el-table-column>
       <el-table-column prop="birthday" label="出生日期" sortable width="120"></el-table-column>
       <el-table-column prop="hireDate" label="入职日期" sortable width="120"></el-table-column>
-      <el-table-column prop="warehouse" label="仓库管辖">
+      <el-table-column prop="warehouse" label="仓库管辖" width="500">
         <template slot-scope="scope">
           <el-tooltip placement="top" v-for="item in scope.row.warehouses" :key="item.name">
             <div slot="content">
@@ -33,9 +33,9 @@
           </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="180">
+      <el-table-column label="操作" width="180" fixed="right">
         <template slot-scope="scope">
-          <el-button @click="updateEmployee(scope.row)" size="mini" icon="el-icon-edit" type="warning" plain>编辑
+          <el-button @click="beforeUpdateEmployee(scope.row)" size="mini" icon="el-icon-edit" type="warning" plain>编辑
           </el-button>
           <el-button @click="deleteEmployee(scope.row)" size="mini" icon="el-icon-delete" type="danger" plain>删除
           </el-button>
@@ -123,7 +123,7 @@
             </el-form-item>
           </el-form>
           <div style="float: right; margin-top: 15px; margin-bottom: 10px">
-            <el-button @click="" type="primary">修改基本信息</el-button>
+            <el-button @click="updateEmployee" type="primary">修改基本信息</el-button>
             <el-button @click="isEditDialogVisible=false">取消</el-button>
           </div>
         </el-collapse-item>
@@ -133,7 +133,7 @@
           </template>
           <el-transfer :titles="['未分配仓库', '已分配仓库']" :data="transferLeft" v-model="transferRight" filterable></el-transfer>
           <div style="float: right; margin-top: 15px; margin-bottom: 10px">
-            <el-button @click="" type="primary">修改仓库信息</el-button>
+            <el-button @click="updateWarehouse" type="primary">修改仓库信息</el-button>
             <el-button @click="isEditDialogVisible=false">取消</el-button>
           </div>
         </el-collapse-item>
@@ -198,6 +198,10 @@
         });
       },
 
+      reloadEmployeeList() {
+        this.loadEmployeeList(`/employees?page=${this.page}&pageSize=${this.pageSize}`);
+      },
+
       searchEmployee() {
         if (this.keyword.trim() === "") {
           this.$message.warning("请输入关键字");
@@ -242,7 +246,7 @@
                   that.$message.success("员工添加成功");
                   that.isAddDialogVisible = false;
                   that.addForm = {name: "", phone: "", salary: ""};
-                  that.loadEmployeeList("/employees");
+                  that.reloadEmployeeList();
                 } else {
                   that.$message.warning("员工添加失败");
                 }
@@ -259,7 +263,7 @@
         });
       },
 
-      updateEmployee(row) {
+      beforeUpdateEmployee(row) {
         let left = [];
         let right = [];
         // 加载该员工未管理的仓库
@@ -267,7 +271,7 @@
           res.data.warehouseList.forEach((item, index) => {
             left.push({
               label: item.name,
-              key: index + 1,
+              key: item.id,
               disabled: false
             });
           });
@@ -278,11 +282,74 @@
         });
         this.transferLeft = left;
         this.transferRight = right;
-        this.editForm = row
+        this.editForm = row;
         this.isEditDialogVisible = true;
       },
 
+      updateEmployee() {
+        this.$refs.editForm.validate(valid => {
+          if (valid) {
+            var that = this;
+            this.$axios.post(`/employee/${this.editForm.id}/update/info`, this.editForm)
+            .then(res => {
+              if (res.status === 200) {
+                if (res.data === 1) {
+                  that.$message.success("员工基本信息修改成功");
+                  reloadEmployeeList();
+                } else {
+                  that.$message.warning("员工基本信息修改失败");
+                }
+              } else if (res.status === 403) {
+                that.$message.warning("权限不足，请联系管理员");
+              }
+              that.isEditDialogVisible = false;
+            })
+            .catch(err => {
+              console.log(err);
+              that.$message.error("服务器异常");
+            });
+          } else {
+            return false;
+          }
+        });
+      },
+
+      updateWarehouse() {
+        var that = this;
+        this.$axios.post(`/employee/${this.editForm.id}/update/warehouse`, {"widList":this.transferRight})
+        .then(res => {
+          if (res.status === 200) {
+            if (res.data === 1) {
+              that.$message.success("员工管辖仓库修改成功");
+              that.reloadEmployeeList();
+            } else {
+              that.$message.warning("员工管辖仓库修改失败");
+            }
+          } else if (res.status === 403) {
+            that.$message.warning("权限不足，请联系管理员");
+          }
+          this.isEditDialogVisible = false;
+        })
+        .catch(err => {
+          console.log(err);
+          that.$message.error("服务器异常");
+        });
+      },
+
       deleteEmployee(row) {
+        let that = this;
+        this.$axios.delete(`/employee/${row.id}/delete`).then(res => {
+          if (res.status === 200) {
+            if (res.data === 1) {
+              that.$message.success("员工删除成功");
+              that.reloadEmployeeList();
+            } else {
+              that.$message.warning("员工删除失败");
+            }
+          } else if (res.status === 403) {
+            that.$message.warning("权限不足，请联系管理员");
+          }
+        });
       }
     }
   };
