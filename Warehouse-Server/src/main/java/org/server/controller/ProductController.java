@@ -45,7 +45,7 @@ public class ProductController {
 	@PostMapping("/product/add")
 	public int addProduct(@RequestBody Product product) {
 		try {
-			productService.addProduct(product);
+			return productService.addProduct(product);
 		} catch (RepeatException | InsertException e) {
 			logger.error(e.getMessage());
 		} catch (Exception e) {

@@ -47,11 +47,10 @@ public class UserService implements UserDetailsService {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		user.setPassword(encoder.encode(user.getPassword()));
 		int res1 = userMapper.addUser(user);
-
 		// 表单传递的user还未分配, 添加到tb_user之后才有一个新id
 		user = userMapper.getUserByUsername(user.getUsername());
 		int res2 = userMapper.addRoleByUid(user.getId(), 2);
-		if (res1 + res2 != 2) {
+		if (res1 != 1 || res2 != 1) {
 			throw new InsertException("添加用户失败");
 		}
 		return 1;
@@ -87,10 +86,9 @@ public class UserService implements UserDetailsService {
 	public int deleteUserById(int id) throws DeleteException {
 		int res1 = userMapper.deleteUserById(id);
 		int res2 = userMapper.deleteAllRoleByUid(id);
-		if (res1 + res2 >= 2) {
-			return 1;
-		} else {
+		if (res1 != 1 || res2 < 1) {
 			throw new DeleteException("用户删除失败");
 		}
+		return 1;
 	}
 }

@@ -15,7 +15,7 @@
     </el-header>
 
     <el-table :data="employeeList" v-loading="loading" border stripe>
-      <el-table-column prop="id" label="工号" sortable width="100"></el-table-column>
+      <el-table-column prop="id" label="工号" sortable fixed width="100"></el-table-column>
       <el-table-column prop="name" label="姓名" width="100"></el-table-column>
       <el-table-column prop="gender" label="性别" width="50"></el-table-column>
       <el-table-column prop="phone" label="联系电话" width="130"></el-table-column>
@@ -35,7 +35,7 @@
       </el-table-column>
       <el-table-column label="操作" width="180" fixed="right">
         <template slot-scope="scope">
-          <el-button @click="beforeUpdateEmployee(scope.row)" size="mini" icon="el-icon-edit" type="warning" plain>编辑
+          <el-button @click="showEditDialog(scope.row)" size="mini" icon="el-icon-edit" type="warning" plain>编辑
           </el-button>
           <el-button @click="deleteEmployee(scope.row)" size="mini" icon="el-icon-delete" type="danger" plain>删除
           </el-button>
@@ -59,7 +59,7 @@
     <!--添加员工对话框-->
     <el-dialog title="添加新员工" :visible.sync="isAddDialogVisible">
       <el-form ref="addForm" :model="addForm" :rules="rules" status-icon label-width="120px">
-        <el-form-item label="用户名" prop="name">
+        <el-form-item label="姓名" prop="name">
           <el-input v-model="addForm.name" prefix-icon="el-icon-user"></el-input>
         </el-form-item>
         <el-form-item label="联系电话" prop="phone">
@@ -263,7 +263,7 @@
         });
       },
 
-      beforeUpdateEmployee(row) {
+      showEditDialog(row) {
         let left = [];
         let right = [];
         // 加载该员工未管理的仓库

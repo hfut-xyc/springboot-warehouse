@@ -42,8 +42,11 @@ public class EmployeeService {
 	@Transactional
 	public int updateWarehouseByEid(int eid, List<Integer> widList) {
 		employeeMapper.deleteAllWarehouseByEid(eid);
-		int res2 = employeeMapper.addWarehouseByEid(eid, widList);
-		if (widList.size() != res2) {
+		if (widList.size() == 0) {
+			return 1;
+		}
+		int res = employeeMapper.addWarehouseByEid(eid, widList);
+		if (widList.size() != res) {
 			throw new UpdateException("修改员工仓库失败");
 		}
 		return 1;
