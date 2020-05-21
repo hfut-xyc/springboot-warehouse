@@ -33,7 +33,7 @@
         values (#{username}, #{password}, #{phone})
     </insert>
 
-    <update id="updateUserEnabled">
+    <update id="updateEnabledById">
         update tb_user set enabled=#{enabled} WHERE id=#{id}
     </update>
 

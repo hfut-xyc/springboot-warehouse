@@ -70,7 +70,7 @@ public class UserController {
 	}
 
 	@ApiOperation("按id设置用户是否为管理员")
-	@PostMapping("/user/{id}/set-admin")
+	@PostMapping("/user/{id}/update/role")
 	public int updateUserRole(@RequestParam("isAdmin") boolean enabled, @PathVariable int id) {
 		try {
 			return userService.updateRoleByUid(enabled, id);
