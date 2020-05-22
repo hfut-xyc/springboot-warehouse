@@ -54,6 +54,9 @@ public class WarehouseService {
     @Transactional
     public int updateEmployeeByWid(int wid, List<Integer> eidList) {
 		warehouseMapper.deleteAllEmployeeByWid(wid);
+		if (eidList.size() == 0) {
+			return 1;
+		}
 		int res = warehouseMapper.addEmployeeByWid(wid, eidList);
 		if (eidList.size() != res) {
 			throw new UpdateException("未能成功修改员工负责的仓库");
