@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class LogAspect {
 
-    private final Logger logger = LoggerFactory.getLogger(LogAspect.class);
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Pointcut("execution(public * org.server.controller.*.*(..))")
     public void pointCut() {}

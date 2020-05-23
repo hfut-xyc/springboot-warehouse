@@ -10,9 +10,7 @@
       </el-form-item>
       <el-form-item prop="verifyCode">
         <el-input v-model="loginForm.verifyCode" style="width: 150px; vertical-align: middle;" prefix-icon="el-icon-picture-outline-round" placeholder="请输入验证码"></el-input>
-        <el-tooltip placement="buttom" content="看不清楚？点击以获取新的验证图片">
-        <img id="captcha" @click="" src="http://localhost:8081/captcha"/>
-        </el-tooltip>
+        <img id="captcha" @click="" src="http://localhost:8081/captcha"  alt="" title="看不清楚？换一张" style="cursor: pointer"/>
       </el-form-item>
       <el-form-item>
         <el-checkbox v-model="checked">记住用户</el-checkbox>
@@ -48,20 +46,19 @@
           if (valid) {
             var that = this;
             // axios所有的请求默认是json格式，登录必须封装formdata格式，因为spring security不接受json
-            postRequest("/login", this.loginForm)
-              .then(res => {
+            postRequest("/login", this.loginForm).then(res => {
                 console.log(res);
                 if (res.data === "success") {
                   that.$store.commit("login", {'username': that.loginForm.username, 'checked': that.checked});
                   that.$router.replace("/home");
                   that.$message.success("登录成功^_^");
-                } else {
+                } else if (res.data === "fail") {
                   that.$message.warning("登录失败，用户名和密码不匹配T_T");
                 }
               })
               .catch(error => {
                 console.log(error);
-                that.$message.error("服务器连接失败>_<");
+                that.$message.error("服务器异常");
               });
           } else {
             return false;

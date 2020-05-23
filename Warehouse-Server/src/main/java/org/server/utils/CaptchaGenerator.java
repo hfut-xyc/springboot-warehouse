@@ -14,7 +14,7 @@ public class CaptchaGenerator {
 
     private static Random random = new Random();
 
-    private static Font font = new Font("宋体", Font.BOLD, 19);
+    private static Font font = new Font("宋体", Font.BOLD, 25);
 
     private String code;
 
@@ -44,7 +44,7 @@ public class CaptchaGenerator {
         this.code = getRandomCode();
         for(int i = 0; i < 4; i++) {
             g.setColor(getRandomColor());
-            g.drawString(String.valueOf(code.charAt(i)), 15 * i + 10, 16);
+            g.drawString(String.valueOf(code.charAt(i)), 20 * i + 15, 25);
         }
         // 绘制干扰线
         for (int i = 0; i < 5; i++) {
