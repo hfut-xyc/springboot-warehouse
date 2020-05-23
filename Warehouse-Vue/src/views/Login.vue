@@ -9,8 +9,10 @@
         <el-input v-model="loginForm.password" show-password prefix-icon="el-icon-lock" placeholder="请输入密码"></el-input>
       </el-form-item>
       <el-form-item prop="verifyCode">
-        <el-input v-model="loginForm.verifyCode" style="width: 150px" prefix-icon="el-icon-picture-outline-round" placeholder="请输入验证码"></el-input>
-        <img src="http://localhost:8081/captcha"/>
+        <el-input v-model="loginForm.verifyCode" style="width: 150px; vertical-align: middle;" prefix-icon="el-icon-picture-outline-round" placeholder="请输入验证码"></el-input>
+        <el-tooltip placement="buttom" content="看不清楚？点击以获取新的验证图片">
+        <img id="captcha" @click="" src="http://localhost:8081/captcha"/>
+        </el-tooltip>
       </el-form-item>
       <el-form-item>
         <el-checkbox v-model="checked">记住用户</el-checkbox>
@@ -100,5 +102,32 @@
   .btn {
     width: 45%;
     border-radius: 5px;
+  }
+
+  #captcha {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-appearance: none;
+    background-image: none;
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: #dcdfe6;
+    box-sizing: border-box;
+    display: inline-block;
+    font-size: inherit;
+    height: 40px;
+    outline: none;
+    
+    margin-left: 19px;
+    text-align: right;
+    transition: border-color .2s cubic-bezier(.645,.045,.355,1)
+  }
+
+  #captcha:hover {
+    border-color: #C0C4CC;
+  }
+
+  #captcha:focus {
+    border-color: #bad5f3;
   }
 </style>
