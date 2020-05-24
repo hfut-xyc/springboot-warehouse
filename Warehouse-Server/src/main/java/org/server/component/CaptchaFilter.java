@@ -24,11 +24,16 @@ public class CaptchaFilter extends GenericFilterBean {
         if ("POST".equals(request.getMethod()) && "/login".equals(request.getRequestURI())) {
             String verifyCode = request.getParameter("verifyCode");
             String trueCode = (String) request.getSession().getAttribute("code");
-            if (StringUtils.isEmpty(verifyCode)) {
-                throw new AuthenticationServiceException("验证码不能为空");
-            }
-            if (!verifyCode.equalsIgnoreCase(trueCode)) {
-                throw new AuthenticationServiceException("验证码错误");
+            try {
+                if (StringUtils.isEmpty(verifyCode)) {
+                    throw new AuthenticationServiceException("验证码不能为空");
+                }
+                if (!verifyCode.equalsIgnoreCase(trueCode)) {
+                    throw new AuthenticationServiceException("验证码错误");
+                }
+            } catch (AuthenticationServiceException e) {
+                logger.error(e.getMessage());
+                return;
             }
         }
         chain.doFilter(request, response);

@@ -9,8 +9,11 @@
         <el-input v-model="loginForm.password" show-password prefix-icon="el-icon-lock" placeholder="请输入密码"></el-input>
       </el-form-item>
       <el-form-item prop="verifyCode">
-        <el-input v-model="loginForm.verifyCode" style="width: 150px; vertical-align: middle;" prefix-icon="el-icon-picture-outline-round" placeholder="请输入验证码"></el-input>
-        <img id="captcha" @click="" src="http://localhost:8081/captcha"  alt="" title="看不清楚？换一张" style="cursor: pointer"/>
+        <el-input v-model="loginForm.verifyCode" style="width: 150px; vertical-align: middle;"
+                  prefix-icon="el-icon-picture-outline-round" placeholder="请输入验证码"></el-input>
+        <img id="captcha" :src="imgURL" @click="refreshCaptcha()"
+             alt="图片加载失败" title="看不清楚？换一张"
+             style="cursor: pointer"/>
       </el-form-item>
       <el-form-item>
         <el-checkbox v-model="checked">记住用户</el-checkbox>
@@ -31,7 +34,12 @@
     data() {
       return {
         checked: false,
-        loginForm: {username: this.$store.state.username, password: "", verifyCode: ""},
+        imgURL: "",
+        loginForm: {
+          username: this.$store.state.username,
+          password: "",
+          verifyCode: ""
+        },
         rules: {
           username: [{required: true, message: "账号不能为空", trigger: "blur"}],
           password: [{required: true, message: "密码不能为空", trigger: "blur"}],
@@ -39,7 +47,9 @@
         }
       };
     },
-
+    mounted() {
+      this.refreshCaptcha();
+    },
     methods: {
       login() {
         this.$refs["loginForm"].validate(valid => {
@@ -47,15 +57,17 @@
             var that = this;
             // axios所有的请求默认是json格式，登录必须封装formdata格式，因为spring security不接受json
             postRequest("/login", this.loginForm).then(res => {
-                console.log(res);
-                if (res.data === "success") {
-                  that.$store.commit("login", {'username': that.loginForm.username, 'checked': that.checked});
-                  that.$router.replace("/home");
-                  that.$message.success("登录成功^_^");
-                } else if (res.data === "fail") {
-                  that.$message.warning("登录失败，用户名和密码不匹配T_T");
-                }
-              })
+              console.log(res);
+              if (res.data === "success") {
+                that.$store.commit("login", {'username': that.loginForm.username, 'checked': that.checked});
+                that.$router.replace("/home");
+                that.$message.success("登录成功");
+              } else if (res.data === "fail") {
+                that.$message.warning("用户名和密码不匹配");
+              } else {
+                that.$message.warning("验证码输入错误");
+              }
+            })
               .catch(error => {
                 console.log(error);
                 that.$message.error("服务器异常");
@@ -68,6 +80,10 @@
       reset() {
         this.loginForm.username = "";
         this.loginForm.password = "";
+      },
+      // 加上访问时间戳，防止图片缓存
+      refreshCaptcha() {
+        this.imgURL = "http://localhost:8081/captcha?timeStamp=" + new Date().getTime();
       }
     }
   };
@@ -108,23 +124,20 @@
     background-image: none;
     border-radius: 4px;
     border: 1px solid;
-    border-color: #dcdfe6;
+    border-color: #0093e6;
     box-sizing: border-box;
     display: inline-block;
     font-size: inherit;
     height: 40px;
     outline: none;
-    
+
     margin-left: 19px;
     text-align: right;
-    transition: border-color .2s cubic-bezier(.645,.045,.355,1)
+    transition: border-color .2s cubic-bezier(.645, .045, .355, 1)
   }
 
   #captcha:hover {
-    border-color: #C0C4CC;
+    border-color: #df0100;
   }
 
-  #captcha:focus {
-    border-color: #bad5f3;
-  }
 </style>
