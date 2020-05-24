@@ -30,9 +30,6 @@ public interface WarehouseMapper {
 	// 按仓库id删除管理该仓库的所有员工
 	int deleteAllEmployeeByWid(int wid);
 
-	// 通过仓库id和产品id查询该仓库中对应产品的库存
-	Integer getProductStockByWid(@Param("wid") int wid, @Param("pid") int pid);
-
 	// 处理旧产品的订单时，更新原有库存记录
 	int updateProductByWid(@Param("wid") int wid, @Param("pid") int pid, @Param("amount") int amount);
 

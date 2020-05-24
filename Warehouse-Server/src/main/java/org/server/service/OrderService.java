@@ -8,6 +8,7 @@ import org.server.exception.OutOfStockException;
 import org.server.mapper.OrderMapper;
 import org.server.mapper.ProductMapper;
 import org.server.mapper.WarehouseMapper;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,37 +24,42 @@ public class OrderService {
 	@Resource
 	private WarehouseMapper warehouseMapper;
 
+	@Resource
+	private RedisTemplate<String, Object> redisTemplate;
+
 	public List<Order> getOrderList(int keyword) {
 		return orderMapper.getOrderList(keyword);
 	}
 
 	@Transactional
-	public int addOrderWithOld(Order order) throws NotFoundException, OutOfStockException, InsertException {
-		// 0.查询剩余库存
-		Integer stock = warehouseMapper.getProductStockByWid(order.getWid(), order.getPid());
-		if (stock == null) {
-			throw new NotFoundException("该仓库没有对应库存记录");
-		}
-		if (stock + order.getAmount() < 0) {
-			throw new OutOfStockException("库存不足");
-		}
-		// 1.更新产品库存 2.添加订单记录
-		int res1 = warehouseMapper.updateProductByWid(order.getWid(), order.getPid(), order.getAmount());
-		int res2 = orderMapper.addOrder(order);
-		if (res1 != 1 || res2 != 1) {
+	public int addOrderWithOld(Order order) throws OutOfStockException, InsertException {
+		// 1.先添加订单
+		int res1 = orderMapper.addOrder(order);
+		if (res1 != 1) {
 			throw new InsertException("添加订单失败");
 		}
+		// 2.再更新库存，减少行级锁持有时间
+		int res2 = warehouseMapper.updateProductByWid(order.getWid(), order.getPid(), order.getAmount());
+		if (res2 != 1) {
+			throw new OutOfStockException("库存不足");
+		}
+		// 3.更新缓存
+		String warehousekey = "warehouse:" + order.getWid();
+		String productKey = "product:" + order.getPid();
+		Product product = (Product) redisTemplate.boundHashOps(warehousekey).get(productKey);
+		product.setTotal(product.getTotal() + order.getAmount());
+		redisTemplate.boundHashOps(warehousekey).put(productKey, product);
 		return 1;
 	}
 
 	@Transactional
 	public int addOrderWithNew(Order order) throws InsertException {
 		// 新产品订单只能是入库，不需要查库存
-		int res1 = warehouseMapper.addProductByWid(order.getWid(), order.getPid(), order.getAmount());
-		int res2 = orderMapper.addOrder(order);
-		if (res1 != 1 || res2 != 1) {
-			throw new InsertException("添加订单失败");
-		}
+//		int res1 = warehouseMapper.addProductByWid(order.getWid(), order.getPid(), order.getAmount());
+//		int res2 = orderMapper.addOrder(order);
+//		if (res1 != 1 || res2 != 1) {
+//			throw new InsertException("添加订单失败");
+//		}
 		return 1;
 	}
 }

@@ -1,10 +1,12 @@
 package org.server.service;
 
+import org.aspectj.weaver.ast.Not;
 import org.server.mapper.WarehouseMapper;
 import org.server.entity.Product;
 import org.server.entity.Warehouse;
 import org.server.exception.*;
 
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,19 +15,32 @@ import java.util.List;
 
 @Service
 public class WarehouseService {
+
     @Resource
     private WarehouseMapper warehouseMapper;
+
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
 
     public List<Warehouse> getWarehouseList(String keyword) {
         return warehouseMapper.getWarehouseList(keyword);
     }
 
-	public List<Product> getProductListById(int id) {
-        Warehouse temp = warehouseMapper.getWarehouseById(id);
-		if (temp == null) {
-            throw new NotFoundException("仓库ID不存在");
-		}
-		return warehouseMapper.getProductListById(id);
+	public List<? super Product> getProductListById(int id) throws NotFoundException {
+    	// 1.先从Redis中读取
+    	List<? super Product> products = redisTemplate.boundHashOps("warehouse:" + id).values();
+    	// 2.如果缓存中没有，再从MySQL中读取
+    	if (products == null | products.size() == 0) {
+    		products = warehouseMapper.getProductListById(id);
+		    if (products == null) {
+			    throw new NotFoundException("仓库ID不存在");
+		    }
+		    // 3.将MySQL中的数据同步到Redis
+		    for (Object product : products) {
+			    redisTemplate.boundHashOps("warehouse:" + id).put("product:" + ((Product) product).getId(), product);
+		    }
+	    }
+		return products;
     }
 
     @Transactional

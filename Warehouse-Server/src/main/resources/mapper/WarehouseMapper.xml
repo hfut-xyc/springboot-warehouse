@@ -65,15 +65,10 @@
         delete from tb_employee_warehouse where wid=#{wid}
     </delete>
 
-    <select id="getProductStockByWid" resultType="java.lang.Integer">
-        select amount from tb_warehouse_product
-        where wid=#{wid} and pid=#{pid}
-    </select>
-
     <update id="updateProductByWid">
         update tb_warehouse_product
         set amount = amount + #{amount}
-        where wid=#{wid} and pid=#{pid}
+        where wid=#{wid} and pid=#{pid} and amount + #{amount} >= 0
     </update>
 
     <insert id="addProductByWid">

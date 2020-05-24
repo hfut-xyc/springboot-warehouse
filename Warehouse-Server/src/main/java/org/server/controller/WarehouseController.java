@@ -75,7 +75,7 @@ public class WarehouseController {
 		@RequestParam(value = "page", defaultValue = "1") int page,
 		@RequestParam(value = "pageSize", defaultValue = "10") int pageSize)
 	{
-		List<Product> list = warehouseService.getProductListById(id);
+		List<? super Product> list = warehouseService.getProductListById(id);
 		int start = (page - 1) * pageSize;
 		int end = Math.min(start + pageSize, list.size());
 

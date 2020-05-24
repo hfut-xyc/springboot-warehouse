@@ -48,8 +48,7 @@ class WarehouseTest {
 
     @Test
     void getProductStock() {
-        Integer amount = warehouseMapper.getProductStockByWid(1, 20000);
-        System.out.println(amount);
+
     }
     // passed, nothing failed. 
 
