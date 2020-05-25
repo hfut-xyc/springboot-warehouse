@@ -30,7 +30,7 @@ public class WarehouseService {
     	// 1.先从Redis中读取
     	List<? super Product> products = redisTemplate.boundHashOps("warehouse:" + id).values();
     	// 2.如果缓存中没有，再从MySQL中读取
-    	if (products == null | products.size() == 0) {
+    	if (products == null || products.size() == 0) {
     		products = warehouseMapper.getProductListById(id);
 		    if (products == null) {
 			    throw new NotFoundException("仓库ID不存在");

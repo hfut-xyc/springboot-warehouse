@@ -14,7 +14,7 @@ public interface WarehouseMapper {
 
 	List<Product> getProductListById(int id);
 
-	Warehouse getWarehouseById(int id);
+//	Warehouse getWarehouseById(int id);
 
 	Warehouse getWarehouseByName(String name);
 

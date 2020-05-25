@@ -159,7 +159,8 @@ from
     tb_role r,
     tb_user_role ur
 where
-    u.id = ur.uid and r.id = ur.rid;
+    u.id = ur.uid and r.id = ur.rid
+order by id, rid;
 
 -- 创建员工-仓库视图
 drop view if exists view_employee_warehouse;
@@ -191,7 +192,7 @@ from
     left join tb_employee e on e.id = ew.eid;
 
 -- 创建仓库-产品视图，无需left join，
--- 因为会造成返回产品列表为[null]，而我们需要的是[]
+-- 因为会造成返回产品列表为null，而我们需要的是[]
 drop view if exists view_warehouse_product;
 create view view_warehouse_product as
 select
@@ -205,7 +206,8 @@ from
 	tb_warehouse_product wp,
     tb_product p
 where
-	w.id = wp.wid and p.id = wp.pid;
+	w.id = wp.wid and p.id = wp.pid
+order by id, pid;
 
 -- 创建产品-仓库视图，用于统计每个产品总数量，这里不需要left join
 drop view if exists view_product_warehouse;

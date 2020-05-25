@@ -22,7 +22,7 @@
       <el-table-column prop="roles" label="角色权限">
         <template slot-scope="scope">
           <el-checkbox :checked="true" disabled>普通用户</el-checkbox>
-          <el-checkbox v-model="isAdmin[scope.$index]" @change="updateRole(scope.row, scope.$index)">超级管理员</el-checkbox>
+          <el-checkbox :name="scope.row.id.toString()" :checked="scope.row.roles.length === 2" @change="updateRole(scope.row)">超级管理员</el-checkbox>
         </template>
       </el-table-column>
       <el-table-column prop="enabled" label="用户状态" width="150">
@@ -41,7 +41,6 @@
         </template>
       </el-table-column>
     </el-table>
-
     <el-footer>
       <el-pagination
         layout="total, sizes, prev, pager, next, jumper"
@@ -55,7 +54,7 @@
         :page-sizes="[5, 10, 15, 20, 25]"
       ></el-pagination>
     </el-footer>
-
+    <!-- 添加用户对话框 -->
     <el-dialog title="添加新用户" :visible.sync="isDialogVisible">
       <el-form ref="addForm" :model="addForm" :rules="rules" status-icon label-width="120px">
         <el-form-item label="用户名" prop="username">
@@ -114,16 +113,6 @@
           phone: [{required: true, message: "联系电话不能为空", trigger: "blur"}]
         }
       };
-    },
-
-    computed: {
-      isAdmin: function () {
-        var list = [];
-        this.userList.forEach(user => {
-          list.push(user.roles.length === 2);
-        });
-        return list;
-      }
     },
 
     mounted: function () {
@@ -186,17 +175,6 @@
         this.loadUserList(url);
       },
 
-      updateEnabled(row) {
-        this.$axios.post("/user/" + row.id + "/update/enabled" + "?enabled=" + row.enabled, {})
-          .then(res => {
-            console.log(res);
-            this.$message.success("用户[" + row.username + "]状态已改变");
-          })
-          .catch(res => {
-            console.log(res);
-          });
-      },
-
       addUser() {
         this.$refs["addForm"].validate(valid => {
           if (valid) {
@@ -250,20 +228,32 @@
         });
       },
 
-      updateRole(row, index) {
-        let that = this;
-        this.$axios.post("/user/" + row.id + "/update/role" + "?isAdmin=" + this.isAdmin[index], {})
+      updateEnabled(row) {
+        this.$axios.post("/user/" + row.id + "/update/enabled" + "?enabled=" + row.enabled, {})
           .then(res => {
+            console.log(res);
+            this.$message.success("用户[" + row.username + "]状态已改变");
+          })
+          .catch(res => {
+            console.log(res);
+          });
+      },
+
+      updateRole(row) {
+        let that = this;
+        let checked = document.getElementsByName(row.id)[0].checked;
+        this.$axios.post(
+          "/user/" + row.id + "/update/role" + "?isAdmin=" + checked,
+          {}
+        ).then(res => {
            if (res.status === 200) {
              if (res.data === 1) {
-               that.$message.success("用户[" + row.username + "]角色修改成功");
-               that.loadUserList("/users");
+               that.$message.success("修改用户[" + row.username + "]角色成功");
              } else {
-               that.$message.warning("修改用户角色失败");
+               that.$message.warning("修改用户[" + row.username + "]角色失败");
              }
            }
-         })
-         .catch(err => {
+         }).catch(err => {
            this.$message.error("服务器异常")
          });
       }

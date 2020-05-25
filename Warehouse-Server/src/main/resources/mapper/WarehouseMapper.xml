@@ -37,9 +37,9 @@
         from view_warehouse_product where id=#{id}
     </select>
 
-    <select id="getWarehouseById" resultType="org.server.entity.Warehouse">
-        select * from tb_warehouse where id=#{id}
-    </select>
+<!--    <select id="getWarehouseById" resultType="org.server.entity.Warehouse">-->
+<!--        select * from tb_warehouse where id=#{id}-->
+<!--    </select>-->
 
     <select id="getWarehouseByName" resultType="org.server.entity.Warehouse">
         select * from tb_warehouse where name=#{name}

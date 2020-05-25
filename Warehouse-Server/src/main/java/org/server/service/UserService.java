@@ -66,18 +66,10 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Transactional
-	public int updateRoleByUid(boolean isAdmin, int id) throws UpdateException {
-		int res;
-		if (isAdmin) {
-			res = userMapper.addRoleByUid(id, 1);
-			if (res != 1) {
-				throw new UpdateException("用户" + id + "设置管理员权限失败");
-			}
-		} else {
-			res = userMapper.deleteRoleByUid(id, 1);
-			if (res != 1) {
-				throw new UpdateException("用户" + id + "取消管理员权限失败");
-			}
+	public int updateRoleByUid(boolean isAdmin, int uid) throws UpdateException {
+		int res = isAdmin ? userMapper.addRoleByUid(uid, 1) : userMapper.deleteRoleByUid(uid, 1);
+		if (res != 1) {
+			throw new UpdateException("修改用户" + uid + "角色失败");
 		}
 		return res;
 	}

@@ -71,9 +71,9 @@ public class UserController {
 
 	@ApiOperation("按id设置用户是否为管理员")
 	@PostMapping("/user/{id}/update/role")
-	public int updateUserRole(@RequestParam("isAdmin") boolean enabled, @PathVariable int id) {
+	public int updateUserRole(@RequestParam("isAdmin") boolean isAdmin, @PathVariable int id) {
 		try {
-			return userService.updateRoleByUid(enabled, id);
+			return userService.updateRoleByUid(isAdmin, id);
 		} catch (UpdateException e) {
 			logger.error(e.getMessage());
 		} catch (Exception e) {

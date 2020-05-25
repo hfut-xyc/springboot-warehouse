@@ -12,16 +12,15 @@ public interface UserMapper {
 
 	List<User> getUserList(@Param("keyword") String keyword);
 
+	List<Role> getRolesByUid(int uid);
+
 	User getUserByUsername(String username);
 
 	int addUser(User user);
 
-	int updateEnabledById(@Param("enabled") boolean enabled, @Param("id") int id);
-
 	int deleteUserById(int id);
 
-	// 通过用户id查询其所有的角色
-	List<Role> getRolesByUid(int uid);
+	int updateEnabledById(@Param("enabled") boolean enabled, @Param("id") int id);
 
 	// 通过用户id添加角色
 	int addRoleByUid(int uid, int rid);
