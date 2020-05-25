@@ -17,7 +17,7 @@ Course Design of DataBase, HFUT, 2020
 - 密码：admin
 
 #### 项目运行和注意事项
-1. 安装Java 8+、Maven、node.js和npm
+1. 安装Java 8、Maven、node.js和npm
 2. npm安装@vue/cli和vue的开发服务器(建议换成阿里镜像源cnpm)
 3. 安装MySQL 8.0+，配置root用户的密码为root，服务器端口号为3306
 4. 运行init.sql，初始化数据库
@@ -27,6 +27,15 @@ Course Design of DataBase, HFUT, 2020
 8. 实体类通过使用Lombok库的注解来自动生成setter和getter方法，提高了开发效率，代码变得简洁易读。如果在**Intellij Idea**上运行，记得要去**settings->plugins**下搜索安装Lombok插件 (**需要科学上网**)，不然代码会报错 (不安装的话不影响运行，但是报错总会让人不舒服=_=)
 9. 后端程序运行后，可以访问 [localhost:8081/swagger-ui.html](localhost:8081/swagger-ui.html) 来查看所有的API文档，并且支持在文档上测试接口
 
+#### 部署方法和注意事项
+1. 预计作为项目部署服务器的是Aliyun, Ubuntu服务器，并使用docker技术部署
+2. 需要安装JRE 8、nginx、docker
+3. 部署前需要敲定域名，并且按照该域名修改后端的服务器配置（主要是跨域访问），申请免费SSL证书
+4. 部署需要的脚本和配置文件写在deployment文件夹下面
+5. 前端编译所得应存放在`/var/www`下，使用nginx做为部署服务器。其配置文件已经存放在deployment文件夹中
+6. 后端编译成单个jar，并在服务器上使用`nohup`等等手段后台运行
+
+
 #### RESTful API设计约定
 1. 后端程序统一返回json格式给前端，只负责提供数据，不用管页面如何跳转
 2. 数据库交互时，select操作一律采用`GET`请求，insert和update操作使用`POST`请求，delete操作使用`DELETE`请求
@@ -34,13 +43,14 @@ Course Design of DataBase, HFUT, 2020
 > - 查询用户列表： /users
 > - 添加用户： /user/add
 > - 删除用户： /user/{id}/delete
-> - 修改用户：/user/{id}/edit
+> - 修改用户基本信息：/user/{id}/update/info
 
 4. 后期设计其他模块也是如此，以员工为例
 > - 查询员工列表： /employees
 > - 添加员工： /employee/add
 > - 删除员工： /employee/{id}/delete
-> - 修改员工：/employee/{id}/edit
+> - 修改员工基本信息：/employee/{id}/update/info
+> - 修改员工负责仓库：/employee/{id}/update/warehouse
 
 #### CRUD操作的函数命名建议
 ##### 在命名Service和Mapper层的函数时，建议遵循以下风格:

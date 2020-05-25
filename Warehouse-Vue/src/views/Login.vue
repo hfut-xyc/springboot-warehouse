@@ -83,7 +83,7 @@
       },
       // 加上访问时间戳，防止图片缓存
       refreshCaptcha() {
-        this.imgURL = "http://localhost:8081/captcha?timeStamp=" + new Date().getTime();
+        this.imgURL = "/api/captcha?timeStamp=" + new Date().getTime();
       }
     }
   };
