@@ -82,8 +82,8 @@ Course Design of DataBase, HFUT, 2020
 | Swagger-UI           | 文档生成工具，用于生成API文档         | https://github.com/swagger-api/swagger-ui |
 | Lombok               | 代码生成工具，用于简化代码，提高可读性    | https://github.com/rzwitserloot/lombok  |
 | Maven                | Java依赖库管理工具                 |https://maven.apache.org/
-| Docker               | 后端部署工具                   |  https://www.docker.com/
-| Nginx                | 反向代理服务器，前端部署工具       |http://nginx.org/en/download.html
+| Docker               | 后端部署工具                    | https://www.docker.com/
+| Nginx                | 反向代理服务器，前端部署工具       | http://nginx.org/en/download.html
 #### 前端技术
 
 | 技术       | 说明                  | 官网                                   |

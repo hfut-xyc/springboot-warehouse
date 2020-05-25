@@ -57,7 +57,7 @@ public class UserController {
 	}
 
 	@ApiOperation("按id启用或禁用账户")
-	@PostMapping("/user/{id}/enabled")
+	@PostMapping("/user/{id}/update/enabled")
 	public int updateUserEnabled(@RequestParam("enabled") boolean enabled, @PathVariable int id) {
 		try {
 			return userService.updateEnabledById(enabled, id);

@@ -28,7 +28,7 @@
       <el-table-column prop="enabled" label="用户状态" width="150">
         <template slot-scope="scope">
           <el-switch
-            @change="setUserEnabled(scope.row)"
+            @change="updateEnabled(scope.row)"
             v-model="scope.row.enabled"
             active-text="启用"
             inactive-text="禁用">
@@ -186,8 +186,8 @@
         this.loadUserList(url);
       },
 
-      setUserEnabled(row) {
-        this.$axios.post("/user/" + row.id + "/enabled" + "?enabled=" + row.enabled, {})
+      updateEnabled(row) {
+        this.$axios.post("/user/" + row.id + "/update/enabled" + "?enabled=" + row.enabled, {})
           .then(res => {
             console.log(res);
             this.$message.success("用户[" + row.username + "]状态已改变");
