@@ -25,11 +25,7 @@ class UserTest {
 
 	@Test
 	void getUserList() {
-		StopWatch stopwatch = new StopWatch();
-		stopwatch.start();
-//		List<User> list1 = userMapper.getUserList(null);
-		stopwatch.stop();
-		System.out.println(stopwatch.getLastTaskTimeMillis());
+		List<User> list = userMapper.getUserList(null);
 	}
 
 	@Test

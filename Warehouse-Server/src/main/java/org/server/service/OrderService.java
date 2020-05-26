@@ -3,17 +3,14 @@ package org.server.service;
 import org.server.entity.Order;
 import org.server.entity.Product;
 import org.server.exception.InsertException;
-import org.server.exception.NotFoundException;
 import org.server.exception.OutOfStockException;
 import org.server.mapper.OrderMapper;
-import org.server.mapper.ProductMapper;
 import org.server.mapper.WarehouseMapper;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -28,7 +25,7 @@ public class OrderService {
 	@Resource
 	private RedisTemplate<String, Object> redisTemplate;
 
-	public List<Order> getOrderList(Date startTime, Date endTime) {
+	public List<Order> getOrderList(String startTime, String endTime) {
 		return orderMapper.getOrderList(startTime, endTime);
 	}
 

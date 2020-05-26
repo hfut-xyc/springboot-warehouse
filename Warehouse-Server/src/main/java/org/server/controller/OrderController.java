@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -33,12 +34,13 @@ public class OrderController {
             @RequestParam(value = "startTime", required = false) Long startTimeStamp,
             @RequestParam(value = "endTime", required = false) Long endTimeStamp)
     {
-    	Date startTime = (startTimeStamp == null) ? null : new Date(startTimeStamp);
-	    Date endTime = (endTimeStamp == null) ? null : new Date(endTimeStamp);
-        List<Order> list = orderService.getOrderList(startTime, endTime);
-        int start = (page - 1) * pageSize;
-        int end = Math.min(start + pageSize, list.size());
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	String startTime = (startTimeStamp == null) ? null : fmt.format(new Date(startTimeStamp));
+	    String endTime = (endTimeStamp == null) ? null : fmt.format(new Date(endTimeStamp));
+	    List<Order> list = orderService.getOrderList(startTime, endTime);
 
+	    int start = (page - 1) * pageSize;
+        int end = Math.min(start + pageSize, list.size());
         Map<String, Object> map = new HashMap<>();
         map.put("orderList", list.subList(start, end));
         map.put("total", list.size());

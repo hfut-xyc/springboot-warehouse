@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface OrderMapper {
 
-	List<Order> getOrderList(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
+	List<Order> getOrderList(@Param("startTime") String startTime, @Param("endTime") String endTime);
 
 	int addOrder(Order order);
 
