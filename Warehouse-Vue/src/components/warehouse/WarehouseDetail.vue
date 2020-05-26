@@ -206,7 +206,7 @@
       updateEmployeeListSelction() {
         this.info.operators.forEach((employee, index, array) => {
           this.employeeListSelection.find((v, i, obj) => {
-            if(v.id == employee.id) {
+            if(v.id === employee.id) {
               this.employeeListSelection.splice(i, 1);
               return true;
             }
@@ -220,7 +220,7 @@
         vals.forEach((employee, index, array) => {
           console.log(vals);
           this.employeeListSelection.find((v, i, obj) => {
-            if(v.id == employee.id) {
+            if(v.id === employee.id) {
               this.employeeListSelection.splice(i, 1);
               return true;
             }
@@ -250,10 +250,10 @@
       // Tag删除触发的事件
       deleteEmployeeTag(eid) {
         this.info.operators.find((value, index, obj) => { 
-          if(value.id == eid) {
+          if(value.id === eid) {
             this.info.operators.splice(index, 1);
             this.employeeList.find((v, i, o) => {
-              if (v.id == eid) {
+              if (v.id === eid) {
                 this.employeeListSelection.push(v);
                 this.employeeListSelection.sort((a, b) => a.id - b.id);
                 return true;

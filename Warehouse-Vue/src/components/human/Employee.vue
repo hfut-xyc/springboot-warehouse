@@ -239,7 +239,7 @@
       addEmployee() {
         this.$refs["addForm"].validate(valid => {
           if (valid) {
-            var that = this;
+            let that = this;
             this.$axios.post("/employee/add", this.addForm).then(res => {
               if (res.status === 200) {
                 if (res.data === 1) {
@@ -289,13 +289,13 @@
       updateEmployee() {
         this.$refs.editForm.validate(valid => {
           if (valid) {
-            var that = this;
+            let that = this;
             this.$axios.post(`/employee/${this.editForm.id}/update/info`, this.editForm)
             .then(res => {
               if (res.status === 200) {
                 if (res.data === 1) {
                   that.$message.success("员工基本信息修改成功");
-                  reloadEmployeeList();
+                  that.reloadEmployeeList();
                 } else {
                   that.$message.warning("员工基本信息修改失败");
                 }
@@ -315,7 +315,7 @@
       },
 
       updateWarehouse() {
-        var that = this;
+        let that = this;
         this.$axios.post(`/employee/${this.editForm.id}/update/warehouse`, {"widList":this.transferRight})
         .then(res => {
           if (res.status === 200) {

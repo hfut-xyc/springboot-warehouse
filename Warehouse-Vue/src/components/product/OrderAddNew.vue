@@ -1,10 +1,10 @@
 <template>
-  <el-container>Output</el-container>
+  <el-container></el-container>
 </template>
 
 <script>
 export default {
-  name: "OrderOutput"
+  name: "OrderAddNew"
 };
 </script>
 

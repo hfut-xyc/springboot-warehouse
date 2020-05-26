@@ -135,14 +135,12 @@ create table tb_order(
     `eid` int(11) not null,
     `wid` int(11) not null,
     `pid` int(11) not null,
-    `amount` int not null comment '订单处理数量:正数表示入库, 负数表示出库',
+    `amount` int not null comment '订单数量: 正数表示入库, 负数表示出库',
     `status` enum('正常', '报废') not null,
     `create_time` timestamp default current_timestamp(),
     `update_time` timestamp default current_timestamp(),
     primary key(id),
-	key idx_eid(eid),		
-	key idx_wid(wid),
-	key idx_pid(pid)
+		key idx_create_time(create_time)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- *********************************************************************

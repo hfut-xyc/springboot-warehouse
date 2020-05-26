@@ -1,5 +1,5 @@
 <template>
-  <el-container>StockDustbin</el-container>
+  <el-container>Dustbin</el-container>
 </template>
 
 <script>

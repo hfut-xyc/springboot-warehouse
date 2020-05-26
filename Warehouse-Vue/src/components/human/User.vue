@@ -97,7 +97,7 @@
         pageSize: 10, // 当前页面大小
         keyword: "", // 查询用户名的关键字
         userList: [], // 获得的查询结果
-        loading: false, // 页面表格是否处于加载状态
+        loading: true, // 页面表格是否处于加载状态
 
         isDialogVisible: false,   // 添加用户的对话框是否可见
         addForm: {    // 添加用户表单
@@ -116,13 +116,12 @@
     },
 
     mounted: function () {
-      this.loading = true;
       this.loadUserList("/users");
     },
 
     methods: {
       loadUserList(url) {
-        var that = this;
+        let that = this;
         this.$axios.get(url).then(res => {
           if (res.status === 200) {
             console.log(res);
@@ -134,11 +133,10 @@
             that.loading = false;
             that.$message.error("数据加载失败");
           }
-        })
-          .catch(res => {
+        }).catch(res => {
             that.loading = false;
             that.$message.error("服务器异常");
-          });
+        });
       },
 
       searchUser() {

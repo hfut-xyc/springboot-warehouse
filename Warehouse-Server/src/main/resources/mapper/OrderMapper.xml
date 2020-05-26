@@ -5,9 +5,12 @@
 <mapper namespace="org.server.mapper.OrderMapper">
 
     <select id="getOrderList" resultType="org.server.entity.Order">
-        select * from tb_order
-        <if test="keyword != null">
-            where id like concat('%',#{keyword},'%')
+        select * from tb_order where status="正常"
+        <if test="startTime != null ">
+            and create_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            and create_time <![CDATA[<=]]> #{endTime}
         </if>
     </select>
 
@@ -16,7 +19,7 @@
         values (#{eid}, #{wid}, #{pid}, #{amount}, #{status})
     </insert>
 
-    <delete id="deleteOrder">
+    <delete id="deleteOrderById">
         delete from tb_order where id=#{id}
     </delete>
 
