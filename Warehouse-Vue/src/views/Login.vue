@@ -55,7 +55,8 @@
         this.$refs["loginForm"].validate(valid => {
           if (valid) {
             var that = this;
-            // axios所有的请求默认是json格式，登录必须封装formdata格式，因为spring security不接受json
+            // axios所有的请求默认是json格式，登录必须封装成application/x-www-form-urlencoded格式
+            // 因为spring security不接受application/json
             postRequest("/login", this.loginForm).then(res => {
               console.log(res);
               if (res.data === "success") {
