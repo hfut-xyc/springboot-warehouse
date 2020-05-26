@@ -51,7 +51,7 @@ create table tb_employee(
     `name` varchar(255) not null,
     `gender` enum('男','女'),
     `phone` varchar(11),
-		`salary` decimal(10,2),
+	`salary` decimal(10,2),
     `birthday` date,
     `hire_date` date,
     primary key(id)
@@ -140,9 +140,17 @@ create table tb_order(
     `create_time` timestamp default current_timestamp(),
     `update_time` timestamp default current_timestamp(),
     primary key(id),
-		key idx_create_time(create_time)
+    key idx_create_time(create_time)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
+insert into tb_order(wid, pid, amount, eid, status, create_time) values (1, 20000, 100, 10000, '正常', '20200301070000');
+insert into tb_order(wid, pid, amount, eid, status, create_time) values (1, 20001, 200, 10001, '正常', '20200301080000');
+insert into tb_order(wid, pid, amount, eid, status, create_time) values (2, 20001, 300, 10002, '正常', '20200302080000');
+insert into tb_order(wid, pid, amount, eid, status, create_time) values (2, 20002, 400, 10001, '正常', '20200303080000');
+insert into tb_order(wid, pid, amount, eid, status, create_time) values (3, 20000, 200, 10000, '正常', '20200304080000');
+insert into tb_order(wid, pid, amount, eid, status, create_time) values (3, 20001, 600, 10002, '正常', '20200305080000');
+insert into tb_order(wid, pid, amount, eid, status, create_time) values (3, 20001, -100, 10002, '正常', '20200305100000');
+insert into tb_order(wid, pid, amount, eid, status, create_time) values (3, 20002, 200, 10001, '正常', '20200306080000');
 -- *********************************************************************
 -- 创建用户-角色视图
 drop view if exists view_user_role;
