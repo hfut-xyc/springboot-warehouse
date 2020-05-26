@@ -1,32 +1,30 @@
 <template>
   <el-container>
     <el-header style="margin-top: 10px">
-      <el-row :gutter="24">
-        <el-col :span="9">
-          <el-date-picker v-model="period" :editable="false"
-            type="datetimerange"
-            range-separator="至"
-            start-placeholder="开始时间"
-            end-placeholder="结束时间">
-          </el-date-picker>
-        </el-col>
-        <el-col :span="8">
-          <el-button @click="searchOrder()" type="primary" icon="el-icon-search">按创建时间查询</el-button>
-        </el-col>
-      </el-row>
+      <el-date-picker v-model="period" :editable="false"
+        type="datetimerange"
+        range-separator="至"
+        start-placeholder="开始时间"
+        end-placeholder="结束时间">
+      </el-date-picker>
+      <el-button @click="searchOrder()" type="primary" style="margin-left: 20px" icon="el-icon-search">按创建时间查询</el-button>
     </el-header>
 
     <el-table :data="orderList" v-loading="loading" border stripe>
-      <el-table-column prop="id"  label="订单编号" sortable></el-table-column>
-      <el-table-column prop="eid" label="负责人编号" sortable></el-table-column>
+      <el-table-column prop="id" label="订单编号" sortable></el-table-column>
+      <el-table-column prop="eid" label="负责人编号" sortable width="120"></el-table-column>
       <el-table-column prop="wid" label="仓库编号" sortable></el-table-column>
       <el-table-column prop="pid" label="产品编号" sortable></el-table-column>
-      <el-table-column prop="amount" label="订单数量" sortable></el-table-column>
+      <el-table-column prop="amount" label="订单数量"
+                       :filters="[{ text: '入库订单', value: 'input' }, { text: '出库订单', value: 'output' }]"
+                       :filter-method="orderFilter">
+      </el-table-column>
       <el-table-column prop="createTime" label="创建时间" sortable width="180"></el-table-column>
       <el-table-column prop="updateTime" label="修改时间" sortable width="180"></el-table-column>
       <el-table-column label="操作" width="150">
         <template slot-scope="scope">
-          <el-button @click="deleteOrder(scope.row)" size="mini" icon="el-icon-delete" type="danger" plain>删除</el-button>
+          <el-button @click="deleteOrder(scope.row)" size="mini" icon="el-icon-delete" type="danger" plain>删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -102,6 +100,10 @@
 
       onPageSizeChange() {
 
+      },
+
+      orderFilter(value, row) {
+        return value === "input" ? row.amount > 0 : row.amount < 0;
       },
 
       deleteOrder() {
