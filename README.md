@@ -20,20 +20,22 @@ Course Design of DataBase, HFUT, 2020
 1. 安装Java 8、Maven、node.js和npm
 2. npm安装@vue/cli和vue的开发服务器(建议换成阿里镜像源cnpm)
 3. 安装MySQL 8.0+，配置root用户的密码为root，服务器端口号为3306
-4. 运行init.sql，初始化数据库
-5. 启动数据库服务程序`systemctl start mysql`(Linux)
-6. 启动后端服务器`mvn spring-boot:run`
-7. 启动前端服务器`npm run serve`
-8. 实体类通过使用Lombok库的注解来自动生成setter和getter方法，提高了开发效率，代码变得简洁易读。如果在**Intellij Idea**上运行，记得要去**settings->plugins**下搜索安装Lombok插件 (**需要科学上网**)，不然代码会报错 (不安装的话不影响运行，但是报错总会让人不舒服=_=)
-9. 后端程序运行后，可以访问 [localhost:8081/swagger-ui.html](localhost:8081/swagger-ui.html) 来查看所有的API文档，并且支持在文档上测试接口
+4. 安装Redis
+5. 运行init.sql，初始化数据库
+6. 启动数据库服务程序`systemctl start mysql`(Linux)
+7. 启动缓存数据库服务程序`systemctl start redis`(Linux)，Windows下应启动`redis-server.exe`
+8. 启动后端服务器`mvn spring-boot:run`(建议提前将maven换成阿里镜像源)
+9. 启动前端服务器`npm run serve`
+10. 实体类通过使用Lombok库的注解来自动生成setter和getter方法，提高了开发效率，代码变得简洁易读。如果在**Intellij Idea**上运行，记得要去**settings->plugins**下搜索安装Lombok插件 (**需要科学上网**)，不然代码会报错 (不安装的话不影响运行，但是报错总会让人不舒服=_=)
+11. 后端程序运行后，可以访问 [localhost:8081/swagger-ui.html](localhost:8081/swagger-ui.html) 来查看所有的API文档，并且支持在文档上测试接口
 
 #### 部署方法和注意事项
 1. 预计作为项目部署服务器的是Aliyun, Ubuntu服务器，并使用docker技术部署
-2. 需要安装JRE 8、nginx、docker
+2. 需要安装JRE 8、nginx、docker、MySQL、Redis
 3. 部署前需要敲定域名，并且按照该域名修改后端的服务器配置（主要是跨域访问），申请免费SSL证书
 4. 部署需要的脚本和配置文件写在deployment文件夹下面
-5. 前端编译所得应存放在`/var/www`下，使用nginx做为部署服务器。其配置文件已经存放在deployment文件夹中
-6. 后端编译成单个jar，并在服务器上使用`nohup`等等手段后台运行
+5. 前端编译所得`dist/**`应存放在`/var/www`下，使用nginx做为部署服务器。其配置文件已经存放在deployment文件夹中
+6. 后端编译成单个jar，并使用`nohup`等等手段后台运行
 
 
 #### RESTful API设计约定
@@ -94,14 +96,5 @@ Course Design of DataBase, HFUT, 2020
 | Element-ui    | 前端UI组件框架            | https://element.eleme.cn               |
 | Axios      | AJAX请求框架          | https://github.com/axios/axios         |
 | v-charts   | 基于Echarts的图表框架 | https://v-charts.js.org/               |
-
-#### TODO
-
-请按重要程度排序
-
-1. Warehouse物品管理部分
-2. 页面鉴权
-3. `/home`欢迎页
-
 
 

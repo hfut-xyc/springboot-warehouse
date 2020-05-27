@@ -277,7 +277,7 @@
               if (res.status === 200) {
                 if (res.data === 1) {
                   that.$message.success("仓库名称修改成功");
-                  this.info.name = this.updateForm.name;
+                  that.info.name = that.updateForm.name;
                 } else {
                   that.$message.warning("仓库名称修改失败");
                 }

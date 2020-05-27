@@ -56,10 +56,10 @@ public class WarehouseController {
 	}
 
 	@ApiOperation("修改仓库管理员")
-	@PostMapping("/warehouse/{wid}/employees")
-	public int updateEmployeeByWid(@PathVariable int wid, @RequestBody List<Integer> eidList) {
+	@PostMapping("/warehouse/{id}/employees")
+	public int updateEmployeeByWid(@PathVariable int id, @RequestBody List<Integer> eidList) {
 		try {
-			return warehouseService.updateEmployeeByWid(wid, eidList);
+			return warehouseService.updateEmployeeByWid(id, eidList);
 		} catch (UpdateException e) {
 			logger.error(e.getMessage());
 		} catch (Exception e) {
