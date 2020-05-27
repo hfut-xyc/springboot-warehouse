@@ -76,7 +76,7 @@
         </el-form-item>
         <el-form-item label="出生日期">
           <el-col :span="8">
-            <el-date-picker v-model="addForm.birthday" :editable="false" placeholder="选择日期"></el-date-picker>
+            <el-date-picker v-model="addForm.birthday" :editable="false" placeholder="选择日期" value-format="yyyy-MM-dd"></el-date-picker>
           </el-col>
         </el-form-item>
       </el-form>
@@ -113,12 +113,12 @@
             </el-form-item>
             <el-form-item label="出生日期">
               <el-col :span="8">
-                <el-date-picker v-model="editForm.birthday" :editable="false" placeholder="选择日期"></el-date-picker>
+                <el-date-picker v-model="editForm.birthday" :editable="false" placeholder="选择日期" value-format="yyyy-MM-dd"></el-date-picker>
               </el-col>
             </el-form-item>
             <el-form-item label="入职日期">
               <el-col :span="8">
-                <el-date-picker v-model="editForm.hireDate" disabled></el-date-picker>
+                <el-date-picker v-model="editForm.hireDate" disabled value-format="yyyy-MM-dd"></el-date-picker>
               </el-col>
             </el-form-item>
           </el-form>
@@ -165,6 +165,7 @@
           salary: ""
         },
         editForm: {},   // 编辑员工表单
+        editRow: null, // 正在编辑的员工
         rules: {
           name: [{required: true, message: "姓名不能为空", trigger: "blur"}],
           phone: [{required: true, message: "电话不能为空", trigger: "blur"}],
@@ -282,7 +283,17 @@
         });
         this.transferLeft = left;
         this.transferRight = right;
-        this.editForm = row;
+        this.editForm = {
+          "id": row.id,
+          "name": row.name,
+          "gender": row.gender,
+          "phone": row.phone,
+          "birthday": row.birthday,
+          "hireDate": row.hireDate,
+          "salary": row.salary,
+          "warehouses": row.warehouses
+        }
+        this.editRow = row;
         this.isEditDialogVisible = true;
       },
 
@@ -295,7 +306,10 @@
               if (res.status === 200) {
                 if (res.data === 1) {
                   that.$message.success("员工基本信息修改成功");
-                  that.reloadEmployeeList();
+                  for (let i in that.editForm) {
+                    console.log(i + that.editForm[i]);
+                    that.editRow[i] = that.editForm[i];
+                  }
                 } else {
                   that.$message.warning("员工基本信息修改失败");
                 }

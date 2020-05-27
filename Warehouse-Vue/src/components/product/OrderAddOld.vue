@@ -3,7 +3,7 @@
     <el-main>
     <el-form ref="addOldForm" :model="addOldForm" :rules="rules" label-width="100px">
       <el-form-item label="仓库名称" prop="wid">
-        <el-select v-model="addOldForm.wid" value-key="id" :loading="warehouseLoading">
+        <el-select v-model="addOldForm.wid" @change="addOldForm.eid = ''" value-key="id" :loading="warehouseLoading">
           <el-option
             v-for="warehouse in warehouseList"
             :key="warehouse.id"
@@ -25,8 +25,10 @@
       <el-form-item label="操作员工" prop="eid">
         <template v-if="addOldForm.wid !== ''">
           <el-select v-model="addOldForm.eid" value-key="id" :loading="warehouseLoading">
+            <!-- 在v-for属性中唯有find才能正确取出对应的operators -->
             <el-option
-              v-for="operator in warehouseList[addOldForm.wid].operators"
+              v-for="operator in 
+                warehouseList.find(i => i.id == addOldForm.wid).operators"
               :key="operator.id"
               :label="operator.name"
               :value="operator.id">
@@ -39,7 +41,7 @@
         </template>
       </el-form-item>
       <el-form-item label="商品数量" prop="amount">
-        <el-input-number v-model.number="addOldForm.amount" width="200px">
+        <el-input-number v-model.number="addOldForm.amount" step-strictly controls-position="right" :min="getProductMin()">
         </el-input-number>
       </el-form-item>
     </el-form>
@@ -131,10 +133,16 @@
         });
       },
 
+      // 此为物品总量(total)对应的最小值
+      getProductMin() {
+        let p = this.productList.find(i => i.id == this.addOldForm.pid);
+        if (p === undefined)
+          return -NaN;
+        else
+          return -p.total;
+      },
+
       addOrderOld() {
-        // let date = new Date()
-        // this.addOldForm.createTime = date.toISOString().replace('T', ' ').split('.')[0];
-        // this.addOldForm.updateTime = date.toISOString().replace('T', ' ').split('.')[0];
         this.$refs.addOldForm.validate(valid => {
           if (valid) {
             var that = this;
