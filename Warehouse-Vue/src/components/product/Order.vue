@@ -2,16 +2,16 @@
   <el-container style="margin-top: 5px;">
     <el-main>
       <el-tabs v-model="activeName" type="border-card">
-        <el-tab-pane label="订单记录" name="list">
+        <el-tab-pane label="订单记录" name="list" :lazy="true">
           <order-list></order-list>
         </el-tab-pane>
-        <el-tab-pane label="创建旧产品订单" name="add-old">
+        <el-tab-pane label="创建旧产品订单" name="add-old" :lazy="true">
           <order-add-old></order-add-old>
         </el-tab-pane>
-        <el-tab-pane label="创建新产品订单" name="add-new">
+        <el-tab-pane label="创建新产品订单" name="add-new" :lazy="true">
           <order-add-new></order-add-new>
         </el-tab-pane>
-        <el-tab-pane label="回收站" name="dustbin">
+        <el-tab-pane label="回收站" name="dustbin" :lazy="true">
           <order-dustbin></order-dustbin>
         </el-tab-pane>
       </el-tabs>
