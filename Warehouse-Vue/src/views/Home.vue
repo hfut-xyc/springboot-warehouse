@@ -5,7 +5,7 @@
       <el-dropdown @command="logout" class="dropdown">
         <div class="currentUser">
           <el-avatar src="" style="margin-right: 5px"></el-avatar>
-          <label>{{currentUsername}}</label>
+          <label style="font-weight: bold">{{this.$store.state.currentUser}}</label>
         </div>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>
@@ -74,19 +74,6 @@
 <script>
   export default {
     name: "Home",
-    data() {
-      return {
-        currentUsername: "admin"
-      };
-    },
-
-    mounted() {
-      // this.currentUsername = JSON.parse(
-      //   window.sessionStorage.getItem("username")
-      // );
-      this.currentUsername = this.$store.state.username;
-    },
-
     methods: {
       logout() {
         let that = this;
@@ -94,8 +81,8 @@
           console.log(res);
           if (res.data === "success") {
             that.$store.commit("logout");
-            that.$message.success("注销成功");
             that.$router.replace("/login");
+            that.$message.success("注销成功");
           }
         }).catch(error => {
           console.log(error);

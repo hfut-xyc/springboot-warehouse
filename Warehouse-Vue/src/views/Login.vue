@@ -1,6 +1,7 @@
 <template>
   <div class="body">
-    <el-form ref="loginForm" :model="loginForm" :rules="rules" @keyup.enter.native="login()" class="login-box" status-icon>
+    <el-form ref="loginForm" :model="loginForm" :rules="rules" @keyup.enter.native="login()" class="login-box"
+             status-icon>
       <h3 class="login-title">登录页面</h3>
       <el-form-item prop="username">
         <el-input v-model="loginForm.username" prefix-icon="el-icon-user" placeholder="请输入用户名"></el-input>
@@ -16,7 +17,7 @@
              style="cursor: pointer"/>
       </el-form-item>
       <el-form-item>
-        <el-checkbox v-model="checked">记住用户</el-checkbox>
+        <el-checkbox v-model="isRemembered">记住用户</el-checkbox>
       </el-form-item>
       <el-form-item>
         <el-button @click="login()" type="primary" icon="el-icon-s-promotion" class="btn">登录</el-button>
@@ -33,10 +34,10 @@
     name: "Login",
     data() {
       return {
-        checked: false,
+        isRemembered: false,
         imgURL: "",
         loginForm: {
-          username: this.$store.state.username,
+          username: "",
           password: "",
           verifyCode: ""
         },
@@ -59,7 +60,7 @@
             postRequest("/login", this.loginForm).then(res => {
               console.log(res);
               if (res.data === "success") {
-                that.$store.commit("login", {'username': that.loginForm.username, 'checked': that.checked});
+                that.$store.commit("login", that.loginForm.username);
                 that.$router.replace("/home");
                 that.$message.success("登录成功");
               } else if (res.data === "fail") {
@@ -68,8 +69,8 @@
                 that.$message.warning("验证码输入错误");
               }
             }).catch(error => {
-                console.log(error);
-                that.$message.error("服务器异常");
+              console.log(error);
+              that.$message.error("服务器异常");
             });
           } else {
             return false;
