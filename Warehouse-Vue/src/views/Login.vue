@@ -1,6 +1,6 @@
 <template>
   <div class="body">
-    <el-form ref="loginForm" :model="loginForm" :rules="rules" class="login-box" status-icon>
+    <el-form ref="loginForm" :model="loginForm" :rules="rules" @keyup.enter.native="login()" class="login-box" status-icon>
       <h3 class="login-title">登录页面</h3>
       <el-form-item prop="username">
         <el-input v-model="loginForm.username" prefix-icon="el-icon-user" placeholder="请输入用户名"></el-input>
@@ -54,9 +54,8 @@
       login() {
         this.$refs["loginForm"].validate(valid => {
           if (valid) {
-            var that = this;
+            let that = this;
             // axios所有的请求默认是json格式，登录必须封装成application/x-www-form-urlencoded格式
-            // 因为spring security不接受application/json
             postRequest("/login", this.loginForm).then(res => {
               console.log(res);
               if (res.data === "success") {
@@ -68,11 +67,10 @@
               } else {
                 that.$message.warning("验证码输入错误");
               }
-            })
-              .catch(error => {
+            }).catch(error => {
                 console.log(error);
                 that.$message.error("服务器异常");
-              });
+            });
           } else {
             return false;
           }
@@ -92,9 +90,11 @@
 
 <style>
   .body {
-    /* background-image: url("../assets/login.png"); */
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    background: url(../assets/bg.png) no-repeat;
+    background-size: cover;
+    position: fixed;
   }
 
   .login-box {

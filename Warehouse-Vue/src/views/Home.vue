@@ -2,12 +2,11 @@
   <el-container>
     <el-header style="background-color: #33b1f5;">
       <div class="title">仓库信息管理系统</div>
-
       <el-dropdown @command="logout" class="dropdown">
-        <span class="userinfo">
-          <el-avatar src=""></el-avatar>
-          {{currentUsername}}
-        </span>
+        <div class="currentUser">
+          <el-avatar src="" style="margin-right: 5px"></el-avatar>
+          <label>{{currentUsername}}</label>
+        </div>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>
             <i class="el-icon-delete"></i>退出登录
@@ -73,61 +72,57 @@
 </template>
 
 <script>
-export default {
-  name: "Home",
-  data() {
-    return {
-      currentUsername: "admin"
-    };
-  },
+  export default {
+    name: "Home",
+    data() {
+      return {
+        currentUsername: "admin"
+      };
+    },
 
-  mounted() {
-    // this.currentUsername = JSON.parse(
-    //   window.sessionStorage.getItem("username")
-    // );
-    this.currentUsername = this.$store.state.username;
-  },
+    mounted() {
+      // this.currentUsername = JSON.parse(
+      //   window.sessionStorage.getItem("username")
+      // );
+      this.currentUsername = this.$store.state.username;
+    },
 
-  methods: {
-    logout() {
-      var _this = this;
-      this.$axios
-        .get("/logout")
-        .then(res => {
+    methods: {
+      logout() {
+        let that = this;
+        this.$axios.get("/logout").then(res => {
           console.log(res);
           if (res.data === "success") {
-            _this.$store.commit("logout");
-            _this.$message.success("注销成功");
-            _this.$router.replace("/login");
+            that.$store.commit("logout");
+            that.$message.success("注销成功");
+            that.$router.replace("/login");
           }
-        })
-        .catch(error => {
+        }).catch(error => {
           console.log(error);
-          _this.$message.error("注销失败");
+          that.$message.error("注销失败");
         });
+      }
     }
-  }
-};
+  };
 </script>
 
 <style>
-.title {
-  color: white;
-  float: left;
-  font-size: large;
-  margin-top: 20px;
-}
+  .title {
+    color: white;
+    float: left;
+    font-size: large;
+    margin-top: 20px;
+  }
 
-.dropdown {
-  color: white;
-  float: right;
-  text-align: right;
-  cursor: pointer;
-  margin-top: 12px;
-}
+  .dropdown {
+    color: white;
+    float: right;
+    cursor: pointer;
+    margin-top: 10px;
+  }
 
-.userinfo {
-  display: flex;
-  align-items: center;
-}
+  .currentUser {
+    display: flex;
+    align-items: center;
+  }
 </style>
