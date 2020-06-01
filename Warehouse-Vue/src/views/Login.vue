@@ -13,8 +13,7 @@
         <el-input v-model="loginForm.verifyCode" style="width: 150px; vertical-align: middle;"
                   prefix-icon="el-icon-picture-outline-round" placeholder="请输入验证码"></el-input>
         <img id="captcha" :src="imgURL" @click="refreshCaptcha()"
-             alt="图片加载失败" title="看不清楚？换一张"
-             style="cursor: pointer"/>
+             alt="图片加载失败" title="看不清楚？换一张"/>
       </el-form-item>
       <el-form-item>
         <el-checkbox v-model="isRemembered">记住用户</el-checkbox>
@@ -56,7 +55,6 @@
         this.$refs["loginForm"].validate(valid => {
           if (valid) {
             let that = this;
-            // axios所有的请求默认是json格式，登录必须封装成application/x-www-form-urlencoded格式
             postRequest("/login", this.loginForm).then(res => {
               console.log(res);
               if (res.data === "success") {
@@ -64,7 +62,7 @@
                 that.$router.replace("/home");
                 that.$message.success("登录成功");
               } else if (res.data === "fail") {
-                that.$message.warning("用户名和密码不匹配");
+                that.$message.warning("登录失败");
               } else {
                 that.$message.warning("验证码输入错误");
               }
@@ -118,23 +116,16 @@
     width: 45%;
     border-radius: 5px;
   }
-
+  
   #captcha {
+    margin-left: 15px;
     display: inline-block;
-    vertical-align: middle;
-    -webkit-appearance: none;
-    background-image: none;
     border-radius: 4px;
-    border: 1px solid;
-    border-color: #0093e6;
-    box-sizing: border-box;
-    display: inline-block;
-    font-size: inherit;
     height: 40px;
-    outline: none;
-
-    margin-left: 19px;
-    text-align: right;
+    border: 1px solid #0093e6;
+    cursor: pointer;
+    vertical-align: middle;
+    box-sizing: border-box;
     transition: border-color .2s cubic-bezier(.645, .045, .355, 1)
   }
 

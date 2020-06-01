@@ -11,8 +11,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.session.ConcurrentSessionFilter;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 
 @Configuration
@@ -36,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-
+		web.ignoring().antMatchers("/favicon.ico", "/captcha");
 	}
 
 	@Override
@@ -75,8 +77,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				})
 				.permitAll()
 				.and()
-				.cors().and()
-				.csrf().disable()
 				.exceptionHandling()
 				.authenticationEntryPoint((request, response, exception) -> {
 					response.setContentType("application/json;charset=utf-8");
@@ -85,7 +85,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					out.write("Unauthorized, please login");
 					out.flush();
 					out.close();
-				});
+				})
+				.and()
+				.csrf().disable()
+				// 设置会话最大并发量为1，不允许重复登录
+				.sessionManagement().maximumSessions(1)
+				.maxSessionsPreventsLogin(true);
 	}
 
 
