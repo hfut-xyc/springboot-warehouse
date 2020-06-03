@@ -1,6 +1,6 @@
 version: '3'
 services:
-  nginx:
+  vue:
     image: warehouse-vue:latest
     build:
       context: .
@@ -8,7 +8,15 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    
+
+  server:
+    image: warehouse-server:latest
+    build:
+      context: .
+      dockerfile: ./deployment/jre/Dockerfile
+    ports:
+      - "127.0.0.1:8081:8081"
+
   # redis:
   #   image: redis
   #   ports:
