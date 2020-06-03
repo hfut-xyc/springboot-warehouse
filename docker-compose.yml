@@ -1,0 +1,22 @@
+version: '3'
+services:
+  nginx:
+    image: warehouse-vue:latest
+    build:
+      context: .
+      dockerfile: ./deployment/nginx/Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    
+  # redis:
+  #   image: redis
+  #   ports:
+  #     - "127.0.0.1:6379:6379"
+  
+  # mysql:
+  #   build:
+  #     context: .
+  #     dockerfile: ./deployment/mysql/Dockerfile
+  #   ports:
+  #     - "127.0.0.1:3306:3306"

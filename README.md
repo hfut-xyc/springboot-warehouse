@@ -31,10 +31,10 @@ Course Design of DataBase, HFUT, 2020
 
 #### 部署方法和注意事项
 1. 预计作为项目部署服务器的是Aliyun, Ubuntu服务器，并使用docker技术部署
-2. 需要安装JRE 8、nginx、docker、MySQL、Redis
+2. 服务器需要安装docker，并部署需要的docker容器
 3. 部署前需要敲定域名，并且按照该域名修改后端的服务器配置（主要是跨域访问），申请免费SSL证书
 4. 部署需要的脚本和配置文件写在deployment文件夹下面
-5. 前端编译所得`dist/**`应存放在`/var/www`下，使用nginx做为部署服务器。其配置文件已经存放在deployment文件夹中
+5. 前端编译所得`dist/**`应存放在nginx docker容器的`/var/www`下。nginx的配置文件和dockerfile已经存放在deployment文件夹中
 6. 后端编译成单个jar，并使用`nohup`等等手段后台运行
 
 
