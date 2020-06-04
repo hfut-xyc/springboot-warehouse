@@ -18,6 +18,10 @@ public class CaptchaGenerator {
 
     private String code;
 
+    public String getCode() {
+        return this.code;
+    }
+
     // 随机取色
     private static Color getRandomColor() {
         return new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256));
@@ -56,9 +60,5 @@ public class CaptchaGenerator {
             g.drawLine(x1, y1, x2, y2);
         }
         return image;
-    }
-
-    public String getCode() {
-        return this.code;
     }
 }

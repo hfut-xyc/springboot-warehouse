@@ -11,6 +11,10 @@
         </if>
     </select>
 
+    <select id="getPidByName" resultType="java.lang.Integer">
+        select id from tb_product where name=#{name}
+    </select>
+
     <select id="getProductByName" resultType="org.server.entity.Product">
         select * from view_product_warehouse
         where name=#{name}

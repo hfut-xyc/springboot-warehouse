@@ -21,6 +21,10 @@ public class ProductService {
 		return productMapper.getProductList(keyword);
 	}
 
+	public Integer getPidByName(String name) {
+		return productMapper.getPidByName(name);
+	}
+
 	// 商品不应该直接主动添加，而是随着入库订单而出现新的商品
 
 	// 商品没必要有删除操作，如果某一商品在所有仓库的合计数量告罄，直接显示0，方便后续补货

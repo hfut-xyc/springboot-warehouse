@@ -10,6 +10,8 @@ public interface ProductMapper {
 
 	List<Product> getProductList(String keyword);
 
+	Integer getPidByName(String name);
+
 	Product getProductByName(String name);
 
 	int addProduct(Product product);

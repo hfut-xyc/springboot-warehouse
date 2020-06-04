@@ -53,11 +53,10 @@ public class OrderService {
 	@Transactional
 	public int addOrderWithNew(Order order) throws InsertException {
 		// 新产品订单只能是入库，不需要查库存
-//		int res1 = warehouseMapper.addProductByWid(order.getWid(), order.getPid(), order.getAmount());
-//		int res2 = orderMapper.addOrder(order);
-//		if (res1 != 1 || res2 != 1) {
-//			throw new InsertException("添加订单失败");
-//		}
+		int res = orderMapper.addOrder(order);
+		if (res != 1) {
+			throw new InsertException("添加订单失败");
+		}
 		return 1;
 	}
 }

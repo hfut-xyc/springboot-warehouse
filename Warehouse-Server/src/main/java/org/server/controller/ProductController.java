@@ -41,6 +41,12 @@ public class ProductController {
 		return map;
 	}
 
+	@ApiOperation("通过产品名获取id")
+	@GetMapping("/product/id")
+	public Integer getPidByName(@RequestParam(value = "name") String name) {
+		return productService.getPidByName(name);
+	}
+
 	@ApiOperation("添加新产品")
 	@PostMapping("/product/add")
 	public int addProduct(@RequestBody Product product) {

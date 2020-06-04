@@ -17,7 +17,7 @@ import java.io.IOException;
 @RestController
 public class CaptchaController {
 
-    private CaptchaGenerator generator = new CaptchaGenerator();
+    private static CaptchaGenerator generator = new CaptchaGenerator();
 
     @ApiOperation("登录验证码生成接口")
     @GetMapping("/captcha")

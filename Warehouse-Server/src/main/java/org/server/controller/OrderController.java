@@ -26,6 +26,8 @@ public class OrderController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     @ApiOperation("按时间范围分页查询订单列表")
     @GetMapping("/orders")
     public Map<String, Object> getOrderList(
@@ -34,7 +36,6 @@ public class OrderController {
             @RequestParam(value = "startTime", required = false) Long startTimeStamp,
             @RequestParam(value = "endTime", required = false) Long endTimeStamp)
     {
-        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     	String startTime = (startTimeStamp == null) ? null : fmt.format(new Date(startTimeStamp));
 	    String endTime = (endTimeStamp == null) ? null : fmt.format(new Date(endTimeStamp));
 	    List<Order> list = orderService.getOrderList(startTime, endTime);
