@@ -64,6 +64,9 @@
           </el-form-item>
         </el-form>
       </template>
+      <template v-if="step === 2">
+        <el-button @click="step = 0" type="success" icon="el-icon-success" plain>订单创建成功，点击此处返回</el-button>
+      </template>
     </el-main>
 
   </el-container>

@@ -11,7 +11,7 @@
     </el-header>
 
     <el-table :data="orderList" v-loading="loading" border stripe>
-      <el-table-column prop="id" label="订单编号" sortable></el-table-column>
+      <el-table-column prop="id" label="订单编号" sortable fixed></el-table-column>
       <el-table-column prop="eid" label="负责人编号" sortable width="120"></el-table-column>
       <el-table-column prop="wid" label="仓库编号" sortable></el-table-column>
       <el-table-column prop="pid" label="产品编号" sortable></el-table-column>
@@ -21,7 +21,7 @@
       </el-table-column>
       <el-table-column prop="createTime" label="创建时间" sortable width="180"></el-table-column>
       <el-table-column prop="updateTime" label="修改时间" sortable width="180"></el-table-column>
-      <el-table-column label="操作" width="150">
+      <el-table-column label="操作" width="180" fixed="right">
         <template slot-scope="scope">
           <el-button @click="recoverOrder(scope.row)" size="mini" icon="el-icon-refresh" type="success" plain>恢复
           </el-button>

@@ -15,9 +15,12 @@
         select id from tb_product where name=#{name}
     </select>
 
+    <select id="getProductById" resultType="org.server.entity.Product">
+        select * from tb_product where id=#{id}
+    </select>
+
     <select id="getProductByName" resultType="org.server.entity.Product">
-        select * from view_product_warehouse
-        where name=#{name}
+        select * from tb_product where name=#{name}
     </select>
 
     <insert id="addProduct">

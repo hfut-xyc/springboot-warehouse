@@ -12,6 +12,8 @@ public interface ProductMapper {
 
 	Integer getPidByName(String name);
 
+	Product getProductById(int id);
+
 	Product getProductByName(String name);
 
 	int addProduct(Product product);

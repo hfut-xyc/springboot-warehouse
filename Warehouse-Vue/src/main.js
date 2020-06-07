@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 import ElementUI from 'element-ui'
+import VCharts from 'v-charts'
 import 'element-ui/lib/theme-chalk/index.css'
 
 import App from '@/App.vue'
@@ -12,6 +13,7 @@ axios.defaults.withCredentials = true;
 Vue.prototype.$axios = axios;
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
+Vue.use(VCharts);
 
 router.beforeEach((to, from, next) => {
     // 设置标题

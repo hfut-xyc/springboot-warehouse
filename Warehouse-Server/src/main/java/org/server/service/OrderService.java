@@ -8,6 +8,7 @@ import org.server.exception.InsertException;
 import org.server.exception.OutOfStockException;
 import org.server.exception.UpdateException;
 import org.server.mapper.OrderMapper;
+import org.server.mapper.ProductMapper;
 import org.server.mapper.WarehouseMapper;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,9 @@ public class OrderService {
 
 	@Resource
 	private WarehouseMapper warehouseMapper;
+
+	@Resource
+	private ProductMapper productMapper;
 
 	@Resource
 	private RedisTemplate<String, Object> redisTemplate;
@@ -55,11 +59,22 @@ public class OrderService {
 
 	@Transactional
 	public int addOrderWithNew(Order order) throws InsertException {
-		// 新产品订单只能是入库，不需要查库存
-		int res = orderMapper.addOrder(order);
-		if (res != 1) {
+		// 1.先添加订单
+		int res1 = orderMapper.addOrder(order);
+		if (res1 != 1) {
 			throw new InsertException("添加订单失败");
 		}
+		// 2.insert一条库存记录，而不是update
+		int res2 = warehouseMapper.addProductByWid(order.getWid(), order.getPid(), order.getAmount());
+		if (res2 != 1) {
+			throw new InsertException("插入库存记录失败");
+		}
+		// 3.更新缓存
+		String warehousekey = "warehouse:" + order.getWid();
+		String productKey = "product:" + order.getPid();
+		Product product = productMapper.getProductById(order.getPid());
+		product.setTotal(order.getAmount());
+		redisTemplate.boundHashOps(warehousekey).put(productKey, product);
 		return 1;
 	}
 
