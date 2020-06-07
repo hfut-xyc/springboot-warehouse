@@ -22,7 +22,9 @@
       <el-table-column prop="roles" label="角色权限">
         <template slot-scope="scope">
           <el-checkbox :checked="true" disabled>普通用户</el-checkbox>
-          <el-checkbox :name="scope.row.id.toString()" :checked="scope.row.roles.length === 2" @change="updateRole(scope.row)">超级管理员</el-checkbox>
+          <el-checkbox :name="scope.row.id.toString()" :checked="scope.row.roles.length === 2"
+                       @change="updateRole(scope.row)">超级管理员
+          </el-checkbox>
         </template>
       </el-table-column>
       <el-table-column prop="enabled" label="用户状态" width="150">
@@ -85,9 +87,9 @@
       // 二次密码校验
       const validatorPassword = (rule, value, callback) => {
         if (value === '')
-          callback(new Error('请再次输入密码'))
+          callback(new Error('请再次输入密码'));
         else if (value !== this.addForm.password)
-          callback(new Error('两次输入密码不一致'))
+          callback(new Error('两次输入密码不一致'));
         else
           callback()
       };
@@ -133,9 +135,9 @@
             that.loading = false;
             that.$message.error("数据加载失败");
           }
-        }).catch(res => {
-            that.loading = false;
-            that.$message.error("服务器异常");
+        }).catch(err => {
+          that.loading = false;
+          that.$message.error("服务器异常");
         });
       },
 
@@ -145,14 +147,14 @@
           return;
         }
         this.loading = true;
-        var url = "/users?page=" + this.page + "&pageSize=" + this.pageSize + "&keyword=" + this.keyword.trim();
+        let url = "/users?page=" + this.page + "&pageSize=" + this.pageSize + "&keyword=" + this.keyword.trim();
         this.loadUserList(url);
       },
 
       onPageChange(val) {
         this.page = val;
         this.loading = true;
-        var url = "/users?page=" + this.page + "&pageSize=" + this.pageSize;
+        let url = "/users?page=" + this.page + "&pageSize=" + this.pageSize;
         if (this.keyword !== "") {
           url += "&keyword=" + this.keyword.trim();
         }
@@ -166,7 +168,7 @@
           this.pageSize = 10;
         }
         this.loading = true;
-        var url = "/users?page=" + this.page + "&pageSize=" + this.pageSize;
+        let url = "/users?page=" + this.page + "&pageSize=" + this.pageSize;
         if (this.keyword !== "") {
           url += "&keyword=" + this.keyword.trim();
         }
@@ -176,33 +178,67 @@
       addUser() {
         this.$refs["addForm"].validate(valid => {
           if (valid) {
-            var that = this;
+            let that = this;
             this.$axios.post("/user/add", {
               username: this.addForm.username,
               password: this.addForm.password,
               phone: this.addForm.phone
-            })
-              .then(res => {
-                if (res.status === 200) {
-                  if (res.data === 1) {
-                    that.$message.success("用户添加成功");
-                    that.isDialogVisible = false;
-                    that.addForm = {username: "", password: "", phone: ""};
-                    that.loadUserList("/users");
-                  } else {
-                    that.$message.warning("用户添加失败, 用户名可能已存在");
-                  }
-                } else if (res.status === 403) {
-                  that.$message.warning("权限不足，请联系管理员");
+            }).then(res => {
+              if (res.status === 200) {
+                if (res.data === 1) {
+                  that.$message.success("用户添加成功");
+                  that.isDialogVisible = false;
+                  that.addForm = {username: "", password: "", phone: ""};
+                  that.loadUserList("/users");
+                } else {
+                  that.$message.warning("用户添加失败, 用户名可能已存在");
                 }
-              })
-              .catch(err => {
-                console.log(err);
-                that.$message.error("服务器异常");
-              });
+              } else if (res.status === 403) {
+                that.$message.warning("权限不足，请联系管理员");
+              }
+            }).catch(err => {
+              console.log(err);
+              that.$message.error("服务器异常");
+            });
           } else {
             return false;
           }
+        });
+      },
+
+      updateEnabled(row) {
+        let that = this;
+        let url = "/user/" + row.id + "/update/enabled" + "?enabled=" + row.enabled;
+        this.$axios.post(url, {}).then(res => {
+          console.log(res);
+          if (res.status === 200) {
+            if (res.data === 1) {
+              that.$message.success("用户[" + row.username + "]状态修改成功");
+            } else {
+              that.$message.warning("用户[" + row.username + "]状态修改失败");
+            }
+          }
+        }).catch(res => {
+          console.log(res);
+          that.$message.error("服务器异常")
+        });
+      },
+
+      updateRole(row) {
+        let that = this;
+        let checked = document.getElementsByName(row.id)[0].checked;
+        let url = "/user/" + row.id + "/update/role" + "?isAdmin=" + checked;
+        this.$axios.post(url, {}).then(res => {
+          if (res.status === 200) {
+            if (res.data === 1) {
+              that.$message.success("修改用户[" + row.username + "]角色成功");
+            } else {
+              that.$message.warning("修改用户[" + row.username + "]角色失败");
+            }
+          }
+        }).catch(err => {
+          console.log(err);
+          that.$message.error("服务器异常")
         });
       },
 
@@ -212,48 +248,15 @@
           cancelButtonText: "取消",
           type: "warning"
         }).then(() => {
-          var that = this;
-          this.$axios.delete("/user/" + row.id + "/delete")
-            .then(res => {
-              console.log(res);
-              that.$message.success("用户[" + row.username + "]已删除");
-              that.loadUserList("/users");
-            })
-            .catch(res => {
-              console.log(res);
-              that.$message.error("服务器异常");
-            });
-        });
-      },
-
-      updateEnabled(row) {
-        this.$axios.post("/user/" + row.id + "/update/enabled" + "?enabled=" + row.enabled, {})
-          .then(res => {
+          let that = this;
+          this.$axios.delete("/user/" + row.id + "/delete").then(res => {
+            that.$message.success("用户[" + row.username + "]已删除");
+            that.loadUserList("/users");
+          }).catch(res => {
             console.log(res);
-            this.$message.success("用户[" + row.username + "]状态已改变");
-          })
-          .catch(res => {
-            console.log(res);
+            that.$message.error("服务器异常");
           });
-      },
-
-      updateRole(row) {
-        let that = this;
-        let checked = document.getElementsByName(row.id)[0].checked;
-        this.$axios.post(
-          "/user/" + row.id + "/update/role" + "?isAdmin=" + checked,
-          {}
-        ).then(res => {
-           if (res.status === 200) {
-             if (res.data === 1) {
-               that.$message.success("修改用户[" + row.username + "]角色成功");
-             } else {
-               that.$message.warning("修改用户[" + row.username + "]角色失败");
-             }
-           }
-         }).catch(err => {
-           this.$message.error("服务器异常")
-         });
+        });
       }
     }
   };

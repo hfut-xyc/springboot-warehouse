@@ -1,9 +1,12 @@
 package org.server.service;
 
+import lombok.Data;
 import org.server.entity.Order;
 import org.server.entity.Product;
+import org.server.exception.DeleteException;
 import org.server.exception.InsertException;
 import org.server.exception.OutOfStockException;
+import org.server.exception.UpdateException;
 import org.server.mapper.OrderMapper;
 import org.server.mapper.WarehouseMapper;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -25,8 +28,8 @@ public class OrderService {
 	@Resource
 	private RedisTemplate<String, Object> redisTemplate;
 
-	public List<Order> getOrderList(String startTime, String endTime) {
-		return orderMapper.getOrderList(startTime, endTime);
+	public List<Order> getOrderList(String status, String startTime, String endTime) {
+		return orderMapper.getOrderList(status, startTime, endTime);
 	}
 
 	@Transactional
@@ -56,6 +59,24 @@ public class OrderService {
 		int res = orderMapper.addOrder(order);
 		if (res != 1) {
 			throw new InsertException("添加订单失败");
+		}
+		return 1;
+	}
+
+	@Transactional
+	public int deleteOrderById(int id) throws DeleteException {
+		int res = orderMapper.deleteOrderById(id);
+		if (res != 1) {
+			throw new DeleteException("彻底删除订单失败");
+		}
+		return 1;
+	}
+
+	@Transactional
+	public int updateOrderStatus(int id, String status) throws UpdateException {
+		int res = orderMapper.updateOrderStatus(id, status);
+		if (res != 1) {
+			throw new UpdateException("订单状态修改失败");
 		}
 		return 1;
 	}

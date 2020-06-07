@@ -58,6 +58,7 @@
         loading: true
       }
     },
+
     mounted() {
       this.loadOrderList("/orders")
     },
@@ -71,10 +72,10 @@
             that.orderList = res.data.orderList;
             that.total = res.data.total;
             that.loading = false;
-            that.$message.success("数据加载成功");
+            that.$message.success("订单数据加载成功");
           } else {
             that.loading = false;
-            that.$message.error("数据加载失败");
+            that.$message.error("订单数据加载失败");
           }
         }).catch(err => {
           that.loading = false;
@@ -87,27 +88,61 @@
           this.$message.warning("请输入查询区间");
           return;
         }
-        console.log(this.period)
         this.loading = true;
         let url = `/orders?page=${this.page}&pageSize=${this.pageSize}&startTime=${this.period[0].getTime()}&endTime=${this.period[1].getTime()}`;
-        console.log(url)
         this.loadOrderList(url);
       },
 
-      onPageChange() {
-
+      onPageChange(val) {
+        this.page = val;
+        this.loading = true;
+        let url = "/orders?page=" + this.page + "&pageSize=" + this.pageSize;
+        if (this.period.length !== 0) {
+          url += "&startTime=" + this.period[0].getTime() + "&endTime=" + this.period[1].getTime();
+        }
+        this.loadOrderList(url);
       },
 
-      onPageSizeChange() {
-
+      onPageSizeChange(val) {
+        this.pageSize = val;
+        if (this.pageSize * (this.page - 1) >= this.total) {
+          this.page = 1;
+          this.pageSize = 10;
+        }
+        this.loading = true;
+        let url = "/orders?page=" + this.page + "&pageSize=" + this.pageSize;
+        if (this.period.length !== 0) {
+          url += "&startTime=" + this.period[0].getTime() + "&endTime=" + this.period[1].getTime();
+        }
+        this.loadOrderList(url);
       },
 
       orderFilter(value, row) {
         return value === "input" ? row.amount > 0 : row.amount < 0;
       },
 
-      deleteOrder() {
-
+      deleteOrder(row) {
+        this.$confirm("是否将该订单移至回收站?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(() => {
+          let that = this;
+          let url = "/order/" + row.id +"/update/status?status=报废";
+          this.$axios.post(url, {}).then(res => {
+            if (res.status === 200) {
+              if (res.data === 1) {
+                that.$message.success("订单删除成功");
+                that.loadOrderList("/orders?page=" + this.page + "&pageSize=" + this.pageSize);
+              } else {
+                that.$message.warning("订单删除失败");
+              }
+            }
+          }).catch(err => {
+            console.log(err);
+            that.$message.error("服务器异常");
+          });
+        });
       },
     }
   }

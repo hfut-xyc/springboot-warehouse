@@ -11,9 +11,12 @@ import java.util.List;
 @Mapper
 public interface OrderMapper {
 
-	List<Order> getOrderList(@Param("startTime") String startTime, @Param("endTime") String endTime);
+	List<Order> getOrderList(@Param("status") String status, @Param("startTime") String startTime, @Param("endTime") String endTime);
 
 	int addOrder(Order order);
 
 	int deleteOrderById(int id);
+
+	int updateOrderStatus(@Param("id") int id, @Param("status") String status);
+
 }

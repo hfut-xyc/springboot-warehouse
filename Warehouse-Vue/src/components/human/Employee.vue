@@ -76,7 +76,8 @@
         </el-form-item>
         <el-form-item label="出生日期">
           <el-col :span="8">
-            <el-date-picker v-model="addForm.birthday" :editable="false" placeholder="选择日期" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-date-picker v-model="addForm.birthday" :editable="false" placeholder="选择日期"
+                            value-format="yyyy-MM-dd"></el-date-picker>
           </el-col>
         </el-form-item>
       </el-form>
@@ -113,7 +114,8 @@
             </el-form-item>
             <el-form-item label="出生日期">
               <el-col :span="8">
-                <el-date-picker v-model="editForm.birthday" :editable="false" placeholder="选择日期" value-format="yyyy-MM-dd"></el-date-picker>
+                <el-date-picker v-model="editForm.birthday" :editable="false" placeholder="选择日期"
+                                value-format="yyyy-MM-dd"></el-date-picker>
               </el-col>
             </el-form-item>
             <el-form-item label="入职日期">
@@ -131,7 +133,8 @@
           <template slot="title">
             <i class="el-icon-s-home"></i>仓库信息
           </template>
-          <el-transfer :titles="['未分配仓库', '已分配仓库']" :data="transferLeft" v-model="transferRight" filterable></el-transfer>
+          <el-transfer :titles="['未分配仓库', '已分配仓库']" :data="transferLeft" v-model="transferRight"
+                       filterable></el-transfer>
           <div style="float: right; margin-top: 15px; margin-bottom: 10px">
             <el-button @click="updateWarehouse" type="primary">修改仓库信息</el-button>
             <el-button @click="isEditDialogVisible=false">取消</el-button>
@@ -199,10 +202,6 @@
         });
       },
 
-      reloadEmployeeList() {
-        this.loadEmployeeList(`/employees?page=${this.page}&pageSize=${this.pageSize}`);
-      },
-
       searchEmployee() {
         if (this.keyword.trim() === "") {
           this.$message.warning("请输入关键字");
@@ -247,7 +246,7 @@
                   that.$message.success("员工添加成功");
                   that.isAddDialogVisible = false;
                   that.addForm = {name: "", phone: "", salary: ""};
-                  that.reloadEmployeeList();
+                  this.loadEmployeeList(`/employees?page=${this.page}&pageSize=${this.pageSize}`);
                 } else {
                   that.$message.warning("员工添加失败");
                 }
@@ -301,8 +300,7 @@
         this.$refs.editForm.validate(valid => {
           if (valid) {
             let that = this;
-            this.$axios.post(`/employee/${this.editForm.id}/update/info`, this.editForm)
-            .then(res => {
+            this.$axios.post(`/employee/${this.editForm.id}/update/info`, this.editForm).then(res => {
               if (res.status === 200) {
                 if (res.data === 1) {
                   that.$message.success("员工基本信息修改成功");
@@ -317,8 +315,7 @@
                 that.$message.warning("权限不足，请联系管理员");
               }
               that.isEditDialogVisible = false;
-            })
-            .catch(err => {
+            }).catch(err => {
               console.log(err);
               that.$message.error("服务器异常");
             });
@@ -330,24 +327,24 @@
 
       updateWarehouse() {
         let that = this;
-        this.$axios.post(`/employee/${this.editForm.id}/update/warehouse`, {"widList":this.transferRight})
-        .then(res => {
-          if (res.status === 200) {
-            if (res.data === 1) {
-              that.$message.success("员工管辖仓库修改成功");
-              that.reloadEmployeeList();
-            } else {
-              that.$message.warning("员工管辖仓库修改失败");
+        this.$axios.post(`/employee/${this.editForm.id}/update/warehouse`, {"widList": this.transferRight})
+          .then(res => {
+            if (res.status === 200) {
+              if (res.data === 1) {
+                that.$message.success("员工管辖仓库修改成功");
+                that.loadEmployeeList(`/employees?page=${this.page}&pageSize=${this.pageSize}`);
+              } else {
+                that.$message.warning("员工管辖仓库修改失败");
+              }
+            } else if (res.status === 403) {
+              that.$message.warning("权限不足，请联系管理员");
             }
-          } else if (res.status === 403) {
-            that.$message.warning("权限不足，请联系管理员");
-          }
-          this.isEditDialogVisible = false;
-        })
-        .catch(err => {
-          console.log(err);
-          that.$message.error("服务器异常");
-        });
+            this.isEditDialogVisible = false;
+          })
+          .catch(err => {
+            console.log(err);
+            that.$message.error("服务器异常");
+          });
       },
 
       deleteEmployee(row) {
@@ -356,7 +353,7 @@
           if (res.status === 200) {
             if (res.data === 1) {
               that.$message.success("员工删除成功");
-              that.reloadEmployeeList();
+              this.loadEmployeeList(`/employees?page=${this.page}&pageSize=${this.pageSize}`);
             } else {
               that.$message.warning("员工删除失败");
             }

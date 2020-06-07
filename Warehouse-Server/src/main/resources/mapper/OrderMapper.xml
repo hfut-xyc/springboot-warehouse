@@ -5,7 +5,7 @@
 <mapper namespace="org.server.mapper.OrderMapper">
 
     <select id="getOrderList" resultType="org.server.entity.Order">
-        select * from tb_order where status="正常"
+        select * from tb_order where status=#{status}
         <if test="startTime != null ">
             and create_time >= #{startTime}
         </if>
@@ -22,5 +22,9 @@
     <delete id="deleteOrderById">
         delete from tb_order where id=#{id}
     </delete>
+
+    <update id="updateOrderStatus">
+        update tb_order set status=#{status} where id=#{id}
+    </update>
 
 </mapper>

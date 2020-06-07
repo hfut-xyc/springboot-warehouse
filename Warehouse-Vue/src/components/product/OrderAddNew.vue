@@ -126,7 +126,7 @@
         this.$axios.get(url).then(res => {
           if (res.status === 200) {
             console.log(res);
-            that.addOrderForm.pid = res.data
+            that.addOrderForm.pid = res.data;
           } else {
             that.$message.error("产品数据加载失败");
           }
@@ -200,6 +200,7 @@
 
       resetAddOrderForm() {
         this.addOrderForm = {
+          pid: this.addOrderForm.pid,   // 从上一步传来的商品id不要变
           wid: '',
           eid: '',
           amount: 0,
