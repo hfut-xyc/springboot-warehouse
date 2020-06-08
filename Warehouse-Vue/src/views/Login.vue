@@ -56,13 +56,12 @@
           if (valid) {
             let that = this;
             postRequest("/login", this.loginForm).then(res => {
-              console.log(res);
               if (res.data === "success") {
                 that.$store.commit("login", that.loginForm.username);
                 that.$router.replace("/home");
                 that.$message.success("登录成功");
               } else if (res.data === "fail") {
-                that.$message.warning("登录失败");
+                that.$message.warning("用户名与密码不匹配");
               } else {
                 that.$message.warning("验证码输入错误");
               }

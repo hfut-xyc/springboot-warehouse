@@ -78,14 +78,13 @@
       logout() {
         let that = this;
         this.$axios.get("/logout").then(res => {
-          console.log(res);
           if (res.data === "success") {
             that.$store.commit("logout");
             that.$router.replace("/login");
             that.$message.success("注销成功");
           }
-        }).catch(error => {
-          console.log(error);
+        }).catch(err => {
+          console.log(err);
           that.$message.error("注销失败");
         });
       }

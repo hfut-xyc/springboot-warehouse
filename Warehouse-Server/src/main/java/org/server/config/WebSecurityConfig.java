@@ -1,5 +1,6 @@
 package org.server.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.server.component.CaptchaFilter;
 import org.server.service.UserService;
 import org.springframework.context.annotation.Bean;
@@ -45,8 +46,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.addFilterBefore(captchaFilter, UsernamePasswordAuthenticationFilter.class);
 		http.authorizeRequests()
-//				.antMatchers("/user/**", "employee/**").hasRole("admin")
-//				.anyRequest().authenticated()
+				.antMatchers("/user/**", "employee/**").hasRole("admin")
+				.anyRequest().authenticated()
 				.and()
 				.formLogin()
 				.loginProcessingUrl("/login")
@@ -88,9 +89,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				})
 				.and()
 				.csrf().disable()
-				// 设置会话最大并发量为1，不允许重复登录
-				.sessionManagement().maximumSessions(1)
-				.maxSessionsPreventsLogin(true);
+				// 设置会话最大并发量为1，重复登录会踢掉前面的用户
+				.sessionManagement().maximumSessions(1);
 	}
 
 
