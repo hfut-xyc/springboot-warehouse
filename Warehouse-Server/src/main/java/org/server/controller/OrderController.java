@@ -2,6 +2,7 @@ package org.server.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.server.dto.OrderChart;
 import org.server.entity.Order;
 import org.server.exception.DeleteException;
 import org.server.exception.InsertException;
@@ -49,6 +50,12 @@ public class OrderController {
         map.put("orderList", list.subList(start, end));
         map.put("total", list.size());
         return map;
+    }
+
+    @ApiOperation("获得按日期统计订单数的曲线图数据")
+    @GetMapping("/order/chart")
+    public List<OrderChart> getOrderChart() {
+        return orderService.getOrderChart();
     }
 
     @ApiOperation("创建旧产品的订单")

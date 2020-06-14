@@ -20,7 +20,6 @@
                        :filter-method="orderFilter">
       </el-table-column>
       <el-table-column prop="createTime" label="创建时间" sortable width="180"></el-table-column>
-      <el-table-column prop="updateTime" label="修改时间" sortable width="180"></el-table-column>
       <el-table-column label="操作" width="150" fixed="right">
         <template slot-scope="scope">
           <el-button @click="deleteOrder(scope.row)" size="mini" icon="el-icon-delete" type="danger" plain>删除

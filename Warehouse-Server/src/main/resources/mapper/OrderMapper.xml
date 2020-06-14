@@ -14,6 +14,14 @@
         </if>
     </select>
 
+    <select id="getOrderChart" resultType="org.server.dto.OrderChart">
+        select
+            DATE_FORMAT(create_time, '%Y-%m-%d') as date,
+            count(*) as count
+        from tb_order
+        GROUP BY DATE_FORMAT(create_time, '%Y-%m-%d')
+    </select>
+
     <insert id="addOrder">
         insert ignore into tb_order(eid, wid, pid, amount, status)
         values (#{eid}, #{wid}, #{pid}, #{amount}, #{status})

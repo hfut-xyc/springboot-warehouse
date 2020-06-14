@@ -41,7 +41,6 @@ create table tb_user_role(
 
 insert into tb_user_role values(1000, 1);
 insert into tb_user_role values(1000, 2);
-insert into tb_user_role values(1001, 1);
 insert into tb_user_role values(1001, 2);
 
 -- *********************************************************************
@@ -138,7 +137,6 @@ create table tb_order(
     `amount` int not null comment '订单数量: 正数表示入库, 负数表示出库',
     `status` enum('正常', '报废') not null,
     `create_time` timestamp default current_timestamp(),
-    `update_time` timestamp default current_timestamp(),
     primary key(id),
     key idx_create_time(create_time)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;

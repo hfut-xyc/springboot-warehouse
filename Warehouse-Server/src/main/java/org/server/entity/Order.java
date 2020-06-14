@@ -18,19 +18,16 @@ public class Order {
 	private String status;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "UTC+8")
 	private Date createTime;
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "UTC+8")
-	private Date updateTime;
 
 	public Order() {}
 
-	public Order(int id, int eid, int wid, int pid, int amount, Date createTime, Date updateTime) {
+	public Order(int id, int eid, int wid, int pid, int amount, Date createTime) {
 		this.id = id;
 		this.eid = eid;
 		this.wid = wid;
 		this.pid = pid;
 		this.amount = amount;
 		this.createTime = createTime;
-		this.updateTime = updateTime;
 	}
 
 	@Override
@@ -42,7 +39,6 @@ public class Order {
 				", pid=" + pid +
 				", amount=" + amount +
 				", createTime=" + createTime +
-				", updateTime=" + updateTime +
 				'}';
 	}
 }

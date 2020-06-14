@@ -1,5 +1,6 @@
 package org.server.service;
 
+import org.server.dto.OrderChart;
 import org.server.entity.Order;
 import org.server.entity.Product;
 import org.server.exception.DeleteException;
@@ -33,6 +34,10 @@ public class OrderService {
 
 	public List<Order> getOrderList(String status, String startTime, String endTime) {
 		return orderMapper.getOrderList(status, startTime, endTime);
+	}
+
+	public List<OrderChart> getOrderChart() {
+		return orderMapper.getOrderChart();
 	}
 
 	@Transactional

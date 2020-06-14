@@ -236,33 +236,6 @@
         this.loadEmployeeList(url);
       },
 
-      addEmployee() {
-        this.$refs["addForm"].validate(valid => {
-          if (valid) {
-            let that = this;
-            this.$axios.post("/employee/add", this.addForm).then(res => {
-              if (res.status === 200) {
-                if (res.data === 1) {
-                  that.$message.success("员工添加成功");
-                  that.isAddDialogVisible = false;
-                  that.addForm = {name: "", phone: "", salary: ""};
-                  this.loadEmployeeList(`/employees?page=${this.page}&pageSize=${this.pageSize}`);
-                } else {
-                  that.$message.warning("员工添加失败");
-                }
-              } else if (res.status === 403) {
-                that.$message.warning("权限不足，请联系管理员");
-              }
-            }).catch(err => {
-              console.log(err);
-              that.$message.error("服务器异常");
-            });
-          } else {
-            return false;
-          }
-        });
-      },
-
       showEditDialog(row) {
         let left = [];
         let right = [];
@@ -291,75 +264,113 @@
           "hireDate": row.hireDate,
           "salary": row.salary,
           "warehouses": row.warehouses
-        }
+        };
         this.editRow = row;
         this.isEditDialogVisible = true;
       },
 
-      updateEmployee() {
-        this.$refs.editForm.validate(valid => {
-          if (valid) {
-            let that = this;
-            this.$axios.post(`/employee/${this.editForm.id}/update/info`, this.editForm).then(res => {
-              if (res.status === 200) {
-                if (res.data === 1) {
-                  that.$message.success("员工基本信息修改成功");
-                  for (let i in that.editForm) {
-                    console.log(i + that.editForm[i]);
-                    that.editRow[i] = that.editForm[i];
-                  }
-                } else {
-                  that.$message.warning("员工基本信息修改失败");
-                }
-              } else if (res.status === 403) {
-                that.$message.warning("权限不足，请联系管理员");
-              }
-              that.isEditDialogVisible = false;
-            }).catch(err => {
-              console.log(err);
-              that.$message.error("服务器异常");
-            });
-          } else {
+      addEmployee() {
+        this.$refs["addForm"].validate(valid => {
+          if (!valid) {
             return false;
           }
+          let that = this;
+          this.$axios.post("/employee/add", this.addForm).then(res => {
+            if (res.status === 200) {
+              if (res.data === 1) {
+                that.$message.success("员工添加成功");
+                that.isAddDialogVisible = false;
+                that.addForm = {name: "", phone: "", salary: ""};
+                this.loadEmployeeList(`/employees?page=${this.page}&pageSize=${this.pageSize}`);
+              } else {
+                that.$message.warning("员工添加失败");
+              }
+            }
+          }).catch(err => {
+            if (err.toString().includes("403")) {
+              that.$message.error("权限不足，请联系管理员")
+            } else {
+              that.$message.error("服务器异常")
+            }
+          });
+        });
+      },
+
+      updateEmployee() {
+        this.$refs.editForm.validate(valid => {
+          if (!valid) {
+            return false;
+          }
+          let that = this;
+          this.$axios.post(`/employee/${this.editForm.id}/update/info`, this.editForm).then(res => {
+            if (res.status === 200) {
+              if (res.data === 1) {
+                that.$message.success("员工基本信息修改成功");
+                for (let i in that.editForm) {
+                  console.log(i + that.editForm[i]);
+                  that.editRow[i] = that.editForm[i];
+                }
+              } else {
+                that.$message.warning("员工基本信息修改失败");
+              }
+            }
+            that.isEditDialogVisible = false;
+          }).catch(err => {
+            if (err.toString().includes("403")) {
+              that.$message.error("权限不足，请联系管理员")
+            } else {
+              that.$message.error("服务器异常")
+            }
+          });
         });
       },
 
       updateWarehouse() {
         let that = this;
-        this.$axios.post(`/employee/${this.editForm.id}/update/warehouse`, {"widList": this.transferRight})
-          .then(res => {
-            if (res.status === 200) {
-              if (res.data === 1) {
-                that.$message.success("员工管辖仓库修改成功");
-                that.loadEmployeeList(`/employees?page=${this.page}&pageSize=${this.pageSize}`);
-              } else {
-                that.$message.warning("员工管辖仓库修改失败");
-              }
-            } else if (res.status === 403) {
-              that.$message.warning("权限不足，请联系管理员");
+        let url = `/employee/${this.editForm.id}/update/warehouse`;
+        this.$axios.post(url, {"widList": this.transferRight}).then(res => {
+          if (res.status === 200) {
+            if (res.data === 1) {
+              that.$message.success("员工管辖仓库修改成功");
+              that.loadEmployeeList(`/employees?page=${this.page}&pageSize=${this.pageSize}`);
+            } else {
+              that.$message.warning("员工管辖仓库修改失败");
             }
-            this.isEditDialogVisible = false;
-          })
-          .catch(err => {
-            console.log(err);
-            that.$message.error("服务器异常");
-          });
+          }
+          this.isEditDialogVisible = false;
+        }).catch(err => {
+          if (err.toString().includes("403")) {
+            that.$message.error("权限不足，请联系管理员")
+          } else {
+            that.$message.error("服务器异常")
+          }
+        });
       },
 
       deleteEmployee(row) {
         let that = this;
-        this.$axios.delete(`/employee/${row.id}/delete`).then(res => {
-          if (res.status === 200) {
-            if (res.data === 1) {
-              that.$message.success("员工删除成功");
-              this.loadEmployeeList(`/employees?page=${this.page}&pageSize=${this.pageSize}`);
-            } else {
-              that.$message.warning("员工删除失败");
+        this.$confirm("是否删除该员工?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(() => {
+          let that = this;
+          this.$axios.delete(`/employee/${row.id}/delete`).then(res => {
+            if (res.status === 200) {
+              if (res.data === 1) {
+                that.$message.success("员工删除成功");
+                that.loadEmployeeList(`/employees?page=${this.page}&pageSize=${this.pageSize}`);
+              } else {
+                that.$message.warning("员工删除失败");
+              }
             }
-          } else if (res.status === 403) {
-            that.$message.warning("权限不足，请联系管理员");
-          }
+          }).catch(err => {
+            if (err.toString().includes("403")) {
+              that.$message.error("权限不足，请联系管理员")
+            } else {
+              that.$message.error("服务器异常")
+            }
+          });
         });
       }
     }

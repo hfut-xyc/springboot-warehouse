@@ -28,13 +28,14 @@ public class User implements UserDetails {
 
 	public User() {}
 
-	public User(int id, String username, String password, String phone, boolean enabled, Date registerTime) {
+	public User(int id, String username, String password, String phone, boolean enabled, Date registerTime, List<Role> roles) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.phone = phone;
 		this.enabled = enabled;
 		this.registerTime = registerTime;
+		this.roles = roles;
 	}
 
 	@Override

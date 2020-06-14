@@ -177,32 +177,32 @@
 
       addUser() {
         this.$refs["addForm"].validate(valid => {
-          if (valid) {
-            let that = this;
-            this.$axios.post("/user/add", {
-              username: this.addForm.username,
-              password: this.addForm.password,
-              phone: this.addForm.phone
-            }).then(res => {
-              if (res.status === 200) {
-                if (res.data === 1) {
-                  that.$message.success("用户添加成功");
-                  that.isDialogVisible = false;
-                  that.addForm = {username: "", password: "", phone: ""};
-                  that.loadUserList("/users");
-                } else {
-                  that.$message.warning("用户添加失败, 用户名可能已存在");
-                }
-              } else if (res.status === 403) {
-                that.$message.warning("权限不足，请联系管理员");
-              }
-            }).catch(err => {
-              console.log(err);
-              that.$message.error("服务器异常");
-            });
-          } else {
+          if (!valid) {
             return false;
           }
+          let that = this;
+          this.$axios.post("/user/add", {
+            username: this.addForm.username,
+            password: this.addForm.password,
+            phone: this.addForm.phone
+          }).then(res => {
+            if (res.status === 200) {
+              if (res.data === 1) {
+                that.$message.success("用户添加成功");
+                that.isDialogVisible = false;
+                that.addForm = {username: "", password: "", phone: ""};
+                that.loadUserList("/users");
+              } else {
+                that.$message.warning("用户添加失败, 用户名可能已存在");
+              }
+            }
+          }).catch(err => {
+            if (err.toString().includes("403")) {
+              that.$message.error("权限不足，请联系管理员")
+            } else {
+              that.$message.error("服务器异常")
+            }
+          });
         });
       },
 
@@ -210,7 +210,6 @@
         let that = this;
         let url = "/user/" + row.id + "/update/enabled" + "?enabled=" + row.enabled;
         this.$axios.post(url, {}).then(res => {
-          console.log(res);
           if (res.status === 200) {
             if (res.data === 1) {
               that.$message.success("用户[" + row.username + "]状态修改成功");
@@ -218,9 +217,12 @@
               that.$message.warning("用户[" + row.username + "]状态修改失败");
             }
           }
-        }).catch(res => {
-          console.log(res);
-          that.$message.error("服务器异常")
+        }).catch(err => {
+          if (err.toString().includes("403")) {
+            that.$message.error("权限不足，请联系管理员")
+          } else {
+            that.$message.error("服务器异常")
+          }
         });
       },
 
@@ -237,8 +239,11 @@
             }
           }
         }).catch(err => {
-          console.log(err);
-          that.$message.error("服务器异常")
+          if (err.toString().includes("403")) {
+            that.$message.error("权限不足，请联系管理员")
+          } else {
+            that.$message.error("服务器异常")
+          }
         });
       },
 
@@ -252,9 +257,12 @@
           this.$axios.delete("/user/" + row.id + "/delete").then(res => {
             that.$message.success("用户[" + row.username + "]已删除");
             that.loadUserList("/users");
-          }).catch(res => {
-            console.log(res);
-            that.$message.error("服务器异常");
+          }).catch(err => {
+            if (err.toString().includes("403")) {
+              that.$message.error("权限不足，请联系管理员")
+            } else {
+              that.$message.error("服务器异常")
+            }
           });
         });
       }

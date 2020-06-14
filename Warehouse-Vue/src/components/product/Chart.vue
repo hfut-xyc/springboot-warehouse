@@ -1,9 +1,8 @@
 <template>
   <div>
-    <ve-line :data="test"></ve-line>
-    <ve-pie :data="chartData"></ve-pie>
+    <ve-line :data="orderChart" :settings="settings"></ve-line>
+    <ve-pie :data="productChart"></ve-pie>
   </div>
-
 </template>
 
 <script>
@@ -11,28 +10,55 @@
     name: "Chart",
     data: function () {
       return {
-        test: {
-          columns: ['日期', '访问用户', '下单用户', '下单率'],
-          rows: [
-            { '日期': '1/1', '访问用户': 1393, '下单用户': 1093, '下单率': 0.32 },
-            { '日期': '1/2', '访问用户': 3530, '下单用户': 3230, '下单率': 0.26 },
-            { '日期': '1/3', '访问用户': 2923, '下单用户': 2623, '下单率': 0.76 },
-            { '日期': '1/4', '访问用户': 1723, '下单用户': 1423, '下单率': 0.49 },
-            { '日期': '1/5', '访问用户': 3792, '下单用户': 3492, '下单率': 0.323 },
-            { '日期': '1/6', '访问用户': 4593, '下单用户': 4293, '下单率': 0.78 }
-          ]
+        settings: {
+          labelMap: {
+            count: '当日订单总数'
+          }
         },
-        chartData: {
-          columns: ['日期', '访问用户'],
-          rows: [
-            { '日期': '1/1', '访问用户': 1393 },
-            { '日期': '1/2', '访问用户': 3530 },
-            { '日期': '1/3', '访问用户': 2923 },
-            { '日期': '1/4', '访问用户': 1723 },
-            { '日期': '1/5', '访问用户': 3792 },
-            { '日期': '1/6', '访问用户': 4593 }
-          ]
+        orderChart: {
+          columns: ['date', 'count'],
+          rows: []
+        },
+        productChart: {
+          columns: ['name', 'total'],
+          rows: []
         }
+      }
+    },
+    mounted() {
+      this.loadOrderChart("/order/chart")
+      this.loadProductChart("/products")
+    },
+    methods: {
+      loadOrderChart(url) {
+        let that = this;
+        this.$axios.get(url).then(res => {
+          if (res.status === 200) {
+            console.log(res.data);
+            that.orderChart.rows = res.data;
+            that.$message.success("订单数据加载成功");
+          } else {
+            that.$message.error("订单数据加载失败");
+          }
+        }).catch(res => {
+          that.$message.error("服务器异常");
+        });
+      },
+
+      loadProductChart(url) {
+        let that = this;
+        this.$axios.get(url).then(res => {
+          if (res.status === 200) {
+            res.data.productList.forEach(item => {
+              that.productChart.rows.push({'name': item.name, 'total': item.total});
+            });
+            that.$message.success("产品数据加载成功");
+          } else {
+            that.$message.error("产品数据加载失败");
+          }
+        }).catch(res => {
+          that.$message.error("服务器异常");
+        });
       }
     }
   };
