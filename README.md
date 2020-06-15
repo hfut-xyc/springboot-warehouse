@@ -5,16 +5,38 @@ Course Design of DataBase, HFUT, 2020
 
 #### 软件运行截图
 
-##### 用户管理界面
-![用户管理界面](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/user.jpg)
+##### 仓库信息
+![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/warehouse.jpg)
+
+##### 库存清单
+![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/inventory.jpg)
+
+##### 订单记录
+![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/order-list.jpg)
+
+##### 创建旧产品订单
+![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/order-add-old.jpg)
+
+##### 创建新产品订单
+![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/order-add-new.jpg)
+
+##### 订单回收站
+![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/order-dustbin.jpg)
+
+##### 数据统计图
+![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/chart.jpg)
+
+##### 员工列表
+![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/employee.jpg)
+
+##### 编辑员工信息
+![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/employee-edit.jpg)
+
+##### 后台用户
+![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/user.jpg)
 
 ##### API文档
 ![API文档](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/api-doc.jpg)
-
-前期为了调试方便，暂时把登录验证给去掉了，可以直接通过localhost:8080/home访问主页
-测试登录接口可以用
-- 用户名：admin
-- 密码：admin
 
 #### 项目运行和注意事项
 1. 安装Java 8、Maven、node.js和npm
@@ -27,7 +49,10 @@ Course Design of DataBase, HFUT, 2020
 8. 启动后端服务器`mvn spring-boot:run`(建议提前将maven换成阿里镜像源)
 9. 启动前端服务器`npm run serve`
 10. 实体类通过使用Lombok库的注解来自动生成setter和getter方法，提高了开发效率，代码变得简洁易读。如果在**Intellij Idea**上运行，记得要去**settings->plugins**下搜索安装Lombok插件 (**需要科学上网**)，不然代码会报错 (不安装的话不影响运行，但是报错总会让人不舒服=_=)
-11. 后端程序运行后，可以访问 [localhost:8081/swagger-ui.html](localhost:8081/swagger-ui.html) 来查看所有的API文档，并且支持在文档上测试接口
+11. 后端程序运行后，可以访问 [http://localhost:8081/swagger-ui.html](http://localhost:8081/swagger-ui.html) 来查看所有的API文档，并且支持在文档上测试接口
+12. 测试登录接口可以下列账户，tb_user存放的是加密后的密码
+> - 超级管理员 用户名：admin 密码：admin
+> - 普通用户 用户名：xyc 密码：xyc
 
 #### 部署方法和注意事项
 1. 预计作为项目部署服务器的是Aliyun, Ubuntu服务器，并使用docker技术部署
