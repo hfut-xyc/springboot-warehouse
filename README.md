@@ -5,6 +5,9 @@ Course Design of DataBase, HFUT, 2020
 
 #### 软件运行截图
 
+##### 登录界面
+![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/login.png)
+
 ##### 仓库信息
 ![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/warehouse.png)
 
