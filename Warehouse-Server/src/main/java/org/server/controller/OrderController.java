@@ -29,7 +29,7 @@ public class OrderController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private static SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @ApiOperation("按时间范围分页以及订单状态查询订单列表")
     @GetMapping("/orders")
