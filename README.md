@@ -5,38 +5,41 @@ Course Design of DataBase, HFUT, 2020
 
 #### 软件运行截图
 
+##### 登录界面
+![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/login.png)
+
 ##### 仓库信息
-![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/warehouse.jpg)
+![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/warehouse.png)
 
 ##### 库存清单
-![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/inventory.jpg)
+![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/inventory.png)
 
 ##### 订单记录
-![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/order-list.jpg)
+![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/order-list.png)
 
 ##### 创建旧产品订单
-![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/order-add-old.jpg)
+![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/order-add-old.png)
 
 ##### 创建新产品订单
-![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/order-add-new.jpg)
+![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/order-add-new.png)
 
 ##### 订单回收站
-![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/order-dustbin.jpg)
+![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/order-dustbin.png)
 
 ##### 数据统计图
-![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/chart.jpg)
+![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/chart.png)
 
 ##### 员工列表
-![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/employee.jpg)
+![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/employee.png)
 
 ##### 编辑员工信息
-![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/employee-edit.jpg)
+![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/employee-edit.png)
 
 ##### 后台用户
-![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/user.jpg)
+![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/user.png)
 
 ##### API文档
-![API文档](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/api-doc.jpg)
+![API文档](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/api-doc.png)
 
 #### 项目运行和注意事项
 1. 安装Java 8、Maven、node.js和npm
