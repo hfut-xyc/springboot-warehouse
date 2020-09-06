@@ -5,26 +5,26 @@ services:
     build:
       context: .
       dockerfile: ./deployment/nginx/Dockerfile
-    ports:
-      - "80:80"
-      - "443:443"
+    network_mode: "host"
 
   server:
     image: warehouse-server:latest
     build:
       context: .
       dockerfile: ./deployment/jre/Dockerfile
-    ports:
-      - "127.0.0.1:8081:8081"
+    network_mode: "host"
 
-  # redis:
-  #   image: redis
-  #   ports:
-  #     - "127.0.0.1:6379:6379"
+  redis:
+    image: redis:latest
+    ports:
+      - "127.0.0.1:6379:6379"
   
-  # mysql:
-  #   build:
-  #     context: .
-  #     dockerfile: ./deployment/mysql/Dockerfile
-  #   ports:
-  #     - "127.0.0.1:3306:3306"
+  mysql:
+    image: mysql:latest
+    volumes:
+      - ./deployment/mysql:/docker-entrypoint-initdb.d/
+    ports:
+      - "127.0.0.1:3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+

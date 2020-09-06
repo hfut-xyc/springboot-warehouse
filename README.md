@@ -59,11 +59,22 @@ Course Design of DataBase, HFUT, 2020
 
 #### 部署方法和注意事项
 1. 预计作为项目部署服务器的是Aliyun, Ubuntu服务器，并使用docker技术部署
+
 2. 服务器需要安装docker，并部署需要的docker容器
+
 3. 部署前需要敲定域名，并且按照该域名修改后端的服务器配置（主要是跨域访问），申请免费SSL证书
-4. 部署需要的脚本和配置文件写在deployment文件夹下面
-5. 前端编译所得`dist/**`应存放在nginx docker容器的`/var/www`下。nginx的配置文件和dockerfile已经存放在deployment文件夹中
-6. 后端编译成单个jar，并使用`nohup`等等手段后台运行
+
+4. 部署需要的脚本和配置文件写在deployment文件夹和Makefile中。部署时使用`make build`命令即可编译，`make run`是运行服务的指令
+
+   ![编译过程截图](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/build.png)
+
+5. 前端编译所得`dist/**`应存放在nginx docker容器的`/var/www`下。nginx的配置文件和dockerfile已经存放在deployment文件夹中。**该docker容器的网络配置使用host模式**
+
+6. 后端编译成单个jar，复制到JRE docker容器运行。**该docker容器的网络配置使用host模式**
+
+7. Redis和MySQL也使用docker容器提供。为了安全，进行了网络隔离，除本机程序以外无法访问。
+
+   ![服务的运行](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/run.png)
 
 
 #### RESTful API设计约定
@@ -111,9 +122,10 @@ Course Design of DataBase, HFUT, 2020
 | Redis                | NoSQL缓存          | https://redis.io/                                    |
 | Swagger-UI           | 文档生成工具，用于生成API文档         | https://github.com/swagger-api/swagger-ui |
 | Lombok               | 代码生成工具，用于简化代码，提高可读性    | https://github.com/rzwitserloot/lombok  |
-| Maven                | Java依赖库管理工具                 |https://maven.apache.org/
-| Docker               | 后端部署工具                    | https://www.docker.com/
-| Nginx                | 反向代理服务器，前端部署工具       | http://nginx.org/en/download.html
+| Maven                | Java依赖库管理工具                 |https://maven.apache.org/ |
+| Docker               | 后端部署工具                    | https://www.docker.com/ |
+| Nginx                | 反向代理服务器，前端部署工具       | http://nginx.org/en/download.html |
+
 #### 前端技术
 
 | 技术       | 说明                  | 官网                                   |
