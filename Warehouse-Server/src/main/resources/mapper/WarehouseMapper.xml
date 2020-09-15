@@ -37,9 +37,11 @@
         from view_warehouse_product where id=#{id}
     </select>
 
-<!--    <select id="getWarehouseById" resultType="org.server.entity.Warehouse">-->
-<!--        select * from tb_warehouse where id=#{id}-->
-<!--    </select>-->
+    <select id="getProductByWidAndPid" resultMap="WarehouseProductMap">
+        select pid, pname, supplier, amount
+        from view_warehouse_product where id=#{wid} and pid=#{pid}
+    </select>
+
 
     <select id="getWarehouseByName" resultType="org.server.entity.Warehouse">
         select * from tb_warehouse where name=#{name}
@@ -66,9 +68,8 @@
     </delete>
 
     <update id="updateProductByWid">
-        update tb_warehouse_product
-        set amount = amount + #{amount}
-        where wid=#{wid} and pid=#{pid} and amount + #{amount} >= 0
+        update tb_warehouse_product set amount=#{amount}
+        where wid=#{wid} and pid=#{pid}
     </update>
 
     <insert id="addProductByWid">

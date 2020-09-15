@@ -35,7 +35,6 @@ create table tb_user_role(
     `uid` int(11) not null,
     `rid` int(11) not null,
     primary key(uid, rid),
-	key idx_uid(uid),
 	key idx_rid(rid)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -95,7 +94,6 @@ create table tb_employee_warehouse(
     `eid` int(11) not null,
     `wid` int(11) not null,
     primary key(eid, wid),
-	key idx_eid(eid),
 	key idx_wid(wid)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -114,7 +112,6 @@ create table tb_warehouse_product(
     `pid` int(11) not null,
     `amount` int not null,
     primary key(wid, pid),
-	key idx_wid(wid),
 	key idx_pid(pid),
 	check(amount >= 0)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

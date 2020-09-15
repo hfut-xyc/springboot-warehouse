@@ -17,19 +17,19 @@ Vue.use(ElementUI);
 Vue.component(VeLine.name, VeLine);
 Vue.component(VePie.name, VePie);
 
-router.beforeEach((to, from, next) => {
-    // 设置标题
-    document.title = to.name ? to.name : "仓库信息管理系统";
-    if (to.meta.requireAuth) {
-      if (store.state.currentUser) {
-        next();
-      } else {
-    		next('/login');
-      }
-    } else {
-    		next();
-    }
-});
+// router.beforeEach((to, from, next) => {
+//     // 设置标题
+//     document.title = to.name ? to.name : "仓库信息管理系统";
+//     if (to.meta.requireAuth) {
+//       if (store.state.currentUser) {
+//         next();
+//       } else {
+//     		next('/login');
+//       }
+//     } else {
+//     		next();
+//     }
+// });
 
 new Vue({
     el: '#app',
