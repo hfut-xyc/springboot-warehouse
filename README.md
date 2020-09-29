@@ -6,37 +6,37 @@ Course Design of DataBase, HFUT, 2020
 #### 软件运行截图
 
 ##### 登录界面
-![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/login.png)
+![登录界面](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/login.png)
 
 ##### 仓库信息
-![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/warehouse.png)
+![仓库信息](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/warehouse.png)
 
 ##### 库存清单
-![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/inventory.png)
+![库存清单](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/inventory.png)
 
 ##### 订单记录
-![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/order-list.png)
+![订单记录](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/order-list.png)
 
 ##### 创建旧产品订单
-![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/order-add-old.png)
+![创建旧产品订单](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/order-add-old.png)
 
 ##### 创建新产品订单
-![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/order-add-new.png)
+![创建新产品订单](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/order-add-new.png)
 
 ##### 订单回收站
-![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/order-dustbin.png)
+![订单回收站](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/order-dustbin.png)
 
 ##### 数据统计图
-![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/chart.png)
+![数据统计图](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/chart.png)
 
 ##### 员工列表
-![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/employee.png)
+![员工列表](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/employee.png)
 
 ##### 编辑员工信息
-![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/employee-edit.png)
+![编辑员工信息](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/employee-edit.png)
 
 ##### 后台用户
-![](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/user.png)
+![后台用户](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/user.png)
 
 ##### API文档
 ![API文档](https://gitee.com/hfut-xyc/Warehouse-Management-System/raw/master/screenshot/api-doc.png)
