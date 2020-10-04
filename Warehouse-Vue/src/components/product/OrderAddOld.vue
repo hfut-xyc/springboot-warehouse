@@ -39,10 +39,13 @@
             </el-select>
           </template>
         </el-form-item>
-        <el-form-item label="商品数量" prop="amount">
+        <el-form-item label="产品数量" prop="amount">
           <el-input-number v-model.number="addOrderForm.amount" step-strictly controls-position="right"
                            :min="getProductMin()">
           </el-input-number>
+        </el-form-item>
+        <el-form-item label="产品报废">
+          <el-checkbox v-model="isObsolete" :disabled="addOrderForm.amount >= 0">是否为报废产品</el-checkbox>
         </el-form-item>
       </el-form>
     </el-main>
@@ -81,6 +84,7 @@
         warehouseList: [],        // 员工列表，这里包括了仓库的员工。
         productLoading: false,
         warehouseLoading: false,
+        isObsolete: false
       }
     },
 
