@@ -9,7 +9,7 @@ import App from '@/App.vue'
 import store from '@/store/index.js'
 import router from '@/router/index.js'
 
-axios.defaults.baseURL = '/api/';
+axios.defaults.baseURL = 'http://localhost:8081/';
 axios.defaults.withCredentials = true;
 Vue.prototype.$axios = axios;
 Vue.config.productionTip = false;

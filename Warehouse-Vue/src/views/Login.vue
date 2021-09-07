@@ -57,7 +57,7 @@
             let that = this;
             postRequest("/login", this.loginForm).then(res => {
               if (res.data === "success") {
-                that.$store.commit("login", that.loginForm.username);
+                // that.$store.commit("login", that.loginForm.username);
                 that.$router.replace("/home");
                 that.$message.success("登录成功");
               } else if (res.data === "fail") {
@@ -80,7 +80,7 @@
       },
       // 加上访问时间戳，防止图片缓存
       refreshCaptcha() {
-        this.imgURL = "/api/captcha?timeStamp=" + new Date().getTime();
+        this.imgURL = "http://localhost:8081/captcha?timeStamp=" + new Date().getTime();
       }
     }
   };

@@ -44,7 +44,7 @@ export default new VueRouter({
 					path: 'warehouse/:id/detail',
 					name: "仓库详情",
 					component: WarehouseDetail,
-					meta: { requireAuth: true}
+					meta: { requireAuth: true }
 				},
 				{
 					path: 'inventory',
