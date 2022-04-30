@@ -3,15 +3,15 @@ services:
   vue:
     image: warehouse-vue:latest
     build:
-      context: .
-      dockerfile: ./deployment/nginx/Dockerfile
+      context: ..
+      dockerfile: nginx/Dockerfile
     network_mode: "host"
 
   server:
     image: warehouse-server:latest
     build:
-      context: .
-      dockerfile: ./deployment/jre/Dockerfile
+      context: ..
+      dockerfile: jre/Dockerfile
     network_mode: "host"
 
   redis:
