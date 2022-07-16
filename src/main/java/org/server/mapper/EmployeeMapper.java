@@ -1,6 +1,9 @@
 package org.server.mapper;
 
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Update;
 import org.server.entity.Employee;
 
 import java.util.List;
@@ -8,16 +11,22 @@ import java.util.List;
 @Mapper
 public interface EmployeeMapper {
 
-	List<Employee> getEmployeeList(String keyword);
+    List<Employee> findEmployees(String keyword);
 
-	int addEmployee(Employee employee);
+    @Insert("INSERT INTO employee(name, gender, phone, salary) " +
+            "VALUES (#{name}, #{gender}, #{phone}, #{salary})")
+    Integer save(Employee employee);
 
-	int updateEmployeeInfo(Employee employee);
+    @Update("UPDATE employee " +
+            "SET name=#{name}, gender=#{gender}, phone=#{phone}, salary=#{salary} " +
+            "WHERE id = #{id}")
+    Integer updateEmployeeInfo(Employee employee);
 
-	int deleteEmployeeById(int id);
+    @Delete("delete from employee where id=#{id}")
+    Integer deleteById(Integer id);
 
-	int addWarehouseByEid(int eid, List<Integer> widList);
+    Integer addWarehouseByEid(Integer eid, List<Integer> widList);
 
-	int deleteAllWarehouseByEid(int eid);
+    Integer deleteAllWarehouseByEid(Integer eid);
 
 }

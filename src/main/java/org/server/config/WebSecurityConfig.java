@@ -1,6 +1,5 @@
 package org.server.config;
 
-import org.server.component.CaptchaFilter;
 import org.server.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,7 +43,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(captchaFilter, UsernamePasswordAuthenticationFilter.class);
         http.authorizeRequests()
                 .antMatchers("/user/**").hasRole("admin")
-                .antMatchers("/employee/**").hasRole("admin")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

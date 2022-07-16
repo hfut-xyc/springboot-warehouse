@@ -1,7 +1,6 @@
 package org.server.mapper;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.*;
 import org.server.entity.Role;
 import org.server.entity.User;
 
@@ -10,24 +9,26 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-	List<User> getUserList(@Param("keyword") String keyword);
+	@Select("select * from user where username=#{username}")
+	User findByUsername(String username);
 
-	List<Role> getRolesByUid(int uid);
+	List<User> findUsers(@Param("keyword") String keyword);
+	
+	Role findRole(Integer id);
 
-	User getUserByUsername(String username);
+	@Insert("INSERT IGNORE INTO `user`(username, password) VALUES (#{username}, #{password})")
+	Integer save(User user);
 
-	int addUser(User user);
-
-	int deleteUserById(int id);
-
-	int updateEnabledById(@Param("enabled") boolean enabled, @Param("id") int id);
+	@Delete("DELETE FROM `user` WHERE id=#{id}")
+	Integer deleteUserById(Integer id);
 
 	// 通过用户id添加角色
-	int addRoleByUid(int uid, int rid);
+	@Insert("INSERT IGNORE INTO user_role VALUES (#{uid}, #{rid})")
+	Integer addRoleById(Integer uid, Integer rid);
 
 	// 通过用户id删除角色
-	int deleteRoleByUid(int uid, int rid);
+	@Delete("DELETE FROM user_role WHERE uid=#{id}")
+	Integer deleteRoleById(Integer id);
 
-	// 通过用户id删除其所有角色
-	int deleteAllRoleByUid(int uid);
+	Integer updateEnabledById(@Param("enabled") boolean enabled, @Param("id") Integer id);
 }

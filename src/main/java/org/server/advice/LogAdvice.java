@@ -1,22 +1,21 @@
-package org.server.component;
+package org.server.advice;
 
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
+
+@Slf4j
 @Aspect
 @Component
-public class LogAspect {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+public class LogAdvice {
 
     @Pointcut("execution(public * org.server.controller.*.*(..))")
     public void pointCut() {}
@@ -29,6 +28,6 @@ public class LogAspect {
         String ip = request.getRemoteAddr();
         String method = request.getMethod();
         String uri = request.getRequestURI();
-        logger.info("{} {} {}", ip, method, uri);
+        log.info("{} {} {}", ip, method, uri);
     }
 }

@@ -12,19 +12,11 @@
     </select>
 
     <select id="getPidByName" resultType="java.lang.Integer">
-        select id from tb_product where name=#{name}
-    </select>
-
-    <select id="getProductById" resultType="org.server.entity.Product">
-        select * from tb_product where id=#{id}
-    </select>
-
-    <select id="getProductByName" resultType="org.server.entity.Product">
-        select * from tb_product where name=#{name}
+        select id from product where name=#{name}
     </select>
 
     <insert id="addProduct">
-        insert into tb_product(name, supplier)
+        insert into product(name, supplier)
         values (#{name}, #{supplier});
     </insert>
 

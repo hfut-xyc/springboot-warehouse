@@ -13,7 +13,6 @@
             <result column="gender" property="gender"/>
             <result column="phone" property="phone"/>
             <result column="birthday" property="birthday"/>
-            <result column="hire_date" property="hireDate"/>
             <result column="salary" property="salary"/>
         </collection>
     </resultMap>
@@ -44,36 +43,36 @@
 
 
     <select id="getWarehouseByName" resultType="org.server.entity.Warehouse">
-        select * from tb_warehouse where name=#{name}
+        select * from warehouse where name=#{name}
     </select>
 
     <insert id="addWarehouse">
-        insert ignore into tb_warehouse(name) values (#{name})
+        insert ignore into warehouse(name) values (#{name})
     </insert>
 
     <update id="updateWarehouseInfo">
-        update tb_warehouse set name=#{name}
+        update warehouse set name=#{name}
         where id=#{id}
     </update>
 
     <insert id="addEmployeeByWid">
-        insert ignore into tb_employee_warehouse(wid, eid) values
+        insert ignore into employee_warehouse(wid, eid) values
         <foreach collection="eidList" item="item" separator=",">
             (#{wid}, #{item})
         </foreach>
     </insert>
 
     <delete id="deleteAllEmployeeByWid">
-        delete from tb_employee_warehouse where wid=#{wid}
+        delete from employee_warehouse where wid=#{wid}
     </delete>
 
     <update id="updateProductByWid">
-        update tb_warehouse_product set amount=#{amount}
+        update warehouse_product set amount=#{amount}
         where wid=#{wid} and pid=#{pid}
     </update>
 
     <insert id="addProductByWid">
-        insert into tb_warehouse_product(wid, pid, amount)
+        insert into warehouse_product(wid, pid, amount)
         values (#{wid}, #{pid}, #{amount})
     </insert>
 </mapper>

@@ -1,4 +1,4 @@
-package org.server.component;
+package org.server.config;
 
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.stereotype.Component;

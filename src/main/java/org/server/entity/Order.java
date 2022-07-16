@@ -1,14 +1,16 @@
 package org.server.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Order implements Serializable {
 
 	private int id;
@@ -19,27 +21,6 @@ public class Order implements Serializable {
 	private String status;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "UTC+8")
 	private Date createTime;
-
-	public Order() {}
-
-	public Order(int id, int eid, int wid, int pid, int amount, Date createTime) {
-		this.id = id;
-		this.eid = eid;
-		this.wid = wid;
-		this.pid = pid;
-		this.amount = amount;
-		this.createTime = createTime;
-	}
-
-	@Override
-	public String toString() {
-		return "Order{" +
-				"id=" + id +
-				", eid=" + eid +
-				", wid=" + wid +
-				", pid=" + pid +
-				", amount=" + amount +
-				", createTime=" + createTime +
-				'}';
-	}
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "UTC+8")
+	private Date updateTime;
 }

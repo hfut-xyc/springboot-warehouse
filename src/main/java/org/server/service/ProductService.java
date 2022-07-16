@@ -1,9 +1,6 @@
 package org.server.service;
 
 import org.server.entity.Product;
-import org.server.exception.DeleteException;
-import org.server.exception.InsertException;
-import org.server.exception.RepeatException;
 import org.server.mapper.ProductMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,14 +27,14 @@ public class ProductService {
 	// 商品没必要有删除操作，如果某一商品在所有仓库的合计数量告罄，直接显示0，方便后续补货
 
 	@Transactional
-	public int addProduct(Product product) throws RepeatException, InsertException {
-		Product temp = productMapper.getProductByName(product.getName());
+	public int addProduct(Product product) throws Exception {
+		Product temp = productMapper.findByName(product.getName());
 		if (temp != null) {
-			throw new RepeatException("产品名已存在");
+			throw new Exception("产品名已存在");
 		}
 		int res = productMapper.addProduct(product);
 		if (res != 1) {
-			throw new InsertException("添加产品失败");
+			throw new Exception("添加产品失败");
 		}
 		return 1;
 	}

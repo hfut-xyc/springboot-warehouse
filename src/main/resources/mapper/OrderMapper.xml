@@ -4,8 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.server.mapper.OrderMapper">
 
-    <select id="getOrderList" resultType="org.server.entity.Order">
-        select * from tb_order where status=#{status}
+    <select id="findOrdersByTime" resultType="org.server.entity.Order">
+        select * from order where status=#{status}
         <if test="startTime != null ">
             and create_time >= #{startTime}
         </if>
@@ -18,21 +18,10 @@
         select
             DATE_FORMAT(create_time, '%Y-%m-%d') as date,
             count(*) as count
-        from tb_order
+        from order
         GROUP BY DATE_FORMAT(create_time, '%Y-%m-%d')
     </select>
 
-    <insert id="addOrder">
-        insert ignore into tb_order(eid, wid, pid, amount, status)
-        values (#{eid}, #{wid}, #{pid}, #{amount}, #{status})
-    </insert>
 
-    <delete id="deleteOrderById">
-        delete from tb_order where id=#{id}
-    </delete>
-
-    <update id="updateOrderStatus">
-        update tb_order set status=#{status} where id=#{id}
-    </update>
 
 </mapper>

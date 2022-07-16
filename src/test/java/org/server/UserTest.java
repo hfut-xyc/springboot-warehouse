@@ -7,10 +7,8 @@ import org.server.mapper.UserMapper;
 import org.server.service.EmployeeService;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.StopWatch;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -25,7 +23,7 @@ class UserTest {
 
 	@Test
 	void getUserList() {
-		List<User> list = userMapper.getUserList(null);
+		List<User> list = userMapper.findUsers(null);
 	}
 
 	@Test
@@ -33,8 +31,7 @@ class UserTest {
 		User user = new User();
 		user.setUsername("xyc");
 		user.setPassword("xyc");
-		user.setPhone("11111");
-		System.out.println(userMapper.addUser(user));
+		System.out.println(userMapper.save(user));
 	}
 
 	@Test
@@ -42,10 +39,5 @@ class UserTest {
 		System.out.println(userMapper.deleteUserById(1000));
 	}
 
-	@Test
-	void test() {
-		List<Integer> list = Arrays.asList(1, 2, 3);
-		System.out.println(employeeService.updateWarehouseByEid(10000, list));
-	}
 
 }

@@ -1,14 +1,16 @@
 package org.server.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderChart implements Serializable {
 
     @JsonFormat(pattern="yyyy-MM-dd", timezone = "UTC+8")
