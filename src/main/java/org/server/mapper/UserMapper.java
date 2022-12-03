@@ -1,7 +1,6 @@
 package org.server.mapper;
 
 import org.apache.ibatis.annotations.*;
-import org.server.entity.Role;
 import org.server.entity.User;
 
 import java.util.List;
@@ -9,26 +8,21 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
+	List<User> page(@Param("keyword") String keyword);
+
 	@Select("select * from user where username=#{username}")
 	User findByUsername(String username);
 
-	List<User> findUsers(@Param("keyword") String keyword);
-	
-	Role findRole(Integer id);
+	@Select("select * from user where username=#{username} and password=#{password}")
+	User findByUsernameAndPasswd(@Param("username") String username, @Param("password") String password);
 
-	@Insert("INSERT IGNORE INTO `user`(username, password) VALUES (#{username}, #{password})")
+	@Insert("insert into user(username, password) VALUES (#{username}, #{password})")
 	Integer save(User user);
 
-	@Delete("DELETE FROM `user` WHERE id=#{id}")
-	Integer deleteUserById(Integer id);
+	@Update("update user set password=#{password}, status=#{status}, admin=#{admin} where id=#{id}")
+	Integer update(User user);
 
-	// 通过用户id添加角色
-	@Insert("INSERT IGNORE INTO user_role VALUES (#{uid}, #{rid})")
-	Integer addRoleById(Integer uid, Integer rid);
+	@Delete("delete from `user` where id=#{id}")
+	Integer deleteById(Integer id);
 
-	// 通过用户id删除角色
-	@Delete("DELETE FROM user_role WHERE uid=#{id}")
-	Integer deleteRoleById(Integer id);
-
-	Integer updateEnabledById(@Param("enabled") boolean enabled, @Param("id") Integer id);
 }

@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.server.mapper.OrderMapper">
 
-    <select id="findOrdersByTime" resultType="org.server.entity.Order">
+    <select id="list" resultType="org.server.entity.Order">
         select * from order where status=#{status}
         <if test="startTime != null ">
             and create_time >= #{startTime}

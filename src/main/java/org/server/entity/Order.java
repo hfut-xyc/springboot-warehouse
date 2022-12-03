@@ -13,12 +13,12 @@ import java.util.Date;
 @NoArgsConstructor
 public class Order implements Serializable {
 
-	private int id;
-	private int eid;
-	private int wid;
-	private int pid;
-	private int amount;
-	private String status;
+	private Integer id;
+	private Integer eid;
+	private Integer wid;
+	private Integer pid;
+	private Integer amount;
+	private Integer status;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "UTC+8")
 	private Date createTime;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "UTC+8")

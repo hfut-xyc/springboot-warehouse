@@ -4,28 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.server.mapper.WarehouseMapper">
 
-    <resultMap id="WarehouseEmployeeMap" type="org.server.entity.Warehouse">
-        <id column="id" property="id"/>
-        <result column="name" property="name"/>
-        <collection property="operators" ofType="org.server.entity.Employee">
-            <id column="eid" property="id"/>
-            <result column="ename" property="name"/>
-            <result column="gender" property="gender"/>
-            <result column="phone" property="phone"/>
-            <result column="birthday" property="birthday"/>
-            <result column="salary" property="salary"/>
-        </collection>
-    </resultMap>
-
     <resultMap id="WarehouseProductMap" type="org.server.entity.Product">
         <id column="pid" property="id"/>
         <result column="pname" property="name"/>
-        <result column="supplier" property="supplier"/>
         <result column="amount" property="total"/>
     </resultMap>
 
-    <select id="getWarehouseList" resultMap="WarehouseEmployeeMap">
-        select * from view_warehouse_employee
+    <select id="getWarehouseList" resultType="org.server.entity.Warehouse">
+        select * from warehouse
         <if test="keyword != null">
             where name like concat('%',#{keyword},'%')
         </if>

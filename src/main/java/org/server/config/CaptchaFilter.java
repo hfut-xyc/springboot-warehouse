@@ -1,6 +1,5 @@
 package org.server.config;
 
-import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
@@ -13,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component
+//@Component
 public class CaptchaFilter extends GenericFilterBean {
 
     @Override
@@ -26,12 +25,12 @@ public class CaptchaFilter extends GenericFilterBean {
             String trueCode = (String) request.getSession().getAttribute("code");
             try {
                 if (StringUtils.isEmpty(verifyCode)) {
-                    throw new AuthenticationServiceException("验证码不能为空");
+                    throw new Exception("验证码不能为空");
                 }
                 if (!verifyCode.equalsIgnoreCase(trueCode)) {
-                    throw new AuthenticationServiceException("验证码错误");
+                    throw new Exception("验证码错误");
                 }
-            } catch (AuthenticationServiceException e) {
+            } catch (Exception e) {
                 logger.error(e.getMessage());
                 return;
             }

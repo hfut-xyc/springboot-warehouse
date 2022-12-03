@@ -1,13 +1,14 @@
 ## 介绍
-本项目是 2020 年 HFUT-CS 数据库课设的后端部分，前端部分代码位于[warehouse-vue](https://github.com/hfut-xyc/warehouse-vue)
+- 基于 Vue2 和 SpringBoot2 的仓库管理系统，2020 年 HFUT-CS 数据库课设选题
+- 本仓库为后端代码，前端代码位于[vue-warehouse](https://github.com/hfut-xyc/vue-warehouse)
 
-## 项目运行
-1. 安装 Java 8，Maven 3.6.1
-2. 安装 MySQL 8.0+，配置 root 用户的密码为 root，服务器端口号为 3306
-3. 运行 init.sql，初始化数据库
+## 运行
+1. 安装配置 Java 8，Maven 3.6.1
+2. 安装 MySQL 8.0+，用户名和密码均为 root
+3. 运行 db_warehouse.sql，初始化数据库
 
 
-## 项目部署
+## 部署
 1. 项目部署服务器的是Ubuntu服务器，并使用docker技术部署
 2. 服务器需要安装docker，并部署需要的docker容器
 3. 部署前需要敲定域名，并且按照该域名修改后端的服务器配置（主要是跨域访问），申请免费SSL证书
@@ -34,16 +35,3 @@
 - 删除员工： /employee/{id}/delete
 - 修改员工基本信息：/employee/{id}/update/info
 - 修改员工负责仓库：/employee/{id}/update/warehouse
-
-## 技术栈
-
-| 技术                 | 说明                | 官网                                                 |
-| -------------------- | ------------------- | ---------------------------------------------------- |
-| SpringBoot           | 容器+MVC框架        | https://spring.io/projects/spring-boot               |
-| SpringSecurity       | 认证和授权框架      | https://spring.io/projects/spring-security           |
-| MyBatis              | ORM框架,用于和数据库交互  | http://www.mybatis.org/mybatis-3/zh/index.html       |
-| Lombok               | 代码生成工具，用于简化代码，提高可读性    | https://github.com/rzwitserloot/lombok  |
-| Maven                | Java依赖库管理工具                 |https://maven.apache.org/ |
-| Docker               | 后端部署工具                    | https://www.docker.com/ |
-
-

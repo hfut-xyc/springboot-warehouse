@@ -1,11 +1,11 @@
 package org.server.mapper;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.server.entity.Product;
 import org.server.entity.Warehouse;
+
+import java.util.List;
 
 @Mapper
 public interface WarehouseMapper {
@@ -23,12 +23,6 @@ public interface WarehouseMapper {
 
 	// 修改仓库基本信息
 	int updateWarehouseInfo(Warehouse warehouse);
-
-	// 按仓库id为该仓库添加员工
-	int addEmployeeByWid(int wid, List<Integer> eidList);
-
-	// 按仓库id删除管理该仓库的所有员工
-	int deleteAllEmployeeByWid(int wid);
 
 	// 处理旧产品的订单时，更新原有库存记录
 	int updateProductByWid(@Param("wid") int wid, @Param("pid") int pid, @Param("amount") int amount);

@@ -13,13 +13,12 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/warehouse")
 public class WarehouseController {
 
     @Resource
     private WarehouseService warehouseService;
 
-    @GetMapping("/list")
+    @GetMapping("/warehouse/list")
     public Map<String, Object> getWarehouseList(
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
@@ -34,7 +33,7 @@ public class WarehouseController {
         return map;
     }
 
-    @PostMapping("/warehouse/update/info")
+    @PostMapping("/warehouse")
     public int updateWarehouseInfo(@RequestBody Warehouse warehouse) {
         try {
             return warehouseService.updateWarehouseInfo(warehouse);
@@ -44,15 +43,6 @@ public class WarehouseController {
         return 0;
     }
 
-    @PostMapping("/warehouse/{id}/employees")
-    public int updateEmployeeByWid(@PathVariable int id, @RequestBody List<Integer> eidList) {
-        try {
-            return warehouseService.updateEmployeeByWid(id, eidList);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-        return 0;
-    }
 
     @GetMapping("/warehouse/{id}/products")
     public Map<String, Object> getProductListById(
@@ -69,7 +59,7 @@ public class WarehouseController {
         return map;
     }
 
-    @PostMapping("/warehouse/add")
+    @PostMapping("/warehouse/")
     public int addWarehouse(@RequestBody Warehouse warehouse) throws Exception {
         try {
             return warehouseService.addWarehouse(warehouse);

@@ -5,15 +5,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product implements Serializable {
-
-	private int id;
+	private Integer id;
 	private String name;
-	private String supplier;
-	private int total;
-
+	private Integer total;
+	private LocalDateTime createTime;
+	private LocalDateTime updateTime;
 }

@@ -25,8 +25,10 @@ public class OrderService {
 
 
     public List<Order> getOrderList(String status, String startTime, String endTime) {
-        return orderMapper.findOrdersByTime(status, startTime, endTime);
+        //return orderMapper.findOrdersByTime(status, startTime, endTime);
+        return null;
     }
+
 
     public List<OrderChart> getOrderChart() {
         return orderMapper.getOrderChart();
@@ -120,10 +122,10 @@ public class OrderService {
 
     @Transactional
     public int updateOrderStatus(int id, String status) throws Exception {
-        int res = orderMapper.updateStatus(id, status);
-        if (res != 1) {
-            throw new Exception("订单状态修改失败");
-        }
+        //int res = orderMapper.updateStatus(id, status);
+        //if (res != 1) {
+        //    throw new Exception("订单状态修改失败");
+        //}
         return 1;
     }
 }

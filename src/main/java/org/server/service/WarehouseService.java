@@ -62,14 +62,14 @@ public class WarehouseService {
     
     @Transactional
     public int updateEmployeeByWid(int wid, List<Integer> eidList) throws Exception  {
-		warehouseMapper.deleteAllEmployeeByWid(wid);
-		if (eidList.size() == 0) {
-			return 1;
-		}
-		int res = warehouseMapper.addEmployeeByWid(wid, eidList);
-		if (eidList.size() != res) {
-			throw new Exception("未能成功修改员工负责的仓库");
-		}
+		//warehouseMapper.deleteAllEmployeeByWid(wid);
+		//if (eidList.size() == 0) {
+		//	return 1;
+		//}
+		//int res = warehouseMapper.addEmployeeByWid(wid, eidList);
+		//if (eidList.size() != res) {
+		//	throw new Exception("未能成功修改员工负责的仓库");
+		//}
 		return 1;
     }
 

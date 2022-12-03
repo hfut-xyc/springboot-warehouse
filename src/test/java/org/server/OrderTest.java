@@ -10,7 +10,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.List;
 
 
 @RunWith(SpringRunner.class)
@@ -29,7 +28,7 @@ class OrderTest {
 		order.setEid(10000);
 		order.setWid(1);
 		order.setPid(20000);
-		order.setStatus("正常");
+		order.setStatus(1);
 		order.setAmount(-400);
 	}
 

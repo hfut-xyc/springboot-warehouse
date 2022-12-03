@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.server.entity.User;
 import org.server.mapper.UserMapper;
-import org.server.service.EmployeeService;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -18,12 +17,11 @@ class UserTest {
 	@Resource
 	private UserMapper userMapper;
 
-	@Resource
-	private EmployeeService employeeService;
 
 	@Test
 	void getUserList() {
-		List<User> list = userMapper.findUsers(null);
+		List<User> list = userMapper.page(null);
+		System.out.println(list);
 	}
 
 	@Test
@@ -36,7 +34,7 @@ class UserTest {
 
 	@Test
 	void deleteUser() {
-		System.out.println(userMapper.deleteUserById(1000));
+		System.out.println(userMapper.deleteById(1000));
 	}
 
 
