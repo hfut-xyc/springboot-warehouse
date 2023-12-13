@@ -4,14 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.server.mapper.WarehouseMapper">
 
-    <resultMap id="WarehouseProductMap" type="org.server.entity.Product">
+    <resultMap id="WarehouseProductMap" type="org.server.pojo.entity.Product">
         <id column="pid" property="id"/>
         <result column="pname" property="name"/>
         <result column="amount" property="total"/>
     </resultMap>
 
-    <select id="getWarehouseList" resultType="org.server.entity.Warehouse">
-        select * from warehouse
+    <select id="getWarehouseList" resultType="org.server.pojo.entity.Warehouse">
+        select * from tb_warehouse
         <if test="keyword != null">
             where name like concat('%',#{keyword},'%')
         </if>
@@ -28,21 +28,21 @@
     </select>
 
 
-    <select id="getWarehouseByName" resultType="org.server.entity.Warehouse">
-        select * from warehouse where name=#{name}
+    <select id="getWarehouseByName" resultType="org.server.pojo.entity.Warehouse">
+        select * from tb_warehouse where name=#{name}
     </select>
 
     <insert id="addWarehouse">
-        insert ignore into warehouse(name) values (#{name})
+        insert ignore into tb_warehouse(name) values (#{name})
     </insert>
 
     <update id="updateWarehouseInfo">
-        update warehouse set name=#{name}
+        update tb_warehouse set name=#{name}
         where id=#{id}
     </update>
 
     <insert id="addEmployeeByWid">
-        insert ignore into employee_warehouse(wid, eid) values
+        insert ignore into tb_employee_warehouse(wid, eid) values
         <foreach collection="eidList" item="item" separator=",">
             (#{wid}, #{item})
         </foreach>

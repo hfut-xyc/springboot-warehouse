@@ -1,7 +1,7 @@
 package org.server.service;
 
-import org.server.dto.OrderChart;
-import org.server.entity.Order;
+import org.server.pojo.dto.OrderChart;
+import org.server.pojo.entity.Order;
 import org.server.mapper.OrderMapper;
 import org.server.mapper.ProductMapper;
 import org.server.mapper.WarehouseMapper;
@@ -24,11 +24,9 @@ public class OrderService {
     private ProductMapper productMapper;
 
 
-    public List<Order> getOrderList(String status, String startTime, String endTime) {
-        //return orderMapper.findOrdersByTime(status, startTime, endTime);
-        return null;
+    public List<Order> getOrderList(String startTime, String endTime) {
+        return orderMapper.list(startTime, endTime);
     }
-
 
     public List<OrderChart> getOrderChart() {
         return orderMapper.getOrderChart();
@@ -112,20 +110,13 @@ public class OrderService {
     }
 
     @Transactional
-    public int deleteOrderById(int id) throws Exception {
+    public Integer deleteOrderById(int id) throws Exception {
         int res = orderMapper.deleteById(id);
         if (res != 1) {
             throw new Exception("彻底删除订单失败");
         }
-        return 1;
+        return res;
     }
 
-    @Transactional
-    public int updateOrderStatus(int id, String status) throws Exception {
-        //int res = orderMapper.updateStatus(id, status);
-        //if (res != 1) {
-        //    throw new Exception("订单状态修改失败");
-        //}
-        return 1;
-    }
+
 }

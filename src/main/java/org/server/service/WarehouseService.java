@@ -1,7 +1,7 @@
 package org.server.service;
 
-import org.server.entity.Product;
-import org.server.entity.Warehouse;
+import org.server.pojo.entity.Product;
+import org.server.pojo.entity.Warehouse;
 import org.server.mapper.WarehouseMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,4 +1,4 @@
-package org.server.entity;
+package org.server.pojo.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

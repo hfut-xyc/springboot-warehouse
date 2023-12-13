@@ -2,8 +2,8 @@ package org.server.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.server.entity.Product;
-import org.server.entity.Warehouse;
+import org.server.pojo.entity.Product;
+import org.server.pojo.entity.Warehouse;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package org.server.config;
+package org.server.config.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -15,6 +15,13 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        //User user = (User) request.getSession().getAttribute("user");
+        //if (user == null) {
+        //    return false;
+        //}
+        //if (request.getServletPath().startsWith("/user")) {
+        //    return user.getRole() == 1;
+        //}
         return true;
     }
 

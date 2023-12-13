@@ -1,8 +1,9 @@
 package org.server.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.server.entity.Product;
-import org.server.entity.Warehouse;
+import org.server.pojo.dto.Result;
+import org.server.pojo.entity.Product;
+import org.server.pojo.entity.Warehouse;
 import org.server.service.WarehouseService;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,13 +14,14 @@ import java.util.Map;
 
 @Slf4j
 @RestController
+@RequestMapping("/warehouse")
 public class WarehouseController {
 
     @Resource
     private WarehouseService warehouseService;
 
-    @GetMapping("/warehouse/list")
-    public Map<String, Object> getWarehouseList(
+    @GetMapping("/list")
+    public Result getWarehouseList(
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "keyword", required = false) String keyword) {
@@ -28,12 +30,12 @@ public class WarehouseController {
         int end = Math.min(start + pageSize, list.size());
 
         Map<String, Object> map = new HashMap<>();
-        map.put("warehouseList", list.subList(start, end));
         map.put("total", list.size());
-        return map;
+        map.put("warehouseList", list.subList(start, end));
+        return Result.ok(map, "查询成功");
     }
 
-    @PostMapping("/warehouse")
+    @PostMapping("/")
     public int updateWarehouseInfo(@RequestBody Warehouse warehouse) {
         try {
             return warehouseService.updateWarehouseInfo(warehouse);

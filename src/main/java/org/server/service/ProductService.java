@@ -1,6 +1,6 @@
 package org.server.service;
 
-import org.server.entity.Product;
+import org.server.pojo.entity.Product;
 import org.server.mapper.ProductMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

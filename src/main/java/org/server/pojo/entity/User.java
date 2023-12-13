@@ -1,4 +1,4 @@
-package org.server.entity;
+package org.server.pojo.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,8 +14,7 @@ public class User {
     private Integer id;
     private String username;
     private String password;
-    private Boolean status;
-    private Boolean admin;
+    private Integer role;
 
     private LocalDateTime createTime;
     private LocalDateTime updateTime;

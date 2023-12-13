@@ -1,4 +1,4 @@
-package org.server.dto;
+package org.server.pojo.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

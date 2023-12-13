@@ -5,6 +5,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.extern.slf4j.Slf4j;
+import org.server.config.interceptor.AuthInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -30,7 +31,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:8080")
+                .allowedOrigins("*")
                 .allowedHeaders("*")
                 .allowedMethods("*")
                 .allowCredentials(true)
@@ -41,7 +42,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/user/login");
+                .excludePathPatterns("/login", "/captcha");
     }
 
     @Override
@@ -49,7 +50,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         log.info("扩展消息转换器");
         MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
         messageConverter.setObjectMapper(localDateTimeMapper());
-        converters.add(0,messageConverter);
+        converters.add(0, messageConverter);
     }
 
     @Bean

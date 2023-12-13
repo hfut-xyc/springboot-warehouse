@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.server.mapper.ProductMapper">
 
-    <select id="getProductList" resultType="org.server.entity.Product">
+    <select id="getProductList" resultType="org.server.pojo.entity.Product">
         select * from view_product_warehouse
         <if test="keyword != null">
             where name like concat('%',#{keyword},'%')
@@ -12,11 +12,11 @@
     </select>
 
     <select id="getPidByName" resultType="java.lang.Integer">
-        select id from product where name=#{name}
+        select id from tb_product where name=#{name}
     </select>
 
     <insert id="addProduct">
-        insert into product(name, supplier)
+        insert into tb_product(name, supplier)
         values (#{name}, #{supplier});
     </insert>
 
