@@ -2,15 +2,15 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.server.mapper.WarehouseMapper">
+<mapper namespace="com.admin.mapper.WarehouseMapper">
 
-    <resultMap id="WarehouseProductMap" type="org.server.pojo.entity.Product">
+    <resultMap id="WarehouseProductMap" type="com.admin.entity.Product">
         <id column="pid" property="id"/>
         <result column="pname" property="name"/>
         <result column="amount" property="total"/>
     </resultMap>
 
-    <select id="getWarehouseList" resultType="org.server.pojo.entity.Warehouse">
+    <select id="getWarehouseList" resultType="com.admin.entity.Warehouse">
         select * from tb_warehouse
         <if test="keyword != null">
             where name like concat('%',#{keyword},'%')
@@ -28,7 +28,7 @@
     </select>
 
 
-    <select id="getWarehouseByName" resultType="org.server.pojo.entity.Warehouse">
+    <select id="getWarehouseByName" resultType="com.admin.entity.Warehouse">
         select * from tb_warehouse where name=#{name}
     </select>
 

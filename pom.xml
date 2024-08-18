@@ -8,10 +8,10 @@
     <version>2.2.6.RELEASE</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
-  <groupId>org.server</groupId>
-  <artifactId>warehouse</artifactId>
+
+  <groupId>com.admin</groupId>
+  <artifactId>springboot-warehouse</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>web-warehouse-api</name>
   <description>Demo project for Spring Boot</description>
 
   <properties>
@@ -56,6 +56,12 @@
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>1.16.20</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt</artifactId>
+      <version>0.9.1</version>
     </dependency>
 
   </dependencies>

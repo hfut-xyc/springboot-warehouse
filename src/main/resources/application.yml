@@ -15,4 +15,4 @@ mybatis:
 
 logging:
   level:
-    org.server: DEBUG
+    com.admin: DEBUG

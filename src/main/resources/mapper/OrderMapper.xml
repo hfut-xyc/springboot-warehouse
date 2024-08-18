@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.server.mapper.OrderMapper">
+<mapper namespace="com.admin.mapper.OrderMapper">
 
-    <select id="list" resultType="org.server.pojo.entity.Order">
+    <select id="list" resultType="com.admin.entity.Order">
         select * from tb_order
           <where>
             <if test="startTime != null ">
@@ -15,15 +15,6 @@
             </if>
           </where>
     </select>
-
-    <select id="getOrderChart" resultType="org.server.pojo.dto.OrderChart">
-        select
-            DATE_FORMAT(create_time, '%Y-%m-%d') as date,
-            count(*) as count
-        from order
-        GROUP BY DATE_FORMAT(create_time, '%Y-%m-%d')
-    </select>
-
 
 
 </mapper>
