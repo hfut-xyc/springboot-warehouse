@@ -4,11 +4,20 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.admin.mapper.UserMapper">
 
+  <select id="count" resultType="java.lang.Integer">
+    select count(*) from tb_user
+    <if test="keyword != null">
+      where username like concat('%',#{keyword},'%')
+    </if>
+  </select>
+
   <select id="list" resultType="com.admin.entity.User">
     select * from tb_user
     <if test="keyword != null">
       where username like concat('%',#{keyword},'%')
     </if>
+    limit #{page}, #{pageSize}
   </select>
+
 
 </mapper>

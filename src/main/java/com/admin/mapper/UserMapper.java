@@ -1,14 +1,20 @@
 package com.admin.mapper;
 
-import org.apache.ibatis.annotations.*;
 import com.admin.entity.User;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
 public interface UserMapper {
 
-	List<User> list(@Param("keyword") String keyword);
+	Integer count(String keyword);
+
+	List<User> list(
+		@Param("page") Integer page,
+		@Param("pageSize") Integer pageSize,
+		@Param("keyword") String keyword
+	);
 
 	@Select("select id, username, password, role from tb_user where username=#{username}")
 	User selectByUsername(String username);

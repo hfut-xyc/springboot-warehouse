@@ -23,8 +23,12 @@ public class OrderService {
     private ProductMapper productMapper;
 
 
-    public List<Order> getOrderList(String startTime, String endTime) {
-        return orderMapper.list(startTime, endTime);
+    public Integer count(String startTime, String endTime) {
+        return orderMapper.count(startTime, endTime);
+    }
+
+    public List<Order> listOrder(Integer page, Integer pageSize, String startTime, String endTime) {
+        return orderMapper.list(page, pageSize, startTime, endTime);
     }
 
 
@@ -113,6 +117,5 @@ public class OrderService {
         }
         return res;
     }
-
 
 }

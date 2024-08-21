@@ -1,8 +1,8 @@
 package com.admin.controller;
 
-import com.admin.vo.Result;
 import com.admin.entity.User;
 import com.admin.service.UserService;
+import com.admin.vo.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -19,18 +19,18 @@ public class UserController {
 
     @GetMapping("/list")
     public Result listUser(
-            @RequestParam(value = "page", defaultValue = "1") Integer page,
-            @RequestParam(value = "keyword", required = false) String keyword)
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(required = false) String keyword)
     {
-        List<User> list = userService.list(keyword);
-        int pageSize = 10;
-        int start = (page - 1) * pageSize;
-        int end = Math.min(start + pageSize, list.size());
+        Integer total = userService.count(keyword);
+        List<User> list = userService.listUser((page - 1) * pageSize, pageSize, keyword);
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("total", list.size());
-        map.put("userList", list.subList(start, end));
-        return Result.ok("查询成功", map);
+        Map<String, Object> data = new HashMap<>();
+        data.put("total", total);
+        data.put("userList", list);
+
+        return Result.ok("查询成功", data);
     }
 
     @PostMapping("")

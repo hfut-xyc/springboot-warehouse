@@ -29,8 +29,12 @@ public class UserService {
 		return user;
 	}
 
-	public List<User> list(String keyword) {
-		return userMapper.list(keyword);
+	public Integer count(String keyword) {
+		return userMapper.count(keyword);
+	}
+
+	public List<User> listUser(Integer page, Integer pageSize, String keyword) {
+		return userMapper.list(page, pageSize, keyword);
 	}
 
 	@Transactional

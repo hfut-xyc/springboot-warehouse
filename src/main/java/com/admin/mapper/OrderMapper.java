@@ -8,14 +8,19 @@ import java.util.List;
 @Mapper
 public interface OrderMapper {
 
-	List<Order> list(@Param("startTime") String startTime, @Param("endTime") String endTime);
+    Integer count(String startTime, String endTime);
 
-	@Insert("insert into tb_order(eid, wid, pid, amount, status) values (#{uid}, #{wid}, #{pid}, #{amount}, #{status})")
-	Integer save(Order order);
+	List<Order> list(
+        @Param("page") Integer page,
+        @Param("pageSize") Integer pageSize,
+        @Param("startTime") String startTime,
+        @Param("endTime") String endTime
+    );
 
-	@Update("update tb_order set status=#{status} where id=#{id}")
-	Integer update(Order order);
+    @Insert("insert into tb_order(eid, wid, pid, amount, status) values (#{uid}, #{wid}, #{pid}, #{amount}, #{status})")
+    Integer insert(Order order);
 
-	@Delete("delete from tb_order where id=#{id}")
-	Integer deleteById(Integer id);
+    @Delete("delete from tb_order where id=#{id}")
+    Integer deleteById(Integer id);
+
 }
