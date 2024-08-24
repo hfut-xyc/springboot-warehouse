@@ -19,7 +19,12 @@ public class User {
     private String password;
     private Integer role;
 
+    private Integer createUserId;
+    private String createUserName;
     private LocalDateTime createTime;
+
+    private Integer updateUserId;
+    private String updateUserName;
     private LocalDateTime updateTime;
 
 }

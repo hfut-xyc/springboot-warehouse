@@ -23,11 +23,14 @@ public class LoginInterceptor implements HandlerInterceptor {
             throw new Exception("未登录");
         }
         Claims claims = JwtUtils.parseToken(token);
-        Integer role = (Integer) claims.get("role");
 
-        // 只有超级管理员有权限查改普通管理员的信息
-        if (request.getServletPath().startsWith("/user") && role == User.ROLE_USER) {
-            throw new Exception("权限不足，请联系管理员");
+        // 只有超级管理员有权限增删改用户、仓库
+        Integer role = (Integer) claims.get("role");
+        String path = request.getServletPath();
+        if ("/user".equals(path) || "/warehouse".equals(path)) {
+            if (role == User.ROLE_USER) {
+                throw new Exception("权限不足，请联系管理员");
+            }
         }
         return true;
     }

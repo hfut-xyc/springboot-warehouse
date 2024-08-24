@@ -4,61 +4,47 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.admin.mapper.WarehouseMapper">
 
-    <resultMap id="WarehouseProductMap" type="com.admin.entity.Product">
-        <id column="pid" property="id"/>
-        <result column="pname" property="name"/>
-        <result column="amount" property="total"/>
-    </resultMap>
+<!--    <resultMap id="WarehouseProductMap" type="com.admin.entity.Product">-->
+<!--        <id column="pid" property="id"/>-->
+<!--        <result column="pname" property="name"/>-->
+<!--        <result column="count" property="total"/>-->
+<!--    </resultMap>-->
 
-    <select id="getWarehouseList" resultType="com.admin.entity.Warehouse">
-        select * from tb_warehouse
+    <select id="count" resultType="java.lang.Integer">
+        select count(*) from tb_warehouse
         <if test="keyword != null">
-            where name like concat('%',#{keyword},'%')
+            where name like concat('%', #{keyword}, '%')
         </if>
     </select>
 
-    <select id="getProductListById" resultMap="WarehouseProductMap">
-        select pid, pname, supplier, amount
-        from view_warehouse_product where id=#{id}
-    </select>
-
-    <select id="getProductByWidAndPid" resultMap="WarehouseProductMap">
-        select pid, pname, supplier, amount
-        from view_warehouse_product where id=#{wid} and pid=#{pid}
+    <select id="listByName" resultType="com.admin.entity.Warehouse">
+        select * from tb_warehouse
+        <if test="keyword != null">
+            where name like concat('%', #{keyword}, '%')
+        </if>
     </select>
 
 
-    <select id="getWarehouseByName" resultType="com.admin.entity.Warehouse">
+<!--    <select id="getProductListById" resultMap="WarehouseProductMap">-->
+<!--        select pid, pname, supplier, count-->
+<!--        from view_warehouse_product where id=#{id}-->
+<!--    </select>-->
+
+<!--    <select id="getProductByWidAndPid" resultMap="WarehouseProductMap">-->
+<!--        select pid, pname, count-->
+<!--        from view_warehouse_product where id=#{wid} and pid=#{pid}-->
+<!--    </select>-->
+
+    <select id="selectByName" resultType="com.admin.entity.Warehouse">
         select * from tb_warehouse where name=#{name}
     </select>
 
-    <insert id="addWarehouse">
+    <insert id="insert">
         insert ignore into tb_warehouse(name) values (#{name})
     </insert>
 
-    <update id="updateWarehouseInfo">
-        update tb_warehouse set name=#{name}
-        where id=#{id}
+    <update id="update">
+        update tb_warehouse set name=#{name} where id=#{id}
     </update>
 
-    <insert id="addEmployeeByWid">
-        insert ignore into tb_employee_warehouse(wid, eid) values
-        <foreach collection="eidList" item="item" separator=",">
-            (#{wid}, #{item})
-        </foreach>
-    </insert>
-
-    <delete id="deleteAllEmployeeByWid">
-        delete from employee_warehouse where wid=#{wid}
-    </delete>
-
-    <update id="updateProductByWid">
-        update warehouse_product set amount=#{amount}
-        where wid=#{wid} and pid=#{pid}
-    </update>
-
-    <insert id="addProductByWid">
-        insert into warehouse_product(wid, pid, amount)
-        values (#{wid}, #{pid}, #{amount})
-    </insert>
 </mapper>

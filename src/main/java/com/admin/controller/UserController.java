@@ -6,8 +6,6 @@ import com.admin.vo.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -19,28 +17,22 @@ public class UserController {
 
     @GetMapping("/list")
     public Result listUser(
-            @RequestParam(defaultValue = "1") Integer page,
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(required = false) String keyword)
+        @RequestParam(defaultValue = "1") Integer page,
+        @RequestParam(defaultValue = "10") Integer pageSize,
+        @RequestParam(required = false) String keyword)
     {
-        Integer total = userService.count(keyword);
-        List<User> list = userService.listUser((page - 1) * pageSize, pageSize, keyword);
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", total);
-        data.put("userList", list);
-
-        return Result.ok("查询成功", data);
+        Map<String, Object> map = userService.listUser((page - 1) * pageSize, pageSize, keyword);
+        return Result.ok("查询成功", map);
     }
 
     @PostMapping("")
     public Integer insertUser(@RequestBody User user) throws Exception {
-        return userService.insert(user);
+        return userService.insertUser(user);
     }
 
     @PutMapping("")
     public Integer updateUser(@RequestBody User user) throws Exception {
-        return userService.update(user);
+        return userService.updateUser(user);
     }
 
     @DeleteMapping("")

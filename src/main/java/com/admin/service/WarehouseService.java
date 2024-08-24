@@ -3,11 +3,14 @@ package com.admin.service;
 import com.admin.entity.Product;
 import com.admin.entity.Warehouse;
 import com.admin.mapper.WarehouseMapper;
+import com.admin.mapper.WarehouseProductMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class WarehouseService {
@@ -15,35 +18,35 @@ public class WarehouseService {
     @Resource
     private WarehouseMapper warehouseMapper;
 
-    public List<Warehouse> getWarehouseList(String keyword) {
-        return warehouseMapper.getWarehouseList(keyword);
-    }
+    @Resource
+    private WarehouseProductMapper warehouseProductMapper;
 
-	public List<? super Product> getProductListById(int id) throws Exception {
-    	// 1.先从Redis中读取
-//    	List<? super Product> products = redisTemplate.boundHashOps("warehouse:" + id).values();
-//    	// 2.如果缓存中没有，再从MySQL中读取
-//    	if (products == null || products.size() == 0) {
-//    		products = warehouseMapper.getProductListById(id);
-//		    if (products == null) {
-//			    throw new Exception("仓库ID不存在");
-//		    }
-//		    // 3.将MySQL中的数据同步到Redis
-//		    for (Object product : products) {
-//			    redisTemplate.boundHashOps("warehouse:" + id).put("product:" + ((Product) product).getId(), product);
-//		    }
-//	    }
-		List<? super Product> products = warehouseMapper.getProductListById(id);
-		return products;
+    /**
+     * 根据仓库名分页查询仓库以及所含的产品
+     * @param keyword
+     * @return
+     */
+    public Map<String, Object> listWarehouse(String keyword) {
+        Integer count = warehouseMapper.count(keyword);
+        List<Warehouse> warehouseList = warehouseMapper.listByName(keyword);
+        warehouseList.forEach(warehouse -> {
+            List<Product> productList = warehouseProductMapper.listProduct(warehouse.getId());
+            warehouse.setProductList(productList);
+        });
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("total", count);
+        map.put("warehouseList", warehouseList);
+        return map;
     }
 
     @Transactional
-	public int insert(Warehouse warehouse) throws Exception {
-        Warehouse temp = warehouseMapper.getWarehouseByName(warehouse.getName());
+	public int insertWarehouse(Warehouse warehouse) throws Exception {
+        Warehouse temp = warehouseMapper.selectByName(warehouse.getName());
 		if (temp != null) {
 			throw new Exception("仓库名称重复");
 		}
-        int res = warehouseMapper.addWarehouse(warehouse);
+        int res = warehouseMapper.insert(warehouse);
         if (res != 1) {
             throw new Exception("仓库插入失败");
         }
@@ -52,25 +55,12 @@ public class WarehouseService {
 
 
 	@Transactional
-	public int updateWarehouseInfo(Warehouse warehouse) throws Exception  {
-		if (warehouseMapper.updateWarehouseInfo(warehouse) == 1) {
-			return 1;
-		} else {
+	public int updateWarehouse(Warehouse warehouse) throws Exception  {
+		int res = warehouseMapper.update(warehouse);
+        if (res != 1) {
 			throw new Exception("修改仓库信息失败");
 		}
-    }
-    
-    @Transactional
-    public int updateEmployeeByWid(int wid, List<Integer> eidList) throws Exception  {
-		//warehouseMapper.deleteAllEmployeeByWid(wid);
-		//if (eidList.size() == 0) {
-		//	return 1;
-		//}
-		//int res = warehouseMapper.addEmployeeByWid(wid, eidList);
-		//if (eidList.size() != res) {
-		//	throw new Exception("未能成功修改员工负责的仓库");
-		//}
-		return 1;
+        return 1;
     }
 
 //    @Transactional

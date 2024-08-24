@@ -2,13 +2,13 @@ package com.admin.service;
 
 import com.admin.entity.Order;
 import com.admin.mapper.OrderMapper;
-import com.admin.mapper.ProductMapper;
-import com.admin.mapper.WarehouseMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderService {
@@ -16,24 +16,39 @@ public class OrderService {
     @Resource
     private OrderMapper orderMapper;
 
-    @Resource
-    private WarehouseMapper warehouseMapper;
+    /**
+     * 根据时间分页查询订单
+     * @param page
+     * @param pageSize
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    public Map<String, Object> listOrder(Integer page, Integer pageSize, String startTime, String endTime) {
+        Integer count = orderMapper.count(startTime, endTime);
+        List<Order> orderList = orderMapper.listByCreateTime(page, pageSize, startTime, endTime);
 
-    @Resource
-    private ProductMapper productMapper;
-
-
-    public Integer count(String startTime, String endTime) {
-        return orderMapper.count(startTime, endTime);
-    }
-
-    public List<Order> listOrder(Integer page, Integer pageSize, String startTime, String endTime) {
-        return orderMapper.list(page, pageSize, startTime, endTime);
+        Map<String, Object> map = new HashMap<>();
+        map.put("total", count);
+        map.put("orderList", orderList);
+        return map;
     }
 
 
     @Transactional
-    public int addOrderWithOld(Order order) throws Exception {
+    public int insertOrder(Order order) throws Exception {
+
+        return 1;
+    }
+
+    @Transactional
+    public Integer deleteOrderById(int id) throws Exception {
+        int res = orderMapper.deleteById(id);
+        if (res != 1) {
+            throw new Exception("删除订单失败");
+        }
+        return res;
+    }
 //        String warehousekey = "warehouse:" + order.getWid();
 //        String productKey = "product:" + order.getPid();
 //        Product product = (Product) redisTemplate.boundHashOps(warehousekey).get(productKey);
@@ -85,11 +100,11 @@ public class OrderService {
 //        if (res2 != 1) {
 //            throw new InsertException("添加订单失败");
 //        }
-        return 1;
-    }
+//        return 1;
+//    }
 
-    @Transactional
-    public int addOrderWithNew(Order order) throws Exception {
+    //@Transactional
+    //public int addOrderWithNew(Order order) throws Exception {
 //        // 1.先添加订单
 //        int res1 = orderMapper.addOrder(order);
 //        if (res1 != 1) {
@@ -106,16 +121,6 @@ public class OrderService {
 //        Product product = productMapper.getProductById(order.getPid());
 //        product.setTotal(order.getAmount());
 //        redisTemplate.boundHashOps(warehousekey).put(productKey, product);
-        return 1;
-    }
-
-    @Transactional
-    public Integer deleteOrderById(int id) throws Exception {
-        int res = orderMapper.deleteById(id);
-        if (res != 1) {
-            throw new Exception("彻底删除订单失败");
-        }
-        return res;
-    }
-
+//        return 1;
+//    }
 }

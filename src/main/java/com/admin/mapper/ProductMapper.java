@@ -9,16 +9,15 @@ import java.util.List;
 @Mapper
 public interface ProductMapper {
 
-	List<Product> getProductList(String keyword);
+	Integer count(String keyword);
 
-	Integer getPidByName(String name);
+	List<Product> listByName(String keyword);
 
-	@Select("select * from tb_product where id=#{id}")
-	Product getProductById(int id);
+	@Select("select count(*) from tb_product where name=#{name}")
+	Product selectByName(String name);
 
-	@Select("select * from tb_product where name=#{name}")
-	Product findByName(String name);
+	Integer insert(Product product);
 
-	int addProduct(Product product);
+	Integer update(Product product);
 
 }

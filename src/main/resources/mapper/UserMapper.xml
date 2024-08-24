@@ -7,11 +7,11 @@
   <select id="count" resultType="java.lang.Integer">
     select count(*) from tb_user
     <if test="keyword != null">
-      where username like concat('%',#{keyword},'%')
+      where username like concat('%', #{keyword}, '%')
     </if>
   </select>
 
-  <select id="list" resultType="com.admin.entity.User">
+  <select id="listByName" resultType="com.admin.entity.User">
     select * from tb_user
     <if test="keyword != null">
       where username like concat('%',#{keyword},'%')

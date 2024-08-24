@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.admin.mapper.WarehouseProductMapper">
+
+  <select id="listWarehouse" resultType="com.admin.entity.Warehouse">
+    select warehouse_id as id, warehouse_name as name, count
+    from tb_warehouse_product
+    where product_id=#{productId}
+  </select>
+
+  <select id="listProduct" resultType="com.admin.entity.Product">
+    select product_id as id, product_name as name, count
+    from tb_warehouse_product
+    where warehouse_id=#{warehouseId}
+  </select>
+
+  <insert id="insert">
+    insert into tb_warehouse_product(wid, pid, count)
+    values (#{wid}, #{pid}, #{count})
+  </insert>
+
+  <update id="update">
+    update tb_warehouse_product set count=#{count}
+    where wid=#{wid} and pid=#{pid}
+  </update>
+
+</mapper>

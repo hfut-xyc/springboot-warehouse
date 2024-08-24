@@ -16,7 +16,7 @@
     </where>
   </select>
 
-  <select id="list" resultType="com.admin.entity.Order">
+  <select id="listByCreateTime" resultType="com.admin.entity.Order">
         select * from tb_order
           <where>
             <if test="startTime != null ">

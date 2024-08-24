@@ -1,32 +1,23 @@
 package com.admin.mapper;
 
-import com.admin.entity.Product;
+import com.admin.entity.Warehouse;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import com.admin.entity.Warehouse;
 
 import java.util.List;
 
 @Mapper
 public interface WarehouseMapper {
 
-	List<Warehouse> getWarehouseList(@Param("keyword") String keyword);
+	Integer count(String keyword);
 
-	List<Product> getProductListById(int id);
+	List<Warehouse> listByName(@Param("keyword") String keyword);
 
-	Warehouse getWarehouseByName(String name);
+	Warehouse selectByName(String name);
 
-	Product getProductByWidAndPid(int wid, int pid);
+	// 添加仓库
+	int insert(Warehouse warehouse);
 
-	// 添加新仓库
-	int addWarehouse(Warehouse warehouse);
-
-	// 修改仓库基本信息
-	int updateWarehouseInfo(Warehouse warehouse);
-
-	// 处理旧产品的订单时，更新原有库存记录
-	int updateProductByWid(@Param("wid") int wid, @Param("pid") int pid, @Param("amount") int amount);
-
-	// 处理新产品的订单时，添加一条库存记录
-	int addProductByWid(@Param("wid") int wid, @Param("pid") int pid, @Param("amount") int amount);
+	// 修改仓库
+	int update(Warehouse warehouse);
 }

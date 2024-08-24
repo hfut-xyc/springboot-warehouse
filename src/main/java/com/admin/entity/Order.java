@@ -13,11 +13,15 @@ import java.time.LocalDateTime;
 public class Order implements Serializable {
 
 	private Integer id;
-	private Integer eid;
-	private Integer wid;
-	private Integer pid;
-	private Integer amount;
-	private Integer status;
+	private Integer warehouseId;
+	private Integer productId;
+	private Integer count;
+
+	private Integer createUserId;
+	private String createUserName;
 	private LocalDateTime createTime;
+
+	private Integer updateUserId;
+	private String updateUserName;
 	private LocalDateTime updateTime;
 }
