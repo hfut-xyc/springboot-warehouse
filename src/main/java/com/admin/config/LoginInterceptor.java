@@ -24,10 +24,10 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
         Claims claims = JwtUtils.parseToken(token);
 
-        // 只有超级管理员有权限增删改用户、仓库
+        // 超级管理员的权限：用户的增删改查、仓库的增删改
         Integer role = (Integer) claims.get("role");
         String path = request.getServletPath();
-        if ("/user".equals(path) || "/warehouse".equals(path)) {
+        if (path.startsWith("/user") || "/warehouse".equals(path)) {
             if (role == User.ROLE_USER) {
                 throw new Exception("权限不足，请联系管理员");
             }

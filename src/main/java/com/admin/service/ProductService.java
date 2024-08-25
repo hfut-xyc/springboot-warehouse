@@ -29,10 +29,8 @@ public class ProductService {
 	public Map<String, Object> listProduct(String keyword) {
 		Integer count = productMapper.count(keyword);
 		List<Product> productList = productMapper.listByName(keyword);
-		System.out.println(productList);
 		productList.forEach(product -> {
 			List<Warehouse> warehouseList = warehouseProductMapper.listWarehouse(product.getId());
-			System.out.println(warehouseList);
 			product.setWarehouseList(warehouseList);
 		});
 
