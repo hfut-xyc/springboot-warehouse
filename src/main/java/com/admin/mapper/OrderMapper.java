@@ -8,13 +8,12 @@ import java.util.List;
 @Mapper
 public interface OrderMapper {
 
-    Integer count(String startTime, String endTime);
+    Integer countByCreateTime(String date);
 
 	List<Order> listByCreateTime(
         @Param("page") Integer page,
         @Param("pageSize") Integer pageSize,
-        @Param("startTime") String startTime,
-        @Param("endTime") String endTime
+        @Param("date") String date
     );
 
     @Insert("insert into tb_order(eid, wid, pid, count, status) values (#{uid}, #{wid}, #{pid}, #{count}, #{status})")

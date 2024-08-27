@@ -20,10 +20,9 @@ public class OrderController {
     public Result listOrder(
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(required = false) String startTime,
-            @RequestParam(required = false) String endTime)
+            @RequestParam(required = false) String date)
     {
-        Map<String, Object> map = orderService.listOrder((page - 1) * pageSize, pageSize, startTime, endTime);
+        Map<String, Object> map = orderService.listOrder((page - 1) * pageSize, pageSize, date);
         return Result.ok("查询成功", map);
     }
 

@@ -16,7 +16,7 @@ public interface UserMapper {
 		@Param("keyword") String keyword
 	);
 
-	@Select("select username, password from tb_user where username=#{username}")
+	@Select("select id, username, password, role from tb_user where username=#{username}")
 	User selectByName(String username);
 
 	@Insert("insert into tb_user(username, password) VALUES (#{username}, #{password})")

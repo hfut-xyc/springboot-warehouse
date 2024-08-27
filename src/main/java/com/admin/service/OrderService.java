@@ -20,13 +20,12 @@ public class OrderService {
      * 根据时间分页查询订单
      * @param page
      * @param pageSize
-     * @param startTime
-     * @param endTime
+     * @param date
      * @return
      */
-    public Map<String, Object> listOrder(Integer page, Integer pageSize, String startTime, String endTime) {
-        Integer count = orderMapper.count(startTime, endTime);
-        List<Order> orderList = orderMapper.listByCreateTime(page, pageSize, startTime, endTime);
+    public Map<String, Object> listOrder(Integer page, Integer pageSize, String date) {
+        Integer count = orderMapper.countByCreateTime(date);
+        List<Order> orderList = orderMapper.listByCreateTime(page, pageSize, date);
 
         Map<String, Object> map = new HashMap<>();
         map.put("total", count);
