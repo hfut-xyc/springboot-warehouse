@@ -11,7 +11,7 @@
     </if>
   </select>
 
-  <select id="listByName" resultType="com.admin.entity.User">
+  <select id="selectListByName" resultType="com.admin.entity.User">
     select * from tb_user
     <if test="keyword != null">
       where username like concat('%',#{keyword},'%')

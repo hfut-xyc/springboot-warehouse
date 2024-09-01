@@ -18,17 +18,30 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/list")
-    public Result list(
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+    public Result listProduct(
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
             @RequestParam(value = "keyword", required = false) String keyword)
     {
-        Map<String, Object> map  = productService.listProduct(keyword);
+        Map<String, Object> map  = productService.selectListByName(keyword);
         return Result.ok("查询成功", map);
     }
 
     @PostMapping("")
-    public Integer addProduct(@RequestBody Product product) throws Exception {
-        return productService.insertProduct(product);
+    public Result insert(@RequestBody Product product) throws Exception {
+        Integer res = productService.insert(product);
+        return Result.ok("添加成功", res);
+    }
+
+    @PutMapping("")
+    public Result updateWarehouse(@RequestBody Product product) throws Exception {
+        Integer res = productService.update(product);
+        return Result.ok("修改成功", res);
+    }
+
+    @DeleteMapping("")
+    public Result deleteWarehouse(@RequestParam Integer id) throws Exception {
+        Integer res = productService.deleteById(id);
+        return Result.ok("删除成功", res);
     }
 }

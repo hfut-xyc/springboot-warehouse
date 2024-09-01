@@ -1,5 +1,6 @@
 package com.admin.controller;
 
+import com.admin.entity.Order;
 import com.admin.service.OrderService;
 import com.admin.vo.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -22,23 +23,20 @@ public class OrderController {
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(required = false) String date)
     {
-        Map<String, Object> map = orderService.listOrder((page - 1) * pageSize, pageSize, date);
+        Map<String, Object> map = orderService.selectListByDate((page - 1) * pageSize, pageSize, date);
         return Result.ok("查询成功", map);
     }
 
-    //@PutMapping("/add/old")
-    //public int addOrderWithOld(@RequestBody Order order) throws Exception {
-    //    return orderService.addOrderWithOld(order);
-    //}
-    //
-    //@PutMapping("/add/new")
-    //public int addOrderWithNew(@RequestBody Order order) throws Exception {
-    //    return orderService.addOrderWithNew(order);
-    //}
+    @PostMapping("")
+    public Result insertOrder(@RequestBody Order order) throws Exception {
+        Integer res = orderService.insert(order);
+        return Result.ok("添加成功", res);
+    }
+
 
     @DeleteMapping("")
-    public int deleteUserById(@RequestParam Integer id) throws Exception {
-        return orderService.deleteOrderById(id);
-
+    public Result deleteById(@RequestParam Integer id) throws Exception {
+        Integer res = orderService.deleteById(id);
+        return Result.ok("删除成功", res);
     }
 }

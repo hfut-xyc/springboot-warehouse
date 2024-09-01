@@ -26,9 +26,9 @@ public class ProductService {
 	 * @param keyword
 	 * @return
 	 */
-	public Map<String, Object> listProduct(String keyword) {
+	public Map<String, Object> selectListByName(String keyword) {
 		Integer count = productMapper.count(keyword);
-		List<Product> productList = productMapper.listByName(keyword);
+		List<Product> productList = productMapper.selectListByName(keyword);
 		productList.forEach(product -> {
 			List<Warehouse> warehouseList = warehouseProductMapper.listWarehouse(product.getId());
 			product.setWarehouseList(warehouseList);
@@ -40,23 +40,41 @@ public class ProductService {
 		return map;
 	}
 
-	//public Integer getPidByName(String name) {
-	//	return productMapper.getPidByName(name);
-	//}
-	// 商品不应该直接主动添加，而是随着入库订单而出现新的商品
-	// 商品没必要有删除操作，如果某一商品在所有仓库的合计数量告罄，直接显示0，方便后续补货
-
+	/**
+	 * 添加产品
+	 * @param product
+	 * @return
+	 * @throws Exception
+	 */
 	@Transactional
-	public int insertProduct(Product product) throws Exception {
+	public Integer insert(Product product) throws Exception {
 		Product temp = productMapper.selectByName(product.getName());
 		if (temp != null) {
 			throw new Exception("产品名已存在");
 		}
-		int res = productMapper.insert(product);
+		Integer res = productMapper.insert(product);
 		if (res != 1) {
 			throw new Exception("添加产品失败");
 		}
 		return 1;
 	}
 
+	@Transactional
+	public Integer update(Product product) throws Exception  {
+		Integer res = productMapper.update(product);
+		if (res != 1) {
+			throw new Exception("修改产品失败");
+		}
+		return 1;
+	}
+
+
+	@Transactional
+	public Integer deleteById(Integer id) throws Exception  {
+		Integer res = productMapper.deleteById(id);
+		if (res != 1) {
+			throw new Exception("删除产品失败");
+		}
+		return res;
+	}
 }

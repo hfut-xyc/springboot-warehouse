@@ -11,17 +11,11 @@
         </if>
     </select>
 
-    <select id="listByName" resultType="com.admin.entity.Product">
+    <select id="selectListByName" resultType="com.admin.entity.Product">
         select * from tb_product
         <if test="keyword != null">
             where name like concat('%',#{keyword},'%')
         </if>
     </select>
-
-    <insert id="insert">
-        insert into tb_product(name) values (#{name});
-    </insert>
-
-    <update id="update"></update>
 
 </mapper>

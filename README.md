@@ -7,7 +7,7 @@
 - 查询用户：GET /user/list
 - 添加用户：POST /user
 - 修改用户：PUT /user
-- 删除用户：DELETE /user/{id}
+- 删除用户：DELETE /user
 
 ## 运行
 1. 安装 [JDK 1.8](https://www.oracle.com/java/technologies/downloads/archive/)

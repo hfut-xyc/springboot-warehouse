@@ -1,8 +1,7 @@
 package com.admin.mapper;
 
 import com.admin.entity.Warehouse;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -11,13 +10,18 @@ public interface WarehouseMapper {
 
 	Integer count(String keyword);
 
-	List<Warehouse> listByName(@Param("keyword") String keyword);
+	List<Warehouse> selectListByName(@Param("keyword") String keyword);
 
+	@Select("select id from tb_warehouse where name=#{name}")
 	Warehouse selectByName(String name);
 
-	// 添加仓库
-	int insert(Warehouse warehouse);
+	@Insert("insert into tb_warehouse(name) values (#{name})")
+	Integer insert(Warehouse warehouse);
 
-	// 修改仓库
-	int update(Warehouse warehouse);
+	@Update("update tb_warehouse set name=#{name} where id=#{id}")
+	Integer update(Warehouse warehouse);
+
+	@Delete("delete from tb_warehouse where id=#{id}")
+	Integer deleteById(Integer id);
+
 }

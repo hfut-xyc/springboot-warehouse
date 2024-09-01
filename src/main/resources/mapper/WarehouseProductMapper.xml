@@ -16,14 +16,4 @@
     where warehouse_id=#{warehouseId}
   </select>
 
-  <insert id="insert">
-    insert into tb_warehouse_product(wid, pid, count)
-    values (#{wid}, #{pid}, #{count})
-  </insert>
-
-  <update id="update">
-    update tb_warehouse_product set count=#{count}
-    where wid=#{wid} and pid=#{pid}
-  </update>
-
 </mapper>

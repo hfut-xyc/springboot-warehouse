@@ -10,7 +10,7 @@ public interface UserMapper {
 
 	Integer count(String keyword);
 
-	List<User> listByName(
+	List<User> selectListByName(
 		@Param("page") Integer page,
 		@Param("pageSize") Integer pageSize,
 		@Param("keyword") String keyword

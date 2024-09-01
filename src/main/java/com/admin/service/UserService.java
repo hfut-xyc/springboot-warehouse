@@ -36,9 +36,9 @@ public class UserService {
 	 * @param keyword
 	 * @return
 	 */
-	public Map<String, Object> listUser(Integer page, Integer pageSize, String keyword) {
+	public Map<String, Object> selectListByName(Integer page, Integer pageSize, String keyword) {
 		Integer count = userMapper.count(keyword);
-		List<User> userList = userMapper.listByName(page, pageSize, keyword);
+		List<User> userList = userMapper.selectListByName(page, pageSize, keyword);
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("total", count);
@@ -47,32 +47,32 @@ public class UserService {
 	}
 
 	@Transactional
-	public Integer insertUser(User user) throws Exception {
+	public Integer insert(User user) throws Exception {
 		User temp = userMapper.selectByName(user.getUsername());
 		if (temp != null) {
 			throw new Exception("用户名已存在");
 		}
-		int res = userMapper.insert(user);
+		Integer res = userMapper.insert(user);
 		if (res != 1) {
-			throw new Exception("用户添加失败");
+			throw new Exception("添加用户失败");
 		}
 		return res;
 	}
 
 	@Transactional
-	public Integer updateUser(User user) throws Exception {
-		int res = userMapper.update(user);
+	public Integer update(User user) throws Exception {
+		Integer res = userMapper.update(user);
 		if (res != 1) {
-			throw new Exception("用户修改失败");
+			throw new Exception("修改用户失败");
 		}
 		return res;
 	}
 
 	@Transactional
 	public Integer deleteById(Integer id) throws Exception {
-		int res = userMapper.deleteById(id);
+		Integer res = userMapper.deleteById(id);
 		if (res != 1) {
-			throw new Exception("用户删除失败");
+			throw new Exception("删除用户失败");
 		}
 		return res;
 	}

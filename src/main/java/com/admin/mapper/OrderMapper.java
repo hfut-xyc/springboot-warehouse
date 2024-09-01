@@ -8,9 +8,9 @@ import java.util.List;
 @Mapper
 public interface OrderMapper {
 
-    Integer countByCreateTime(String date);
+    Integer countByDate(String date);
 
-	List<Order> listByCreateTime(
+	List<Order> selectListByDate(
         @Param("page") Integer page,
         @Param("pageSize") Integer pageSize,
         @Param("date") String date

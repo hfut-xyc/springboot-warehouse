@@ -4,12 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.admin.mapper.WarehouseMapper">
 
-<!--    <resultMap id="WarehouseProductMap" type="com.admin.entity.Product">-->
-<!--        <id column="pid" property="id"/>-->
-<!--        <result column="pname" property="name"/>-->
-<!--        <result column="count" property="total"/>-->
-<!--    </resultMap>-->
-
     <select id="count" resultType="java.lang.Integer">
         select count(*) from tb_warehouse
         <if test="keyword != null">
@@ -17,34 +11,10 @@
         </if>
     </select>
 
-    <select id="listByName" resultType="com.admin.entity.Warehouse">
+    <select id="selectListByName" resultType="com.admin.entity.Warehouse">
         select * from tb_warehouse
         <if test="keyword != null">
             where name like concat('%', #{keyword}, '%')
         </if>
     </select>
-
-
-<!--    <select id="getProductListById" resultMap="WarehouseProductMap">-->
-<!--        select pid, pname, supplier, count-->
-<!--        from view_warehouse_product where id=#{id}-->
-<!--    </select>-->
-
-<!--    <select id="getProductByWidAndPid" resultMap="WarehouseProductMap">-->
-<!--        select pid, pname, count-->
-<!--        from view_warehouse_product where id=#{wid} and pid=#{pid}-->
-<!--    </select>-->
-
-    <select id="selectByName" resultType="com.admin.entity.Warehouse">
-        select * from tb_warehouse where name=#{name}
-    </select>
-
-    <insert id="insert">
-        insert ignore into tb_warehouse(name) values (#{name})
-    </insert>
-
-    <update id="update">
-        update tb_warehouse set name=#{name} where id=#{id}
-    </update>
-
 </mapper>

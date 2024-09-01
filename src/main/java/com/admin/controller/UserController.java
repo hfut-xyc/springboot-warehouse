@@ -21,22 +21,25 @@ public class UserController {
         @RequestParam(defaultValue = "10") Integer pageSize,
         @RequestParam(required = false) String keyword)
     {
-        Map<String, Object> map = userService.listUser((page - 1) * pageSize, pageSize, keyword);
+        Map<String, Object> map = userService.selectListByName((page - 1) * pageSize, pageSize, keyword);
         return Result.ok("查询成功", map);
     }
 
     @PostMapping("")
-    public Integer insertUser(@RequestBody User user) throws Exception {
-        return userService.insertUser(user);
+    public Result insertUser(@RequestBody User user) throws Exception {
+        Integer res = userService.insert(user);
+        return Result.ok("添加成功", res);
     }
 
     @PutMapping("")
-    public Integer updateUser(@RequestBody User user) throws Exception {
-        return userService.updateUser(user);
+    public Result updateUser(@RequestBody User user) throws Exception {
+        Integer res = userService.update(user);
+        return Result.ok("修改成功", res);
     }
 
     @DeleteMapping("")
-    public Integer deleteById(@RequestParam Integer id) throws Exception {
-        return userService.deleteById(id);
+    public Result deleteUserById(@RequestParam Integer id) throws Exception {
+        Integer res = userService.deleteById(id);
+        return Result.ok("删除成功", res);
     }
 }

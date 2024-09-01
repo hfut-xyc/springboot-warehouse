@@ -19,27 +19,30 @@ public class WarehouseController {
 
     @GetMapping("/list")
     public Result listWarehouse(
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
             @RequestParam(value = "keyword", required = false) String keyword)
     {
-        Map<String, Object> map = warehouseService.listWarehouse(keyword);
+        Map<String, Object> map = warehouseService.selectListByName(keyword);
         return Result.ok("查询成功", map);
     }
 
     @PostMapping("")
-    public Integer addWarehouse(@RequestBody Warehouse warehouse) throws Exception {
-        return warehouseService.insertWarehouse(warehouse);
+    public Result insertWarehouse(@RequestBody Warehouse warehouse) throws Exception {
+        Integer res = warehouseService.insert(warehouse);
+        return Result.ok("添加成功", res);
     }
 
     @PutMapping("")
-    public Integer updateWarehouse(@RequestBody Warehouse warehouse) throws Exception {
-        return warehouseService.updateWarehouse(warehouse);
+    public Result updateWarehouse(@RequestBody Warehouse warehouse) throws Exception {
+        Integer res = warehouseService.update(warehouse);
+        return Result.ok("修改成功", res);
     }
 
     @DeleteMapping("")
-    public Integer deleteWarehouse(@RequestBody Warehouse warehouse) throws Exception {
-        return warehouseService.updateWarehouse(warehouse);
+    public Result deleteWarehouse(@RequestParam Integer id) throws Exception {
+        Integer res = warehouseService.deleteById(id);
+        return Result.ok("删除成功", res);
     }
 
 }

@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.admin.mapper.OrderMapper">
 
-  <select id="countByCreateTime" resultType="java.lang.Integer">
+  <select id="countByDate" resultType="java.lang.Integer">
     select count(*) from tb_order
     <where>
       <if test="date != null ">
@@ -13,7 +13,7 @@
     </where>
   </select>
 
-  <select id="listByCreateTime" resultType="com.admin.entity.Order">
+  <select id="selectListByDate" resultType="com.admin.entity.Order">
         select * from tb_order
           <where>
             <if test="date != null ">
